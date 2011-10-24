@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.android.rhinos"
+      android:versionCode="1"
+      android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="8" />
+
+	<uses-permission
+        android:name="android.permission.INTERNET" />
+
+    <application 
+    	android:name=".App"
+    	android:icon="@drawable/rhinos" 
+    	android:label="@string/app_name" 
+    	android:theme="@android:style/Theme.Black.NoTitleBar">
+    	
+        <activity android:name=".Splash"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".RhinosActivity"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="com.android.rhinos.RhinosActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Menu"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="com.android.rhinos.Menu" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".AddContract"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="com.android.rhinos.AddContract" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ContractGest"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="com.android.rhinos.ContractGest" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".FilteredContracts"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="com.android.rhinos.FilteredContracts" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".CampGest"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="com.android.rhinos.CampGest" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".UserProfile"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="com.android.rhinos.UserProfile" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+    </application>
+</manifest>

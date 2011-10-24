@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <LinearLayout 
+    	android:layout_width="match_parent" 
+    	android:layout_height="wrap_content" 
+    	android:id="@+id/linearLayout1">
+        <ImageView 
+        	android:layout_width="103dp" 
+        	android:id="@+id/imageView1" 
+        	android:padding="12dp" 
+        	android:layout_height="103dp" 
+        	android:src="@drawable/user_icon"/>
+        
+        <TextView 
+        	android:text="TextView" 
+        	android:id="@+id/textView6" 
+        	android:layout_width="match_parent" android:layout_height="match_parent" android:layout_gravity="center" android:gravity="center"/>
+    </LinearLayout>
+    
+    	<TextView 
+    		android:text="TextView" 
+    		android:id="@+id/nameData" 
+    		android:layout_height="wrap_content" 
+    		android:layout_gravity="center"
+    		android:gravity="center" android:layout_width="match_parent"/>
+    	<TableLayout android:layout_width="match_parent" android:id="@+id/tableLayout1" android:layout_height="wrap_content" android:padding="10dp">
+    		<TableRow android:id="@+id/tableRow1" android:layout_width="wrap_content" android:layout_height="wrap_content">
+    			<TextView 
+    				android:text="- Id" 
+    				android:layout_height="wrap_content" 
+    				android:layout_width="wrap_content" 
+    				android:paddingRight="20dp"/>
+    			<TextView  
+    				android:id="@+id/idData" 
+    				android:layout_width="wrap_content" 
+    				android:layout_height="wrap_content"/>
+    		</TableRow>
+    		<TableRow 
+    			android:id="@+id/tableRow2" 
+    			android:layout_width="wrap_content" 
+    			android:layout_height="wrap_content">
+    			<TextView 
+    				android:text="- Fecha" 
+    				android:layout_width="wrap_content" 
+    				android:layout_height="wrap_content"/>
+    			<TextView 
+    				android:id="@+id/dateData" 
+    				android:layout_width="wrap_content" 
+    				android:layout_height="wrap_content"/>
+    		</TableRow>
+    	</TableLayout>
+    	<TableLayout 
+    		android:layout_width="match_parent" 
+    		android:id="@+id/servicesData" 
+    		android:layout_height="wrap_content">
+    	</TableLayout>
+    		
+</LinearLayout>

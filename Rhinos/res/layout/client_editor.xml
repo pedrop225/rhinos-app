@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<ScrollView 
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:padding="3dp">
+		<LinearLayout
+		  	xmlns:android="http://schemas.android.com/apk/res/android"
+		  	android:orientation="vertical"
+		 	android:layout_width="match_parent"
+		  	android:layout_height="match_parent">
+		    
+		    <TextView 
+		    	android:text="Nombre: "
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"/>
+		    <EditText 
+		        android:id="@+id/userName"
+		    	android:layout_width="fill_parent" 
+		    	android:layout_height="wrap_content"
+		    	android:hint="Nombre" 
+		    	android:inputType="textPersonName|textCapWords">
+		        <requestFocus/>
+		    </EditText>
+		    <TextView 
+			 	android:text="Identificación:" 
+			  	android:id="@+id/userId" 
+			  	android:layout_width="wrap_content" 
+			   	android:layout_height="wrap_content"/>
+
+		    <LinearLayout
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal" >
+
+		        <Spinner
+		            android:id="@+id/idSpinner"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content" />
+
+		        <EditText
+		            android:id="@+id/userName"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:hint="Id"
+		            android:inputType="textPersonName" />
+
+		        <ImageButton
+		            android:id="@+id/checkId"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:src="@drawable/valid" />
+		    </LinearLayout>
+		    
+		    <TextView android:text="Teléfonos de contacto:" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+		    <EditText android:layout_width="match_parent" android:id="@+id/userTlf1" android:inputType="phone" android:layout_height="wrap_content" android:hint="+34"/>
+		    <EditText android:layout_width="match_parent" android:id="@+id/userTlf2" android:inputType="phone" android:layout_height="wrap_content" android:hint="+34" android:enabled="true"/>
+		    
+		    <TextView android:text="e-mail:" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+		    <EditText android:layout_width="match_parent" android:id="@+id/userMail" android:layout_height="wrap_content" android:inputType="textEmailAddress"
+		    		  android:hint="e-mail"/>
+		    
+		    <TextView 
+		    	android:text="Dirección:"
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"/>
+		    
+		    <EditText 
+		    	android:layout_width="match_parent" 
+		    	android:id="@+id/userAddress" 
+		    	android:layout_height="wrap_content" 
+		    	android:inputType="textMultiLine|textPostalAddress" android:hint="Dirección"/>
+		    
+		    <TextView android:text="Servicios:" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+		    <EditText android:layout_width="match_parent" android:id="@+id/userServices" android:layout_height="wrap_content" android:inputType="textMultiLine" android:hint="Servicios"/>
+		    
+		    <DatePicker android:id="@+id/userDatePicker" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" 
+		    			android:padding="15dp"/>   
+		    
+		    <Button android:text="Guardar" android:id="@+id/bSaveUser" android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+		    	
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>
