@@ -9,6 +9,7 @@ public class Service implements Comparable<Service>, Serializable {
 	
 	private int commission;
 	private String service;
+	private String campaign;
 	private Date date;
 	
 	public Service(String service, int commission) {
@@ -51,6 +52,14 @@ public class Service implements Comparable<Service>, Serializable {
 		return (new Integer(commission).compareTo(arg0.commission)) * -1;
 	}
 	
+	public String getCampaign() {
+		return campaign;
+	}
+
+	public void setCampaign(String campaign) {
+		this.campaign = campaign;
+	}
+
 	@Override
 	public String toString() {
 		return ""+service+"\t"+ commission;

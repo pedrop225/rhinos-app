@@ -13,28 +13,32 @@
 		 	android:layout_width="match_parent"
 		  	android:layout_height="match_parent">
 		    
-		    <TextView 
-		    	android:text="Nombre: "
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"/>
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:paddingTop="5dp"
+		        android:text="Nombre: " />
+
 		    <EditText 
-		        android:id="@+id/userName"
+		        android:id="@+id/clientName"
 		    	android:layout_width="fill_parent" 
 		    	android:layout_height="wrap_content"
 		    	android:hint="Nombre" 
 		    	android:inputType="textPersonName|textCapWords">
 		        <requestFocus/>
 		    </EditText>
-		    <TextView 
-			 	android:text="Identificación:" 
-			  	android:id="@+id/userId" 
-			  	android:layout_width="wrap_content" 
-			   	android:layout_height="wrap_content"/>
+
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:paddingTop="5dp"
+		        android:text="Identificación:" />
 
 		    <LinearLayout
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
-		        android:orientation="horizontal" >
+		        android:orientation="horizontal"
+		        android:padding="2dp" >
 
 		        <Spinner
 		            android:id="@+id/idSpinner"
@@ -42,45 +46,77 @@
 		            android:layout_height="wrap_content" />
 
 		        <EditText
-		            android:id="@+id/userName"
-		            android:layout_width="wrap_content"
+		            android:id="@+id/clientId"
+		            android:layout_width="180dp"
 		            android:layout_height="wrap_content"
+		            android:layout_weight="0.28"
 		            android:hint="Id"
 		            android:inputType="textPersonName" />
 
-		        <ImageButton
-		            android:id="@+id/checkId"
+		        <ImageView
+		            android:id="@+id/imageView1"
 		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:src="@drawable/valid" />
+		            android:layout_height="36dp"
+		            android:layout_gravity="center_vertical"
+		            android:scaleType="center"
+		            android:src="@drawable/action_check" />
 		    </LinearLayout>
 		    
-		    <TextView android:text="Teléfonos de contacto:" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-		    <EditText android:layout_width="match_parent" android:id="@+id/userTlf1" android:inputType="phone" android:layout_height="wrap_content" android:hint="+34"/>
-		    <EditText android:layout_width="match_parent" android:id="@+id/userTlf2" android:inputType="phone" android:layout_height="wrap_content" android:hint="+34" android:enabled="true"/>
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:paddingTop="5dp"
+		        android:text="Teléfonos de contacto:" />
+
+		    <EditText android:layout_width="match_parent" android:id="@+id/clientTlf1" android:inputType="phone" android:layout_height="wrap_content" android:hint="+34"/>
+		    <EditText android:layout_width="match_parent" android:id="@+id/clientTlf2" android:inputType="phone" android:layout_height="wrap_content" android:hint="+34" android:enabled="true"/>
 		    
-		    <TextView android:text="e-mail:" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-		    <EditText android:layout_width="match_parent" android:id="@+id/userMail" android:layout_height="wrap_content" android:inputType="textEmailAddress"
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:paddingTop="5dp"
+		        android:text="e-mail:" />
+
+		    <EditText android:layout_width="match_parent" android:id="@+id/clientMail" android:layout_height="wrap_content" android:inputType="textEmailAddress"
 		    		  android:hint="e-mail"/>
 		    
-		    <TextView 
-		    	android:text="Dirección:"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"/>
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:paddingTop="5dp"
+		        android:text="Dirección:" />
 		    
 		    <EditText 
 		    	android:layout_width="match_parent" 
-		    	android:id="@+id/userAddress" 
+		    	android:id="@+id/clientAddress" 
 		    	android:layout_height="wrap_content" 
 		    	android:inputType="textMultiLine|textPostalAddress" android:hint="Dirección"/>
 		    
-		    <TextView android:text="Servicios:" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-		    <EditText android:layout_width="match_parent" android:id="@+id/userServices" android:layout_height="wrap_content" android:inputType="textMultiLine" android:hint="Servicios"/>
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:paddingTop="5dp"
+		        android:text="Servicios:" />
+
+		    <EditText
+		        android:id="@+id/clientServices"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:hint="Servicios"
+		        android:inputType="textMultiLine"/>
+
+		    <LinearLayout
+		        android:id="@+id/linearLayout1"
+		        android:layout_width="match_parent"
+		        android:layout_height="10dp"
+		        android:orientation="vertical" >
+		    </LinearLayout>
 		    
-		    <DatePicker android:id="@+id/userDatePicker" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" 
-		    			android:padding="15dp"/>   
-		    
-		    <Button android:text="Guardar" android:id="@+id/bSaveUser" android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+		    <Button
+		        android:id="@+id/bSaveClient"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:text="Guardar" />
 		    	
 		</LinearLayout>
 	</ScrollView>

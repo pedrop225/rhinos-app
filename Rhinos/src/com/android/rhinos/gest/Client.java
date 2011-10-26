@@ -2,7 +2,6 @@ package com.android.rhinos.gest;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Client implements Serializable, Comparable<Client> {
 
@@ -14,7 +13,6 @@ public class Client implements Serializable, Comparable<Client> {
 	private String tlf_2;
 	private String mail;
 	private String address;
-	private Date date;
 	private int comm;
 	
 	private ArrayList<Service> services;
@@ -39,10 +37,6 @@ public class Client implements Serializable, Comparable<Client> {
 		return comm;
 	}
 	
-	public Date getDate() {
-		return date;
-	}
-	
 	public Id getId() {
 		return id;
 	}
@@ -58,10 +52,6 @@ public class Client implements Serializable, Comparable<Client> {
 	public void setComm(int comm) {
 		this.comm = comm;
 	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
 	
 	public void setId(Id id) {
 		this.id = id;
@@ -73,6 +63,38 @@ public class Client implements Serializable, Comparable<Client> {
 	
 	public void setServices(ArrayList<Service> services) {
 		this.services = services;
+	}
+
+	public String getTlf_1() {
+		return tlf_1;
+	}
+
+	public void setTlf_1(String tlf_1) {
+		this.tlf_1 = tlf_1;
+	}
+
+	public String getTlf_2() {
+		return tlf_2;
+	}
+
+	public void setTlf_2(String tlf_2) {
+		this.tlf_2 = tlf_2;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	@Override

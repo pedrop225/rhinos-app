@@ -10,15 +10,15 @@ import android.widget.TextView;
 public class Splash extends Activity {
 
 	private MediaPlayer mPlayer;	
-	private TextView splashText;
+	private TextView rhinosText;
 	
 	public void initialize() {
 		//initializing
-		splashText = (TextView)findViewById(R.id.splashText);
+		rhinosText = (TextView)findViewById(R.id.rhinosText);
 		
 		//setting fonts
 		Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/rhinos_font.ttf");	
-		splashText.setTypeface(tf);
+		rhinosText.setTypeface(tf);
 				
 		//initializing sound
 		mPlayer = MediaPlayer.create(Splash.this, R.raw.rhinos_splash_sound);
