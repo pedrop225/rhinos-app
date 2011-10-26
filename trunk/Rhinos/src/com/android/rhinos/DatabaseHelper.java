@@ -30,6 +30,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 						"commission INTEGER NOT NULL, " +
 						"PRIMARY KEY (_id, service), " +
 						"FOREIGN KEY (_id) REFERENCES Campaigns(_id) ON DELETE CASCADE)");
+			
+		//Creating table Clients
+		db.execSQL("CREATE TABLE Clients (" +
+						"_id TEXT PRIMARY KEY," +
+						"name TEXT NOT NULL," +
+						"tlf_1 INTEGER NOT NULL," +
+						"tlf_2 INTEGER NOT NULL," +
+						"mail TEXT," +
+						"address TEXT NOT NULL)");
+		
+		//Creating table Services
+		db.execSQL("CREATE TABLE Services (" +
+						"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+						"service TEXT NOT NULL," +
+						"campaign TEXT NOT NULL," +
+						"address TEXT" +
+						"commission INTEGER NOT NULL," +
+						"date TEXT NOT NULL)");
 	}
 
 	@Override
