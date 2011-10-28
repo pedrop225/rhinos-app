@@ -50,7 +50,7 @@ public class CampGest extends Activity {
 					//adding to source connector
 					App.src.clearCampaigns();
 					for (Campaign c : campaigns) {
-						App.src.insertCampaign(c);
+						App.src.addCampaign(c);
 					}
 				}
 				catch (MalformedURLException e) {

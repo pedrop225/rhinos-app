@@ -34,6 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		//Creating table Clients
 		db.execSQL("CREATE TABLE Clients (" +
 						"_id TEXT PRIMARY KEY," +
+						"_idType INTEGER NOT NULL," +
 						"name TEXT NOT NULL," +
 						"tlf_1 INTEGER NOT NULL," +
 						"tlf_2 INTEGER NOT NULL," +

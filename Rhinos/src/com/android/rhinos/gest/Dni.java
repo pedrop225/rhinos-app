@@ -10,8 +10,13 @@ public class Dni extends Id {
 	}
 	
 	@Override
+	public int getType() {
+		return Id.DNI;
+	}
+	
+	@Override
 	protected boolean test1() {
-		return id.matches("[0-9]{8}[a-zA-Z]");
+		return id.matches("[0-9]{8}[A-Z]");
 	}
 	
 	@Override

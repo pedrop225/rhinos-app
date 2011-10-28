@@ -61,7 +61,7 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".UserProfile"
+        <activity android:name=".ClientProfile"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="com.android.rhinos.UserProfile" />
