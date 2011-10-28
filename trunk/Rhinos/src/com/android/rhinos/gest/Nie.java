@@ -9,8 +9,13 @@ public class Nie extends Id {
 	}
 	
 	@Override
+	public int getType() {
+		return Id.NIE;
+	}
+	
+	@Override
 	protected boolean test1() {
-		return id.matches("X[0-9]{7}[a-zA-Z]");
+		return id.matches("X[0-9]{7}[A-Z]");
 	}
 	
 	@Override

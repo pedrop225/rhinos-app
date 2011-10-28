@@ -3,6 +3,7 @@ package connectors;
 import java.util.ArrayList;
 
 import com.android.rhinos.gest.Campaign;
+import com.android.rhinos.gest.Client;
 
 public class FileConnector implements Connector {
 
@@ -13,12 +14,24 @@ public class FileConnector implements Connector {
 	}
 	
 	@Override
-	public boolean insertCampaign(Campaign camp) {
+	public boolean addCampaign(Campaign camp) {
 		return false;
 	}
 	
 	@Override
 	public ArrayList<Campaign> getCampaigns() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public boolean addClient(Client c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public ArrayList<Client> getClients() {
 		// TODO Auto-generated method stub
 		return null;
 	}

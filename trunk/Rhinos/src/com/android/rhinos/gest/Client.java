@@ -13,7 +13,6 @@ public class Client implements Serializable, Comparable<Client> {
 	private String tlf_2;
 	private String mail;
 	private String address;
-	private int comm;
 	
 	private ArrayList<Service> services;
 	
@@ -33,10 +32,6 @@ public class Client implements Serializable, Comparable<Client> {
 		return compareTo(u) == 0;
 	}
 	
-	public int getComm() {
-		return comm;
-	}
-	
 	public Id getId() {
 		return id;
 	}
@@ -47,10 +42,6 @@ public class Client implements Serializable, Comparable<Client> {
 	
 	public ArrayList<Service> getServices() {
 		return services;
-	}
-
-	public void setComm(int comm) {
-		this.comm = comm;
 	}
 	
 	public void setId(Id id) {

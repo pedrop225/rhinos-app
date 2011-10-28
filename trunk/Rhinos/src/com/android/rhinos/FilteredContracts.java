@@ -15,6 +15,35 @@ import android.widget.TextView;
 
 import com.android.rhinos.gest.Client;
 
+public class FilteredContracts extends Activity {
+	
+	private TableLayout base;
+	private ScrollView scroll;
+			
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		base = new TableLayout(FilteredContracts.this);
+		base.setPadding(0, 2, 0, 2);
+				
+		scroll = new ScrollView(FilteredContracts.this);
+		scroll.addView(base);
+		setContentView(scroll);
+		
+		
+		for (Client u : App.src.getClients()) {
+			ContractItemView item = new ContractItemView(FilteredContracts.this, u);
+			base.addView(item);
+						
+			View v = new View(getBaseContext());
+			v.setBackgroundColor(Color.DKGRAY);
+			v.setMinimumHeight(2);
+			base.addView(v);
+		}
+	}
+}
+
 class ContractItemView extends LinearLayout implements View.OnClickListener {
 	
 	private static final int COMMISION_FONT_SIZE = 16;
@@ -28,18 +57,18 @@ class ContractItemView extends LinearLayout implements View.OnClickListener {
 	
 	private LinearLayout info;
 	private TextView name;
-	private Client user;
+	private Client client;
 		
-	public ContractItemView(Context context, Client u) {
+	public ContractItemView(Context context, Client c) {
 		super(context);
-		this.user = u;
+		this.client = c;
 		setClickable(true);
 		
 		name = new TextView(context);
 		id = new TextView(context);
 		comm = new TextView(context);
 				
-		name.setText(u.getName());
+		name.setText(c.getName());
 		name.setTypeface(Typeface.DEFAULT_BOLD);
 		name.setTextSize(NAME_FONT_SIZE);
 		
@@ -67,16 +96,13 @@ class ContractItemView extends LinearLayout implements View.OnClickListener {
 		
 		setOnClickListener(this);
 	}
-
-	public Client getUser() {
-		return user;
-	}
 	
 	@Override
 	public void onClick(View v) {
 		setBackgroundColor(Color.BLACK);
 		
-		Intent intent = new Intent().setClass(getContext(), UserProfile.class);
+		Intent intent = new Intent().setClass(getContext(), ClientProfile.class);
+		intent.putExtra("client", client);
 		getContext().startActivity(intent);
 	
 	}
@@ -93,34 +119,5 @@ class ContractItemView extends LinearLayout implements View.OnClickListener {
 			
 			setBackgroundColor(Color.BLACK);
 		return true;
-	}
-}
-
-public class FilteredContracts extends Activity {
-	
-	private TableLayout base;
-	private ScrollView scroll;
-			
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		base = new TableLayout(FilteredContracts.this);
-		base.setPadding(0, 2, 0, 2);
-				
-		scroll = new ScrollView(FilteredContracts.this);
-		scroll.addView(base);
-		setContentView(scroll);
-		
-		/*
-		for (Client u : Shared.clients) {
-			ContractItemView item = new ContractItemView(FilteredContracts.this, u);
-			base.addView(item);
-						
-			View v = new View(getBaseContext());
-			v.setBackgroundColor(Color.DKGRAY);
-			v.setMinimumHeight(2);
-			base.addView(v);
-		}*/
 	}
 }

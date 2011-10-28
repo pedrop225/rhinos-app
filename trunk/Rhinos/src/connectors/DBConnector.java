@@ -9,6 +9,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.android.rhinos.DatabaseHelper;
 import com.android.rhinos.gest.Campaign;
+import com.android.rhinos.gest.Client;
+import com.android.rhinos.gest.Dni;
+import com.android.rhinos.gest.Id;
+import com.android.rhinos.gest.Nie;
 import com.android.rhinos.gest.Service;
 
 public class DBConnector implements Connector {
@@ -31,7 +35,7 @@ public class DBConnector implements Connector {
 		db.close();
 	}
 	
-	public boolean insertCampaign(Campaign camp) {
+	public boolean addCampaign(Campaign camp) {
 		try {
 			db = dbHelper.getWritableDatabase();
 			activateFlags();
@@ -103,6 +107,60 @@ public class DBConnector implements Connector {
 		
 		return r;
 	}
+	
+	public boolean addClient(Client c) {
+		db = dbHelper.getWritableDatabase();
+		activateFlags();
+		
+		ContentValues cv = new ContentValues();
+		cv.put("_id", c.getId().toString());
+		cv.put("_idType", c.getId().getType());
+		cv.put("name", c.getName());
+		cv.put("tlf_1", c.getTlf_1());
+		cv.put("tlf_2", c.getTlf_2());
+		cv.put("mail", c.getMail());
+		cv.put("address", c.getAddress());
+		
+		db.insert("Clients", "name", cv);
+		db.close();
+		
+		return true;
+	}
+
+	public ArrayList<Client> getClients() {
+		ArrayList<Client> tr = new ArrayList<Client>();
+		
+		db = dbHelper.getReadableDatabase();
+		Cursor c = db.query("Clients", null, null, null, null, null, null);
+		
+		if (c.moveToFirst()) {
+			
+			for (int i = 0; i < c.getCount(); i++) {
+				Client cl = new Client();
+				
+				switch (c.getInt(1)) {
+					case Id.DNI: cl.setId(new Dni(c.getString(0))); break;
+					case Id.NIE: cl.setId(new Nie(c.getString(0))); break;
+					case Id.CIF: cl.setId(new Dni(c.getString(0))); break;
+				}
+				cl.setName(c.getString(2));
+				cl.setTlf_1(c.getString(3));
+				cl.setTlf_2(c.getString(4));
+				cl.setMail(c.getString(5));
+				cl.setAddress(c.getString(6));
+				
+				c.moveToNext();
+				tr.add(cl);
+			}
+		}
+		
+		//closing database
+		c.close();
+		db.close();
+		
+		return tr;
+	}
+	
 	
 	private void activateFlags() {
 		db.execSQL("PRAGMA FOREIGN_KEYS=ON");
