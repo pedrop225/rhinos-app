@@ -10,6 +10,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -17,8 +18,9 @@ import com.android.rhinos.gest.Client;
 import com.android.rhinos.gest.Dni;
 import com.android.rhinos.gest.Id;
 import com.android.rhinos.gest.Nie;
+import com.android.rhinos.gest.Service;
 
-public class AddContract extends Activity {
+public class ClientEditor extends Activity {
 		
 	private EditText clientName;
 	private EditText clientId;
@@ -31,6 +33,7 @@ public class AddContract extends Activity {
 	
 	private Spinner idSpinner;
 	private Button save;
+	private ImageButton addCampaignButton;
 	
 	private Client client;
 			
@@ -43,6 +46,7 @@ public class AddContract extends Activity {
 		clientMail = (EditText) findViewById(R.id.clientMail);
 		clientAddress = (EditText) findViewById(R.id.clientAddress);
 		clientServices = (EditText) findViewById(R.id.clientServices);
+		addCampaignButton = (ImageButton) findViewById(R.id.addCampaignButton);
 		
 		idSpinner = (Spinner) findViewById(R.id.idSpinner);
 		
@@ -56,7 +60,19 @@ public class AddContract extends Activity {
 			}
 		});
 		
-		idSpinner.setAdapter(new ArrayAdapter<String>(AddContract.this, android.R.layout.simple_spinner_item, Id.TYPES));
+		addCampaignButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				Service s = new Service();
+				ServiceEditor se = new ServiceEditor(ClientEditor.this, s);
+				se.setTitle("  ------ Editor de Servicios ------  ");
+				se.show();
+				
+				clientServices.setText(s.getService());
+			}
+		});
+		
+		idSpinner.setAdapter(new ArrayAdapter<String>(ClientEditor.this, android.R.layout.simple_spinner_item, Id.TYPES));
 		idSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
@@ -95,7 +111,7 @@ public class AddContract extends Activity {
 			case Id.NIE: client.setId(new Nie(clientId.getText().toString())); break;
 			case Id.CIF: client.setId(new Dni(clientId.getText().toString())); break;
 		}
-		clientIdState.setImageResource(client.getId().isValid() ? R.drawable.action_check : R.drawable.action_delete);
+		clientIdState.setImageResource(client.getId().isValid() ? R.drawable.action_check : android.R.drawable.ic_delete);
 	}
 	
 	private boolean checkData() {

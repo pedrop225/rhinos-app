@@ -12,6 +12,13 @@ public class Service implements Comparable<Service>, Serializable {
 	private String campaign;
 	private Date date;
 	
+	public Service() {
+		commission = 0;
+		service =  "";
+		campaign = "";
+		date = new Date();
+	}
+	
 	public Service(String service, int commission) {
 		this.service = service;
 		this.commission = commission;
