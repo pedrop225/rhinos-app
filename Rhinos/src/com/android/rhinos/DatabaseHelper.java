@@ -44,11 +44,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		//Creating table Services
 		db.execSQL("CREATE TABLE Services (" +
 						"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+						"_idUser INTEGER" +
 						"service TEXT NOT NULL," +
 						"campaign TEXT NOT NULL," +
 						"address TEXT" +
 						"commission INTEGER NOT NULL," +
-						"date TEXT NOT NULL)");
+						"date TEXT NOT NULL" +
+						"FOREIGN KEY (_idUser) REFERENCES Clients(_id) ON DELETE CASCADE)");
 	}
 
 	@Override
@@ -56,5 +58,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE ON CASCADE Campaigns;");
 		onCreate(db);
 	}
-
 }

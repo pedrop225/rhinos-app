@@ -29,7 +29,7 @@ public class Menu extends ListActivity {
 		
 			//My profile
 			case 0: 
-				execute = "AddContract"; break;
+				execute = "ClientEditor"; break;
 			case 1:
 				execute = "ContractGest"; break;
 			case 2:
