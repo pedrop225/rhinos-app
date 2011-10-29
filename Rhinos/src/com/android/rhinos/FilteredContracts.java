@@ -72,7 +72,7 @@ class ContractItemView extends LinearLayout implements View.OnClickListener {
 		name.setTypeface(Typeface.DEFAULT_BOLD);
 		name.setTextSize(NAME_FONT_SIZE);
 		
-		id.setText("id");
+		id.setText(c.getId().toString());
 		id.setTextSize(ID_FONT_SIZE);
 		
 		comm.setText("85€");
