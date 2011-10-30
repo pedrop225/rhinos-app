@@ -161,6 +161,26 @@ public class DBConnector implements Connector {
 		return tr;
 	}
 	
+	@Override
+	public Client clientExists(String _id) {
+		db = dbHelper.getReadableDatabase();
+		
+		Cursor c = db.query("Clients", null, "_id='"+_id+"'", null, null, null, null);
+		
+		if (c.moveToFirst()) {
+			Client client = new Client();
+			client.setName(c.getString(2));
+			client.setTlf_1(c.getString(3));
+			client.setTlf_2(c.getString(4));
+			client.setMail(c.getString(5));
+			client.setAddress(c.getString(6));
+			c.close();
+			return client;
+		}
+		
+		c.close();
+		return null;
+	}
 	
 	private void activateFlags() {
 		db.execSQL("PRAGMA FOREIGN_KEYS=ON");

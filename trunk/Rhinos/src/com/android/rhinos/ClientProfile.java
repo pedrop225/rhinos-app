@@ -4,17 +4,18 @@ import android.R.anim;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.rhinos.gest.Client;
 
 public class ClientProfile extends Activity {
 
-	private TextView nameData;
-	private EditText idData;
-	private EditText tlf_1Data;
-	private EditText tlf_2Data;
+	private TextView cp_name;
+	private TextView cp_id;
+	private TextView cp_tlf_1;
+	private TextView cp_tlf_2;
+	private TextView cp_mail;
+	private TextView cp_address;
 	
 	private Client client;
 	
@@ -24,19 +25,23 @@ public class ClientProfile extends Activity {
 		setContentView(R.layout.client_profile);
 		overridePendingTransition(anim.fade_in, anim.fade_out);
 		
-		nameData = (TextView) findViewById(R.id.nameData);
-		idData = (EditText) findViewById(R.id.idData);
-		tlf_1Data = (EditText) findViewById(R.id.tlf_1Data);
-		tlf_2Data = (EditText) findViewById(R.id.tlf_2Data);
+		cp_name = (TextView) findViewById(R.id.client_profile_name);
+		cp_id = (TextView) findViewById(R.id.client_profile_id);
+		cp_tlf_1 = (TextView) findViewById(R.id.client_profile_tlf_1);
+		cp_tlf_2 = (TextView) findViewById(R.id.client_profile_tlf_2);
+		cp_mail = (TextView) findViewById(R.id.client_profile_mail);
+		cp_address = (TextView) findViewById(R.id.client_profile_address);
 		
 		client = (Client) getIntent().getSerializableExtra("client");
 		
-		nameData.setText(client.getName());
 		Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/rhinos_font.ttf");	
-		nameData.setTypeface(tf);
+		cp_name.setTypeface(tf);
 		
-		idData.setText(client.getId().toString());
-		tlf_1Data.setText(client.getTlf_1());
-		tlf_2Data.setText(client.getTlf_2());
+		cp_name.setText(client.getName());
+		cp_id.setText(client.getId().toString());
+		cp_tlf_1.setText(client.getTlf_1());
+		cp_tlf_2.setText(client.getTlf_2());
+		cp_mail.setText(client.getMail());
+		cp_address.setText(client.getAddress());
 	}
 }

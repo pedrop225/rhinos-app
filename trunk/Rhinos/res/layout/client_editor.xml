@@ -95,12 +95,6 @@
 		    	android:id="@+id/clientAddress" 
 		    	android:layout_height="wrap_content" 
 		    	android:inputType="textMultiLine|textPostalAddress" android:hint="Dirección"/>
-		    
-		    <TextView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:paddingTop="5dp"
-		        android:text="Servicios:" />
 
 		    <LinearLayout
 		        android:id="@+id/linearLayout2"
@@ -109,22 +103,6 @@
 		        android:padding="2dp"
 		        android:weightSum="100" >
 
-		        <EditText
-		            android:id="@+id/clientServices"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_weight="85"
-		            android:enabled="false"
-		            android:hint="Servicios"
-		            android:inputType="textMultiLine" />
-
-		        <ImageButton
-		            android:id="@+id/imageButton1"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_weight="15"
-		            android:src="@android:drawable/ic_delete" />
-
 		    </LinearLayout>
 
 		    <ImageButton
@@ -132,20 +110,6 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:src="@android:drawable/ic_input_add" />
-
-		    <LinearLayout
-		        android:id="@+id/linearLayout1"
-		        android:layout_width="match_parent"
-		        android:layout_height="10dp"
-		        android:orientation="vertical" >
-
-		    </LinearLayout>
-		    
-		    <Button
-		        android:id="@+id/bSaveClient"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:text="Guardar" />
 		    	
 		</LinearLayout>
 	</ScrollView>

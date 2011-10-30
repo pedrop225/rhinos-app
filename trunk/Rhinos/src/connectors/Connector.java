@@ -11,7 +11,9 @@ public interface Connector {
 	
 	public boolean addCampaign(Campaign camp);
 	public ArrayList<Campaign> getCampaigns();
-	
+		
 	public boolean addClient(Client c);
 	public ArrayList<Client> getClients();
+	
+	public Client clientExists(String _id);
 }
