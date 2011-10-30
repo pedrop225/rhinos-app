@@ -3,6 +3,7 @@ package com.android.rhinos;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -69,7 +70,8 @@ public class CampGest extends Activity {
 				
 				table.removeAllViews();
 				ArrayList<Service> serv = new ArrayList<Service>(((Campaign)spin.getSelectedItem()).getServices().values());
-
+				Collections.sort(serv);
+				
 				for (int i = 0; i < serv.size(); i++) {
 					TextView service = new TextView(CampGest.this);
 					service.setText(serv.get(i).getService());

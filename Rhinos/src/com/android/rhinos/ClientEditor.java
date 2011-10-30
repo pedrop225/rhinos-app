@@ -34,6 +34,7 @@ public class ClientEditor extends Activity {
 	private ImageButton addCampaignButton;
 	
 	private Client client;
+	private int client_status;
 			
 	private void initialize() {
 		clientName = (EditText) findViewById(R.id.clientName);
@@ -44,14 +45,16 @@ public class ClientEditor extends Activity {
 		clientMail = (EditText) findViewById(R.id.clientMail);
 		clientAddress = (EditText) findViewById(R.id.clientAddress);
 		addCampaignButton = (ImageButton) findViewById(R.id.addCampaignButton);
-		
 		idSpinner = (Spinner) findViewById(R.id.idSpinner);
+		
+		client_status = App.NOT_STORED;
 		
 		addCampaignButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (checkData()) {
 					Intent intent = new Intent().setClass(ClientEditor.this, ServiceEditor.class);
 					intent.putExtra("client", client);
+					intent.putExtra("client_status", client_status);
 					startActivity(intent);
 				}
 				else {
@@ -119,6 +122,7 @@ public class ClientEditor extends Activity {
 			//client is valid and already exist.
 			if ((temp = App.src.clientExists(clientId.getText().toString())) != null){
 				clientIdState.setImageResource(android.R.drawable.ic_menu_crop);
+				client_status = App.STORED;
 				
 				clientName.setText(temp.getName());
 				clientTlf_1.setText(temp.getTlf_1());
@@ -129,7 +133,7 @@ public class ClientEditor extends Activity {
 				clientName.requestFocus();
 			}
 			else {
-				cleanFields();
+				client_status = App.NOT_STORED;
 				clientIdState.setImageResource(R.drawable.action_check);
 			}
 		}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.rhinos.DatabaseHelper;
@@ -111,6 +112,7 @@ public class DBConnector implements Connector {
 	public boolean addClient(Client c) {
 		db = dbHelper.getWritableDatabase();
 		activateFlags();
+		boolean tr = true;
 		
 		ContentValues cv = new ContentValues();
 		cv.put("_id", c.getId().toString());
@@ -121,10 +123,17 @@ public class DBConnector implements Connector {
 		cv.put("mail", c.getMail());
 		cv.put("address", c.getAddress());
 		
-		db.insert("Clients", "name", cv);
-		db.close();
+		try {
+			db.insert("Clients", "name", cv);
+		}
+		catch (SQLException e) {
+			tr = false;
+		}
+		finally {
+			db.close();
+		}
 		
-		return true;
+		return tr;
 	}
 
 	public ArrayList<Client> getClients() {
@@ -165,21 +174,49 @@ public class DBConnector implements Connector {
 	public Client clientExists(String _id) {
 		db = dbHelper.getReadableDatabase();
 		
+		Client client = null;
 		Cursor c = db.query("Clients", null, "_id='"+_id+"'", null, null, null, null);
 		
 		if (c.moveToFirst()) {
-			Client client = new Client();
+			client = new Client();
 			client.setName(c.getString(2));
 			client.setTlf_1(c.getString(3));
 			client.setTlf_2(c.getString(4));
 			client.setMail(c.getString(5));
 			client.setAddress(c.getString(6));
-			c.close();
-			return client;
 		}
 		
 		c.close();
-		return null;
+		db.close();
+		return client;
+	}
+	
+	@Override
+	public boolean addService(Service s, Client c) {
+		db = dbHelper.getWritableDatabase();
+		activateFlags();
+		boolean tr = true;
+		
+		ContentValues cv = new ContentValues();
+		cv.put("_idUser", c.getId().toString());
+		cv.put("service", s.getService());
+		cv.put("campaign", s.getCampaign());
+		cv.put("address", s.getAddress());
+		cv.put("commission", s.getCommission());
+		cv.put("notes", s.getNotes());
+		cv.put("date", s.getDate().toGMTString());
+		
+		try {
+			db.insert("Services", "service", cv);
+		}
+		catch (SQLException e) {
+			tr = false;
+		}
+		finally {
+			db.close();
+		}
+		
+		return tr;
 	}
 	
 	private void activateFlags() {
