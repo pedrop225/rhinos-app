@@ -1,10 +1,12 @@
 package com.android.rhinos;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -29,10 +31,11 @@ public class ServiceEditor extends Activity {
 	private EditText service_tlf_2;
 	private ToggleButton service_tlf_2_new;
 	private DatePicker service_date_picker;
+	private EditText service_address;
+	private EditText service_notes;
 	private Button addServicio;
 
 	private Service service;
-	private Client client;
 	private ArrayList<Campaign> campaigns;
 	
 	@Override
@@ -46,11 +49,12 @@ public class ServiceEditor extends Activity {
 		service_tlf_2 = (EditText) findViewById(R.id.service_tlf_2);
 		service_tlf_1_new = (ToggleButton) findViewById(R.id.service_tlf1_new);
 		service_tlf_2_new = (ToggleButton) findViewById(R.id.service_tlf_2_new);
-		addServicio = (Button) findViewById(R.id.addServicio);
 		service_date_picker = (DatePicker) findViewById(R.id.service_date_picker);
+		service_address = (EditText) findViewById(R.id.service_address);
+		service_notes = (EditText) findViewById(R.id.service_notes);
+		addServicio = (Button) findViewById(R.id.addServicio);
 		
 		service = new Service();
-		client = (Client) getIntent().getSerializableExtra("client");
 		campaigns = App.src.getCampaigns();
 				
 		campaignSpinner.setAdapter(new ArrayAdapter<Campaign>(ServiceEditor.this, android.R.layout.simple_spinner_item, campaigns));
@@ -64,6 +68,7 @@ public class ServiceEditor extends Activity {
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				
 				ArrayList<Service> c1 = new ArrayList<Service>(((Campaign)campaignSpinner.getSelectedItem()).getServices().values());
+				Collections.sort(c1);
 				serviceSpinner.setAdapter(new ArrayAdapter<Service>(ServiceEditor.this, android.R.layout.simple_spinner_item, c1));
 			}
 
@@ -105,11 +110,21 @@ public class ServiceEditor extends Activity {
 			public void onClick(View arg0) {
 				service.setService(serviceSpinner.getSelectedItem().toString());
 				service.setCampaign(campaignSpinner.getSelectedItem().toString());
-				service.setDate(new Date( service_date_picker.getYear(),
+				service.setDate(new Date( service_date_picker.getYear() - 1900,
 									service_date_picker.getMonth(),
 									service_date_picker.getDayOfMonth()));
 				
 				service.setCommission(((Service)serviceSpinner.getSelectedItem()).getCommission());
+				service.setAddress(service_address.getText().toString());
+				service.setNotes(service_notes.getText().toString());
+								
+				Client client = (Client) getIntent().getSerializableExtra("client");
+				int client_status = getIntent().getIntExtra("client_status", -1);
+				
+				if (client_status == App.NOT_STORED)
+					App.src.addClient(client);
+				
+				App.src.addService(service, client);				
 				finish();
 			}
 		});
