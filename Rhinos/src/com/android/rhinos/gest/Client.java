@@ -16,20 +16,8 @@ public class Client implements Serializable, Comparable<Client> {
 	
 	private ArrayList<Service> services;
 	
-	@Override
-	public int compareTo(Client another) {
-		return id.compareTo(another.id);
-	}
-	
-	@Override
-	public boolean equals(Object o) {
-		Client u;
-		try {
-			u = (Client)o;
-		}
-		catch (ClassCastException e){ return false;}
-		
-		return compareTo(u) == 0;
+	public Client() {
+		services = new ArrayList<Service>();
 	}
 	
 	public Id getId() {
@@ -88,6 +76,22 @@ public class Client implements Serializable, Comparable<Client> {
 		this.address = address;
 	}
 
+	@Override
+	public int compareTo(Client another) {
+		return id.compareTo(another.id);
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		Client u;
+		try {
+			u = (Client)o;
+		}
+		catch (ClassCastException e){ return false;}
+		
+		return compareTo(u) == 0;
+	}
+	
 	@Override
 	public String toString() {
 		return name;

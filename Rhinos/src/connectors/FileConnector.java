@@ -35,4 +35,10 @@ public class FileConnector implements Connector {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public Client clientExists(String _id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

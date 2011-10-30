@@ -1,3 +1,4 @@
+
 package com.android.rhinos.gest;
 
 import java.io.Serializable;
@@ -69,6 +70,6 @@ public class Service implements Comparable<Service>, Serializable {
 
 	@Override
 	public String toString() {
-		return ""+service+"\t"+ commission;
+		return service;
 	}
 }

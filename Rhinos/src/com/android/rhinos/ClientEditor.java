@@ -1,6 +1,8 @@
 package com.android.rhinos;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -18,7 +19,6 @@ import com.android.rhinos.gest.Client;
 import com.android.rhinos.gest.Dni;
 import com.android.rhinos.gest.Id;
 import com.android.rhinos.gest.Nie;
-import com.android.rhinos.gest.Service;
 
 public class ClientEditor extends Activity {
 		
@@ -29,10 +29,8 @@ public class ClientEditor extends Activity {
 	private EditText clientTlf_2;
 	private EditText clientMail;
 	private EditText clientAddress;
-	private EditText clientServices;
 	
 	private Spinner idSpinner;
-	private Button save;
 	private ImageButton addCampaignButton;
 	
 	private Client client;
@@ -45,30 +43,26 @@ public class ClientEditor extends Activity {
 		clientTlf_2 = (EditText) findViewById(R.id.clientTlf2);
 		clientMail = (EditText) findViewById(R.id.clientMail);
 		clientAddress = (EditText) findViewById(R.id.clientAddress);
-		clientServices = (EditText) findViewById(R.id.clientServices);
 		addCampaignButton = (ImageButton) findViewById(R.id.addCampaignButton);
 		
 		idSpinner = (Spinner) findViewById(R.id.idSpinner);
 		
-		save = (Button) findViewById(R.id.bSaveClient);
-		save.setOnClickListener(new View.OnClickListener() {
+		addCampaignButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (checkData()) {
-					App.src.addClient(client);
-					finish();
+					Intent intent = new Intent().setClass(ClientEditor.this, ServiceEditor.class);
+					intent.putExtra("client", client);
+					startActivity(intent);
 				}
-			}
-		});
-		
-		addCampaignButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				Service s = new Service();
-				ServiceEditor se = new ServiceEditor(ClientEditor.this, s);
-				se.setTitle("  ------ Editor de Servicios ------  ");
-				se.show();
-				
-				clientServices.setText(s.getService());
+				else {
+					AlertDialog builder = new AlertDialog.Builder(ClientEditor.this).create();
+					builder.setMessage(	"Los datos introducidos son insuficientes o incorrectos. " +
+										"Por favor, verifíquelos.");
+					
+					builder.setIcon(android.R.drawable.ic_dialog_alert);
+					builder.setTitle("Error. ");
+					builder.show();
+				}
 			}
 		});
 		
@@ -105,13 +99,44 @@ public class ClientEditor extends Activity {
 		initialize();
 	}
 
+	private void cleanFields() {
+		clientName.setText("");
+		clientTlf_1.setText("");
+		clientTlf_2.setText("");
+		clientMail.setText("");
+		clientAddress.setText("");
+	}
+	
 	private void updateClientIdState() {
 		switch (idSpinner.getSelectedItemPosition()) {
 			case Id.DNI: client.setId(new Dni(clientId.getText().toString())); break;
 			case Id.NIE: client.setId(new Nie(clientId.getText().toString())); break;
 			case Id.CIF: client.setId(new Dni(clientId.getText().toString())); break;
 		}
-		clientIdState.setImageResource(client.getId().isValid() ? R.drawable.action_check : android.R.drawable.ic_delete);
+		
+		if (client.getId().isValid()) {	
+			Client temp;
+			//client is valid and already exist.
+			if ((temp = App.src.clientExists(clientId.getText().toString())) != null){
+				clientIdState.setImageResource(android.R.drawable.ic_menu_crop);
+				
+				clientName.setText(temp.getName());
+				clientTlf_1.setText(temp.getTlf_1());
+				clientTlf_2.setText(temp.getTlf_2());
+				clientMail.setText(temp.getMail());
+				clientAddress.setText(temp.getAddress());
+				
+				clientName.requestFocus();
+			}
+			else {
+				cleanFields();
+				clientIdState.setImageResource(R.drawable.action_check);
+			}
+		}
+		else {
+			cleanFields();
+			clientIdState.setImageResource(android.R.drawable.ic_delete);
+		}
 	}
 	
 	private boolean checkData() {
