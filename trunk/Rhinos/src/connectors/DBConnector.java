@@ -1,6 +1,7 @@
 package connectors;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -216,6 +217,30 @@ public class DBConnector implements Connector {
 			db.close();
 		}
 		
+		return tr;
+	}
+	
+	public ArrayList<Service> getServices(String _id) {
+		db = dbHelper.getReadableDatabase();
+		ArrayList<Service> tr = new ArrayList<Service>();
+		
+		Cursor c = db.query("Services", null, "_idUser='"+_id+"'", null, null, null, null);
+		
+		if (c.moveToFirst()) {
+			for (int i = 0; i < c.getCount(); i++) {
+				Service s = new Service(c.getString(2), c.getInt(5));
+				s.setCampaign(c.getString(3));
+				s.setAddress(c.getString(4));
+				s.setNotes(c.getString(6));
+				s.setDate(new Date(c.getString(7)));
+				
+				tr.add(s);
+				c.moveToNext();
+			}
+		}
+		
+		c.close();
+		db.close();
 		return tr;
 	}
 	

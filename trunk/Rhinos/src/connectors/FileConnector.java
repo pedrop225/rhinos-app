@@ -48,4 +48,10 @@ public class FileConnector implements Connector {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	public ArrayList<Service> getServices(String _id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
