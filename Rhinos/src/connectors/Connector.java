@@ -19,4 +19,5 @@ public interface Connector {
 	public Client clientExists(String _id);
 	
 	public boolean addService(Service s, Client c);
+	public ArrayList<Service> getServices(String _id);
 }

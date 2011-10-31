@@ -47,10 +47,8 @@ public class CampGest extends Activity {
 			public void onClick(View arg0) {
 				App.repository = repo.getText().toString();		
 				try {
-					campaigns = Campaign.containerLoader(new URL(App.repository));
-					
+					campaigns = Campaign.containerLoader(new URL(App.repository));					
 					spin.setAdapter(new ArrayAdapter<Campaign>(CampGest.this, android.R.layout.simple_spinner_item, campaigns));
-					spin.setSelection(0, true);
 					
 					//adding to source connector
 					App.src.clearCampaigns();
