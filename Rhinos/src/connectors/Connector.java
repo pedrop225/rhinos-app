@@ -15,9 +15,12 @@ public interface Connector {
 		
 	public boolean addClient(Client c);
 	public ArrayList<Client> getClients();
+	public ArrayList<Client> getCampaignClients(Campaign c);
 	
 	public Client clientExists(String _id);
 	
 	public boolean addService(Service s, Client c);
 	public ArrayList<Service> getServices(String _id);
+	
+	public int getSumCommissions(Client c);
 }

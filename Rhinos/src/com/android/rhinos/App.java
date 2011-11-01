@@ -16,6 +16,6 @@ public class App extends Application {
 	public void onCreate() {
 		super.onCreate();	
 		src = new DBConnector(getApplicationContext());
-		repository = "http://www.fileden.com/files/2011/10/5/3205115//campaigns_repository.cfg";
+		repository = "http://www.fileden.com/files/2011/10/5/3205115/campaigns_repository.cfg";
 	}
 }
