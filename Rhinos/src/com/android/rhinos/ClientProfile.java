@@ -4,10 +4,17 @@ import java.util.ArrayList;
 
 import android.R.anim;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
@@ -74,10 +81,10 @@ class ServiceRowItem extends TableRow {
 	private TableRow tr_address;
 	private TableRow tr_notes;
 	private TableRow tr_date;
-	
+			
 	public ServiceRowItem(Context context, Service service) {
 		super(context);
-		
+				
 		table = new TableLayout(context);
 		table.setBackgroundResource(android.R.drawable.toast_frame);
 		
@@ -88,29 +95,14 @@ class ServiceRowItem extends TableRow {
 		tr_notes = new TableRow(context);
 		tr_date = new TableRow(context);
 		
-		LayoutParams lp_1 = new LayoutParams(	LayoutParams.FILL_PARENT, 
-												LayoutParams.WRAP_CONTENT, .3f);
-		lp_1.gravity = Gravity.LEFT;
-		
-		LayoutParams lp_2 = new LayoutParams(	LayoutParams.FILL_PARENT,
-												LayoutParams.WRAP_CONTENT, .7f);
-		lp_2.gravity = Gravity.RIGHT;
-		
-		table.addView(tr_campaign);
-		table.addView(tr_service);
-		table.addView(tr_commission);
-		table.addView(tr_address);
-		table.addView(tr_notes);
-		table.addView(tr_date);
-		
 		TextView tv_campaign = new TextView(context);
-		tv_campaign.setText("Campaña");
+		tv_campaign.setText("Campaña\t\t\t");
 		tv_campaign.setTypeface(null, Typeface.BOLD);
 		TextView tv_campaign_data = new TextView(context);
 		tv_campaign_data.setText(service.getCampaign());
 		
-		tr_campaign.addView(tv_campaign, lp_1);
-		tr_campaign.addView(tv_campaign_data, lp_2);
+		tr_campaign.addView(tv_campaign);
+		tr_campaign.addView(tv_campaign_data);
 		
 		TextView tv_service = new TextView(context);
 		tv_service.setText("Servicio");
@@ -118,8 +110,8 @@ class ServiceRowItem extends TableRow {
 		TextView tv_service_data = new TextView(context);
 		tv_service_data.setText(service.getService());
 		
-		tr_service.addView(tv_service, lp_1);
-		tr_service.addView(tv_service_data, lp_2);
+		tr_service.addView(tv_service);
+		tr_service.addView(tv_service_data);
 		
 		TextView tv_commission = new TextView(context);
 		tv_commission.setText("Comisión");
@@ -127,8 +119,8 @@ class ServiceRowItem extends TableRow {
 		TextView tv_commission_data = new TextView(context);
 		tv_commission_data.setText(""+service.getCommission());
 		
-		tr_commission.addView(tv_commission, lp_1);
-		tr_commission.addView(tv_commission_data, lp_2);
+		tr_commission.addView(tv_commission);
+		tr_commission.addView(tv_commission_data);
 		
 		TextView tv_address = new TextView(context);
 		tv_address.setText("Dirección");
@@ -136,8 +128,8 @@ class ServiceRowItem extends TableRow {
 		TextView tv_address_data = new TextView(context);
 		tv_address_data.setText(service.getAddress());
 		
-		tr_address.addView(tv_address, lp_1);
-		tr_address.addView(tv_address_data, lp_2);
+		tr_address.addView(tv_address);
+		tr_address.addView(tv_address_data);
 		
 		TextView tv_notes = new TextView(context);
 		tv_notes.setText("Notas");
@@ -145,8 +137,8 @@ class ServiceRowItem extends TableRow {
 		TextView tv_notes_data = new TextView(context);
 		tv_notes_data.setText(service.getNotes());
 		
-		tr_notes.addView(tv_notes, lp_1);
-		tr_notes.addView(tv_notes_data, lp_2);
+		tr_notes.addView(tv_notes);
+		tr_notes.addView(tv_notes_data);
 		
 		TextView tv_date = new TextView(context);
 		tv_date.setText("Fecha");
@@ -154,9 +146,63 @@ class ServiceRowItem extends TableRow {
 		TextView tv_date_data = new TextView(context);
 		tv_date_data.setText(service.getDate().toLocaleString());
 		
-		tr_date.addView(tv_date, lp_1);
-		tr_date.addView(tv_date_data, lp_2);
+		tr_date.addView(tv_date);
+		tr_date.addView(tv_date_data);
+		
+		table.addView(tr_campaign);		
+		table.addView(tr_service);
+		table.addView(tr_commission);
+		table.addView(tr_address);
+		table.addView(tr_notes);
+		table.addView(tr_date);
 		
 		addView(table);
+		
+		setOnLongClickListener(new OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {				
+				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+				builder.setTitle("Eliminando Servicio");
+				builder.setIcon(android.R.drawable.ic_delete);
+				builder.setMessage("¿Desea eliminar el servicio seleccionado?");
+				builder.setCancelable(false);
+				
+				builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+				
+				builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+					}
+				});
+				
+				AlertDialog alert = builder.create();
+				alert.show();
+				
+				return true;
+			}
+			
+		});
+		
+		setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				
+				if (event.getAction() == MotionEvent.ACTION_DOWN)
+					table.setBackgroundResource(android.R.drawable.editbox_dropdown_dark_frame);
+
+				if ((event.getAction() == MotionEvent.ACTION_UP) || 
+					(event.getAction() == MotionEvent.ACTION_CANCEL))
+					
+					table.setBackgroundResource(android.R.drawable.toast_frame);
+				return false;
+			}
+		});
 	}
 }
