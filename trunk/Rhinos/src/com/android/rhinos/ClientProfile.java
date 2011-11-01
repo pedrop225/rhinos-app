@@ -5,14 +5,10 @@ import java.util.ArrayList;
 import android.R.anim;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TableLayout;
@@ -162,6 +158,8 @@ class ServiceRowItem extends TableRow {
 			
 			@Override
 			public boolean onLongClick(View v) {				
+				table.setBackgroundResource(android.R.drawable.editbox_dropdown_dark_frame);
+				
 				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 				builder.setTitle("Eliminando Servicio");
 				builder.setIcon(android.R.drawable.ic_delete);
@@ -194,9 +192,6 @@ class ServiceRowItem extends TableRow {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				
-				if (event.getAction() == MotionEvent.ACTION_DOWN)
-					table.setBackgroundResource(android.R.drawable.editbox_dropdown_dark_frame);
-
 				if ((event.getAction() == MotionEvent.ACTION_UP) || 
 					(event.getAction() == MotionEvent.ACTION_CANCEL))
 					

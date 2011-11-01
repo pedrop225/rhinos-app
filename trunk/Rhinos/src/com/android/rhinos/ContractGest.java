@@ -30,7 +30,7 @@ public class ContractGest extends TabActivity {
 		
 		for (Campaign a : App.src.getCampaigns()) {
 			intent = new Intent().setClass(this, FilteredContracts.class);
-			intent.putExtra("camp", a.getName());
+			intent.putExtra("campaign", a);
 			spec = host.newTabSpec(a.getName()).setIndicator("  "+a.getName()+"  ").setContent(intent);
 			host.addTab(spec);
 		}

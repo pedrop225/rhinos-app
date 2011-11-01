@@ -38,6 +38,12 @@ public class FileConnector implements Connector {
 	}
 	
 	@Override
+	public ArrayList<Client> getCampaignClients(Campaign c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
 	public Client clientExists(String _id) {
 		// TODO Auto-generated method stub
 		return null;
@@ -53,5 +59,11 @@ public class FileConnector implements Connector {
 	public ArrayList<Service> getServices(String _id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public int getSumCommissions(Client c) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

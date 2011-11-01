@@ -139,9 +139,54 @@ public class DBConnector implements Connector {
 
 	public ArrayList<Client> getClients() {
 		ArrayList<Client> tr = new ArrayList<Client>();
-		
 		db = dbHelper.getReadableDatabase();
+				
 		Cursor c = db.query("Clients", null, null, null, null, null, null);
+		
+		if (c.moveToFirst()) {
+			
+			for (int i = 0; i < c.getCount(); i++) {
+				Client cl = new Client();
+				
+				switch (c.getInt(1)) {
+					case Id.DNI: cl.setId(new Dni(c.getString(0))); break;
+					case Id.NIE: cl.setId(new Nie(c.getString(0))); break;
+					case Id.CIF: cl.setId(new Dni(c.getString(0))); break;
+				}
+				cl.setName(c.getString(2));
+				cl.setTlf_1(c.getString(3));
+				cl.setTlf_2(c.getString(4));
+				cl.setMail(c.getString(5));
+				cl.setAddress(c.getString(6));
+				
+				c.moveToNext();
+				tr.add(cl);
+			}
+		}
+		
+		//closing database
+		c.close();
+		db.close();
+		
+		return tr;
+	}
+	
+	@Override
+	public ArrayList<Client> getCampaignClients(Campaign campaign) {
+		ArrayList<Client> tr = new ArrayList<Client>();
+		db = dbHelper.getReadableDatabase();
+		
+		String [] cols = new String[] {"clients._id", 
+										"_idType", 
+										"name", 
+										"tlf_1", 
+										"tlf_2", 
+										"mail",
+										"clients.address"};
+		
+		String sel = "(clients._id == _iduser) and (campaign == '"+campaign.getName()+"')";
+		
+		Cursor c = db.query(true, "Clients,Services", cols , sel, null, null, null, null, null);
 		
 		if (c.moveToFirst()) {
 			
@@ -242,6 +287,22 @@ public class DBConnector implements Connector {
 		c.close();
 		db.close();
 		return tr;
+	}
+	
+	@Override
+	public int getSumCommissions(Client client) {
+		db = dbHelper.getReadableDatabase();
+		
+		Cursor c = db.query("Services", new String[] {"sum(commission)"}, "_idUser='"+client.getId()+"'", null, null, null, null);
+		
+		int res = 0;
+		if (c.moveToFirst()) {
+			res = c.getInt(0);
+		}
+		
+		c.close();
+		db.close();
+		return res;
 	}
 	
 	private void activateFlags() {

@@ -1,5 +1,7 @@
 package com.android.rhinos;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +15,7 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.Client;
 
 public class FilteredContracts extends Activity {
@@ -31,8 +34,11 @@ public class FilteredContracts extends Activity {
 		scroll.addView(base);
 		setContentView(scroll);
 		
+		Campaign campaign = (Campaign) getIntent().getSerializableExtra("campaign");
 		
-		for (Client u : App.src.getClients()) {
+		ArrayList<Client> clients = (campaign != null) ? App.src.getCampaignClients(campaign) : App.src.getClients();
+		
+		for (Client u : clients) {
 			ContractItemView item = new ContractItemView(FilteredContracts.this, u);
 			base.addView(item);
 						
@@ -75,7 +81,7 @@ class ContractItemView extends LinearLayout implements View.OnClickListener {
 		id.setText(c.getId().toString());
 		id.setTextSize(ID_FONT_SIZE);
 		
-		comm.setText("85€");
+		comm.setText(""+App.src.getSumCommissions(c)+"€");
 		comm.setTextColor(Color.GREEN);
 		comm.setTextSize(COMMISION_FONT_SIZE);
 		
