@@ -126,7 +126,7 @@ class ServiceRowItem extends TableRow {
 		
 		tr_address.addView(tv_address);
 		tr_address.addView(tv_address_data);
-		
+				
 		TextView tv_notes = new TextView(context);
 		tv_notes.setText("Notas");
 		tv_notes.setTypeface(null, Typeface.BOLD);
@@ -162,7 +162,7 @@ class ServiceRowItem extends TableRow {
 				
 				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 				builder.setTitle("Eliminando Servicio");
-				builder.setIcon(android.R.drawable.ic_delete);
+				builder.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
 				builder.setMessage("¿Desea eliminar el servicio seleccionado?");
 				builder.setCancelable(false);
 				
