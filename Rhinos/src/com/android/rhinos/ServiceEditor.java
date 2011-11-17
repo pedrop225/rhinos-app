@@ -55,7 +55,7 @@ public class ServiceEditor extends Activity {
 		
 		service = new Service();
 		campaigns = App.src.getCampaigns();
-				
+		
 		campaignSpinner.setAdapter(new ArrayAdapter<Campaign>(ServiceEditor.this, android.R.layout.simple_spinner_item, campaigns));
 		  
 		ArrayList<Service> c1 = new ArrayList<Service>(((Campaign)campaignSpinner.getSelectedItem()).getServices().values());

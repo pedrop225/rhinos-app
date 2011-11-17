@@ -81,7 +81,7 @@ public class DBConnector implements Connector {
 		ArrayList<Campaign> r = new ArrayList<Campaign>();
 		db = dbHelper.getReadableDatabase();
 		
-		Cursor c = db.query("Campaigns NATURAL JOIN CampInfo", null, null, null, null, null, null);
+		Cursor c = db.query("Campaigns NATURAL JOIN CampInfo", null, null, null, null, null, "name");
 		
 		if (c.moveToFirst()) {
 			
@@ -141,7 +141,7 @@ public class DBConnector implements Connector {
 		ArrayList<Client> tr = new ArrayList<Client>();
 		db = dbHelper.getReadableDatabase();
 				
-		Cursor c = db.query("Clients", null, null, null, null, null, null);
+		Cursor c = db.query("Clients", null, null, null, null, null, "name");
 		
 		if (c.moveToFirst()) {
 			
@@ -186,7 +186,7 @@ public class DBConnector implements Connector {
 		
 		String sel = "(clients._id == _iduser) and (campaign == '"+campaign.getName()+"')";
 		
-		Cursor c = db.query(true, "Clients,Services", cols , sel, null, null, null, null, null);
+		Cursor c = db.query(true, "Clients,Services", cols , sel, null, null, null, "name", null);
 		
 		if (c.moveToFirst()) {
 			
@@ -269,7 +269,7 @@ public class DBConnector implements Connector {
 		db = dbHelper.getReadableDatabase();
 		ArrayList<Service> tr = new ArrayList<Service>();
 		
-		Cursor c = db.query("Services", null, "_idUser='"+_id+"'", null, null, null, null);
+		Cursor c = db.query("Services", null, "_idUser='"+_id+"'", null, null, null, "commission");
 		
 		if (c.moveToFirst()) {
 			for (int i = 0; i < c.getCount(); i++) {
