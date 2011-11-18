@@ -11,12 +11,16 @@ public class Service implements Comparable<Service>, Serializable {
 	private int commission;
 	private String service;
 	private String campaign;
+	private String tlf_1;
+	private String tlf_2;
 	private Date date;
 	
 	public Service() {
 		commission = 0;
 		service =  "";
 		campaign = "";
+		tlf_1 = "";
+		tlf_2 = "";
 		date = new Date();
 	}
 	
@@ -65,6 +69,22 @@ public class Service implements Comparable<Service>, Serializable {
 
 	public void setCampaign(String campaign) {
 		this.campaign = campaign;
+	}
+
+	public String getTlf_1() {
+		return tlf_1;
+	}
+
+	public void setTlf_1(String tlf_1) {
+		this.tlf_1 = tlf_1;
+	}
+
+	public String getTlf_2() {
+		return tlf_2;
+	}
+
+	public void setTlf_2(String tlf_2) {
+		this.tlf_2 = tlf_2;
 	}
 
 	@Override

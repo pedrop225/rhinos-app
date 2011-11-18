@@ -179,8 +179,8 @@ public class DBConnector implements Connector {
 		String [] cols = new String[] {"clients._id", 
 										"_idType", 
 										"name", 
-										"tlf_1", 
-										"tlf_2", 
+										"clients.tlf_1", 
+										"clients.tlf_2", 
 										"mail",
 										"clients.address"};
 		
@@ -247,6 +247,8 @@ public class DBConnector implements Connector {
 		cv.put("_idUser", c.getId().toString());
 		cv.put("service", s.getService());
 		cv.put("campaign", s.getCampaign());
+		cv.put("tlf_1", s.getTlf_1());
+		cv.put("tlf_2", s.getTlf_2());
 		cv.put("commission", s.getCommission());
 		cv.put("date", s.getDate().toGMTString());
 		
@@ -271,9 +273,11 @@ public class DBConnector implements Connector {
 		
 		if (c.moveToFirst()) {
 			for (int i = 0; i < c.getCount(); i++) {
-				Service s = new Service(c.getString(2), c.getInt(5));
+				Service s = new Service(c.getString(2), c.getInt(6));
 				s.setCampaign(c.getString(3));
 				s.setDate(new Date(c.getString(7)));
+				s.setTlf_1(c.getString(4));
+				s.setTlf_2(c.getString(5));
 				
 				tr.add(s);
 				c.moveToNext();

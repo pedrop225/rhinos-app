@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
 
 import android.util.Log;
 
-public class Campaign implements Serializable {
+public class Campaign implements Serializable, Comparable<Campaign> {
 
 	private String name;
 	private HashMap<String, Service> services;
@@ -121,9 +121,14 @@ public class Campaign implements Serializable {
 		}
 		return result;
 	}
-
+	
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	@Override
+	public int compareTo(Campaign another) {
+		return getName().compareTo(another.getName());
 	}
 }
