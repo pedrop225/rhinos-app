@@ -23,4 +23,6 @@ public interface Connector {
 	public ArrayList<Service> getServices(String _id);
 	
 	public int getSumCommissions(Client c);
+
+	public void deleteService(Service service);
 }

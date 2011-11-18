@@ -247,9 +247,7 @@ public class DBConnector implements Connector {
 		cv.put("_idUser", c.getId().toString());
 		cv.put("service", s.getService());
 		cv.put("campaign", s.getCampaign());
-		cv.put("address", s.getAddress());
 		cv.put("commission", s.getCommission());
-		cv.put("notes", s.getNotes());
 		cv.put("date", s.getDate().toGMTString());
 		
 		try {
@@ -275,8 +273,6 @@ public class DBConnector implements Connector {
 			for (int i = 0; i < c.getCount(); i++) {
 				Service s = new Service(c.getString(2), c.getInt(5));
 				s.setCampaign(c.getString(3));
-				s.setAddress(c.getString(4));
-				s.setNotes(c.getString(6));
 				s.setDate(new Date(c.getString(7)));
 				
 				tr.add(s);
@@ -303,6 +299,14 @@ public class DBConnector implements Connector {
 		c.close();
 		db.close();
 		return res;
+	}
+	
+	@Override
+	public void deleteService(Service service) {
+		db = dbHelper.getWritableDatabase();
+		
+		db.delete("Services", "(date='"+service.getDate().toGMTString()+"' AND service='"+service.getService()+"')", null);
+		db.close();
 	}
 	
 	private void activateFlags() {

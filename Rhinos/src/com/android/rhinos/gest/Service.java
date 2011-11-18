@@ -11,8 +11,6 @@ public class Service implements Comparable<Service>, Serializable {
 	private int commission;
 	private String service;
 	private String campaign;
-	private String address;
-	private String notes;
 	private Date date;
 	
 	public Service() {
@@ -54,22 +52,6 @@ public class Service implements Comparable<Service>, Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public String getNotes() {
-		return notes;
-	}
-
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
 	}
 
 	@Override

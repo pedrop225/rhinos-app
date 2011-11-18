@@ -3,22 +3,24 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="2dp">
+    android:padding="2dp" >
 
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
-        
+        
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:gravity="right"
             android:orientation="vertical" >
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:gravity="left"
                 android:text="Campaña:" />
 
             <Spinner
@@ -28,8 +30,9 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:gravity="left"
                 android:text="Servicio:" />
 
             <Spinner
@@ -39,8 +42,9 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:gravity="left"
                 android:text="Teléfonos:" />
 
             <LinearLayout
@@ -87,8 +91,9 @@
             </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:gravity="left"
                 android:text="Dirección:" />
 
             <EditText
@@ -98,15 +103,16 @@
                 android:inputType="textPostalAddress" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:gravity="left"
                 android:text="Notas del servicio:" />
 
             <EditText
                 android:id="@+id/service_notes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine">
+                android:inputType="textMultiLine" >
             </EditText>
 
             <DatePicker
@@ -114,6 +120,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp" />
+
+            <DigitalClock
+                android:id="@+id/digitalClock"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -124,9 +137,9 @@
                     android:id="@+id/addServicio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:text="Añadir Servicio" />
             </LinearLayout>
-
         </LinearLayout>
 
     </ScrollView>

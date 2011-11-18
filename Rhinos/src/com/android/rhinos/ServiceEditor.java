@@ -30,8 +30,6 @@ public class ServiceEditor extends Activity {
 	private EditText service_tlf_2;
 	private ToggleButton service_tlf_2_new;
 	private DatePicker service_date_picker;
-	private EditText service_address;
-	private EditText service_notes;
 	private Button addServicio;
 
 	private Service service;
@@ -49,8 +47,6 @@ public class ServiceEditor extends Activity {
 		service_tlf_1_new = (ToggleButton) findViewById(R.id.service_tlf1_new);
 		service_tlf_2_new = (ToggleButton) findViewById(R.id.service_tlf_2_new);
 		service_date_picker = (DatePicker) findViewById(R.id.service_date_picker);
-		service_address = (EditText) findViewById(R.id.service_address);
-		service_notes = (EditText) findViewById(R.id.service_notes);
 		addServicio = (Button) findViewById(R.id.addServicio);
 		
 		service = new Service();
@@ -109,13 +105,14 @@ public class ServiceEditor extends Activity {
 			public void onClick(View arg0) {
 				service.setService(serviceSpinner.getSelectedItem().toString());
 				service.setCampaign(campaignSpinner.getSelectedItem().toString());
-				service.setDate(new Date( service_date_picker.getYear() - 1900,
-									service_date_picker.getMonth(),
-									service_date_picker.getDayOfMonth()));
+
+				Date date = new Date();
+				date.setYear(service_date_picker.getYear() - 1900);
+				date.setMonth(service_date_picker.getMonth());
+				date.setDate(service_date_picker.getDayOfMonth());
+				service.setDate(date);
 				
 				service.setCommission(((Service)serviceSpinner.getSelectedItem()).getCommission());
-				service.setAddress(service_address.getText().toString());
-				service.setNotes(service_notes.getText().toString());
 								
 				Client client = (Client) getIntent().getSerializableExtra("client");
 				int client_status = getIntent().getIntExtra("client_status", -1);
