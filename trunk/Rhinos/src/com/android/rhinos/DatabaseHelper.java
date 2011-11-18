@@ -36,8 +36,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 						"_id TEXT PRIMARY KEY," +
 						"_idType INTEGER NOT NULL," +
 						"name TEXT NOT NULL," +
-						"tlf_1 INTEGER NOT NULL," +
-						"tlf_2 INTEGER NOT NULL," +
+						"tlf_1 TEXT NOT NULL," +
+						"tlf_2 TEXT," +
 						"mail TEXT," +
 						"address TEXT NOT NULL)");
 		
@@ -47,6 +47,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 						"_idUser INTEGER," +
 						"service TEXT NOT NULL," +
 						"campaign TEXT NOT NULL," +
+						"tlf_1 TEXT," +
+						"tlf_2 TEXT," +
 						"commission INTEGER NOT NULL," +
 						"date TEXT NOT NULL," +
 						"FOREIGN KEY (_idUser) REFERENCES Clients(_id) ON DELETE CASCADE)");

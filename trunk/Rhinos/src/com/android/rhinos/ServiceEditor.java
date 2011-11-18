@@ -113,6 +113,8 @@ public class ServiceEditor extends Activity {
 				service.setDate(date);
 				
 				service.setCommission(((Service)serviceSpinner.getSelectedItem()).getCommission());
+				service.setTlf_1(service_tlf_1.getText().toString());
+				service.setTlf_2(service_tlf_2.getText().toString());
 								
 				Client client = (Client) getIntent().getSerializableExtra("client");
 				int client_status = getIntent().getIntExtra("client_status", -1);

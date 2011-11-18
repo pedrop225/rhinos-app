@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TableLayout;
@@ -80,6 +81,8 @@ class ServiceRowItem extends TableRow {
 	private TableRow tr_campaign;
 	private TableRow tr_service;
 	private TableRow tr_commission;
+	private TableRow tr_tlf_1;
+	private TableRow tr_tlf_2;
 	private TableRow tr_date;
 	
 	public ServiceRowItem(Context context, final Service service, final ClientProfile profile) {
@@ -91,6 +94,8 @@ class ServiceRowItem extends TableRow {
 		tr_campaign = new TableRow(context);
 		tr_service = new TableRow(context);
 		tr_commission = new TableRow(context);
+		tr_tlf_1 = new TableRow(context);
+		tr_tlf_2 = new TableRow(context);
 		tr_date = new TableRow(context);
 		
 		TextView tv_campaign = new TextView(context);
@@ -120,6 +125,24 @@ class ServiceRowItem extends TableRow {
 		tr_commission.addView(tv_commission);
 		tr_commission.addView(tv_commission_data);
 		
+		TextView tv_tlf_1 = new TextView(context);
+		tv_tlf_1.setText("Teléfono #1");
+		tv_tlf_1.setTypeface(null, Typeface.BOLD);
+		TextView tv_tlf_1_data = new TextView(context);
+		tv_tlf_1_data.setText(""+service.getTlf_1());
+		
+		tr_tlf_1.addView(tv_tlf_1);
+		tr_tlf_1.addView(tv_tlf_1_data);
+		
+		TextView tv_tlf_2 = new TextView(context);
+		tv_tlf_2.setText("Teléfono #2");
+		tv_tlf_2.setTypeface(null, Typeface.BOLD);
+		TextView tv_tlf_2_data = new TextView(context);
+		tv_tlf_2_data.setText(""+service.getTlf_2());
+		
+		tr_tlf_2.addView(tv_tlf_2);
+		tr_tlf_2.addView(tv_tlf_2_data);
+		
 		TextView tv_date = new TextView(context);
 		tv_date.setText("Fecha");
 		tv_date.setTypeface(null, Typeface.BOLD);
@@ -134,6 +157,8 @@ class ServiceRowItem extends TableRow {
 		table.addView(tr_campaign);		
 		table.addView(tr_service);
 		table.addView(tr_commission);
+		table.addView(tr_tlf_1);
+		table.addView(tr_tlf_2);
 		table.addView(tr_date);
 		
 		addView(table);
