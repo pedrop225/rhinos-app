@@ -47,9 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 						"_idUser INTEGER," +
 						"service TEXT NOT NULL," +
 						"campaign TEXT NOT NULL," +
-						"address TEXT," +
 						"commission INTEGER NOT NULL," +
-						"notes TEXT," +
 						"date TEXT NOT NULL," +
 						"FOREIGN KEY (_idUser) REFERENCES Clients(_id) ON DELETE CASCADE)");
 	}

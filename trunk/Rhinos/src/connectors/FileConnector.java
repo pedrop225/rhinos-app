@@ -66,4 +66,10 @@ public class FileConnector implements Connector {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@Override
+	public void deleteService(Service service) {
+		// TODO Auto-generated method stub
+		
+	}
 }

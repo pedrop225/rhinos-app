@@ -1,5 +1,6 @@
 package com.android.rhinos;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import android.R.anim;
@@ -29,11 +30,16 @@ public class ClientProfile extends Activity {
 	private TextView cp_address;
 	private TableLayout cp_services;
 	
+	private ClientProfile _this = this;
+	public Bundle _bundle;
+	
 	private Client client;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		_bundle = savedInstanceState;
 		setContentView(R.layout.client_profile);
 		overridePendingTransition(anim.fade_in, anim.fade_out);
 		
@@ -59,7 +65,7 @@ public class ClientProfile extends Activity {
 		
 		ArrayList<Service> services = App.src.getServices(client.getId().toString());
 		for (Service s : services) {
-			ServiceRowItem item = new ServiceRowItem(ClientProfile.this, s);
+			ServiceRowItem item = new ServiceRowItem(ClientProfile.this, s, _this);
 			
 			LayoutParams lp = new LayoutParams(	LayoutParams.FILL_PARENT,
 												LayoutParams.WRAP_CONTENT, 1f);
@@ -74,21 +80,17 @@ class ServiceRowItem extends TableRow {
 	private TableRow tr_campaign;
 	private TableRow tr_service;
 	private TableRow tr_commission;
-	private TableRow tr_address;
-	private TableRow tr_notes;
 	private TableRow tr_date;
-			
-	public ServiceRowItem(Context context, Service service) {
+	
+	public ServiceRowItem(Context context, final Service service, final ClientProfile profile) {
 		super(context);
-				
+
 		table = new TableLayout(context);
 		table.setBackgroundResource(android.R.drawable.toast_frame);
 		
 		tr_campaign = new TableRow(context);
 		tr_service = new TableRow(context);
 		tr_commission = new TableRow(context);
-		tr_address = new TableRow(context);
-		tr_notes = new TableRow(context);
 		tr_date = new TableRow(context);
 		
 		TextView tv_campaign = new TextView(context);
@@ -118,29 +120,13 @@ class ServiceRowItem extends TableRow {
 		tr_commission.addView(tv_commission);
 		tr_commission.addView(tv_commission_data);
 		
-		TextView tv_address = new TextView(context);
-		tv_address.setText("Dirección");
-		tv_address.setTypeface(null, Typeface.BOLD);
-		TextView tv_address_data = new TextView(context);
-		tv_address_data.setText(service.getAddress());
-		
-		tr_address.addView(tv_address);
-		tr_address.addView(tv_address_data);
-				
-		TextView tv_notes = new TextView(context);
-		tv_notes.setText("Notas");
-		tv_notes.setTypeface(null, Typeface.BOLD);
-		TextView tv_notes_data = new TextView(context);
-		tv_notes_data.setText(service.getNotes());
-		
-		tr_notes.addView(tv_notes);
-		tr_notes.addView(tv_notes_data);
-		
 		TextView tv_date = new TextView(context);
 		tv_date.setText("Fecha");
 		tv_date.setTypeface(null, Typeface.BOLD);
 		TextView tv_date_data = new TextView(context);
-		tv_date_data.setText(service.getDate().toLocaleString());
+		
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss");
+		tv_date_data.setText(df.format(service.getDate()));
 		
 		tr_date.addView(tv_date);
 		tr_date.addView(tv_date_data);
@@ -148,8 +134,6 @@ class ServiceRowItem extends TableRow {
 		table.addView(tr_campaign);		
 		table.addView(tr_service);
 		table.addView(tr_commission);
-		table.addView(tr_address);
-		table.addView(tr_notes);
 		table.addView(tr_date);
 		
 		addView(table);
@@ -163,13 +147,14 @@ class ServiceRowItem extends TableRow {
 				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 				builder.setTitle("Eliminando Servicio");
 				builder.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
-				builder.setMessage("¿Desea eliminar el servicio seleccionado?");
+				builder.setMessage("¿Desea eliminar el servicio '"+service.getService()+"'?");
 				builder.setCancelable(false);
 				
 				builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						App.src.deleteService(service);
+						profile.onCreate(profile._bundle);
 					}
 				});
 				
@@ -182,7 +167,7 @@ class ServiceRowItem extends TableRow {
 				
 				AlertDialog alert = builder.create();
 				alert.show();
-				
+								
 				return true;
 			}
 			
