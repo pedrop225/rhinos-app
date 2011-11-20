@@ -7,7 +7,9 @@ import connectors.Connector;
 
 public class App extends Application {
 	
-	public static String repository;
+	public static final String external_path = "http://pedrop225.comuf.com/rhinos";	
+	public static String repository = external_path+"/campaigns/campaigns_repository.cfg";
+	
 	public static Connector src;
 	public static User user;
 		
@@ -17,7 +19,6 @@ public class App extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();	
-		repository = "http://pedrop225.comuf.com/rhinos/campaigns/campaigns_repository.cfg";
 		user = new User();
 	}
 }

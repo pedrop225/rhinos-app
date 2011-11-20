@@ -11,9 +11,6 @@
 								'".$_REQUEST['tlf_1']."',
 								'".$_REQUEST['tlf_2']."',
 								'".$_REQUEST['mail']."',
-								'".$_REQUEST['address']."')");
-	
-	print("#<b>".$_REQUEST['name']."</b># Inserted.");
-	
+								'".$_REQUEST['address']."')");	
 	mysql_close();
 ?>
