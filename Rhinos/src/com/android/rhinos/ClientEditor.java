@@ -155,7 +155,6 @@ public class ClientEditor extends Activity {
 		if 	((client.getName().trim().length() == 0) ||
 			(!client.getId().isValid()) ||
 			(client.getTlf_1().trim().length() == 0) ||
-			(client.getTlf_2().trim().length() == 0) ||
 			(client.getAddress().trim().length() == 0))
 				return false;
 		return true;

@@ -26,6 +26,10 @@ public class DBConnector implements Connector {
 		dbHelper = new DatabaseHelper(context);
 	}
 	
+	public boolean login(String user, String password) {
+		return true;
+	}
+	
 	//campaigns table
 	public void clearCampaigns() {
 		db = dbHelper.getWritableDatabase();

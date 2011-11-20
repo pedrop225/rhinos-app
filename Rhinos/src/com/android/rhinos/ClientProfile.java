@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.util.Linkify;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TableLayout;
