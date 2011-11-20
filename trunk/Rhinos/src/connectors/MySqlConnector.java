@@ -21,6 +21,9 @@ import android.content.Context;
 import com.android.rhinos.App;
 import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.Client;
+import com.android.rhinos.gest.Dni;
+import com.android.rhinos.gest.Id;
+import com.android.rhinos.gest.Nie;
 import com.android.rhinos.gest.Service;
 
 public class MySqlConnector implements Connector {
@@ -61,7 +64,7 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("user", user));
 	    
 	    try {
-	        JSONArray jsonArray = getDataFromDB("http://pedrop225.comuf.com/rhinos/db_login.php", nameValuePairs);
+	        JSONArray jsonArray = getDataFromDB(App.external_path+"/db_login.php", nameValuePairs);
 	        JSONObject jsonObj = jsonArray.getJSONObject(0);
 	            
 	        if (jsonObj.getString("password").equals(password)) {
@@ -78,7 +81,7 @@ public class MySqlConnector implements Connector {
 	
 	@Override
 	public void clearCampaigns() {
-		getDataFromDB("http://pedrop225.comuf.com/rhinos/db_login.php", null);
+		getDataFromDB(App.external_path+"/db_login.php", null);
 	}
 
 	@Override
@@ -90,19 +93,20 @@ public class MySqlConnector implements Connector {
 	    
 	    try {
 	    	//inserting into Campaings
-	        getDataFromDB("http://pedrop225.comuf.com/rhinos/db_add_campaign.php", nameValuePairs);
+	        getDataFromDB(App.external_path+"/db_add_campaign.php", nameValuePairs);
 	       
 	        //looking up campaign id
-	        JSONArray JsonArray = getDataFromDB("http://pedrop225.comuf.com/rhinos/db_get_id_campaign.php", nameValuePairs);
+	        JSONArray JsonArray = getDataFromDB(App.external_path+"/db_get_id_campaign.php", nameValuePairs);
 	        int c_id = JsonArray.getJSONObject(0).getInt("id");
 	        
+	        //inserting into campinfo
 	        for (Service s : camp.getServices().values()) {
 				nameValuePairs.clear();
 				nameValuePairs.add(new BasicNameValuePair("id", ""+c_id));
 				nameValuePairs.add(new BasicNameValuePair("service", s.getService()));
 				nameValuePairs.add(new BasicNameValuePair("commission", ""+s.getCommission()));
 				
-				getDataFromDB("http://pedrop225.comuf.com/rhinos/db_insert_into_campinfo.php", nameValuePairs);
+				getDataFromDB(App.external_path+"/db_insert_into_campinfo.php", nameValuePairs);
 			}
 	        
 	        return true;
@@ -114,25 +118,94 @@ public class MySqlConnector implements Connector {
 
 	@Override
 	public ArrayList<Campaign> getCampaigns() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		ArrayList<Campaign> r = new ArrayList<Campaign>();
+	    
+	    try {
+	        JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_campaigns.php", new ArrayList<NameValuePair>());
+	        
+	        if (jsonArray.length() > 0) {
+				
+	        	JSONObject jsonObj = jsonArray.getJSONObject(0);
+	        	String name = jsonObj.getString("name");
+				String old = name;
+				Campaign camp = new Campaign(name);
+
+				for (int i = 0; i < jsonArray.length(); i++) {
+
+					jsonObj = jsonArray.getJSONObject(i);
+					
+					if (!(name = jsonObj.getString("name")).equals(old)) {
+						r.add(camp);
+						old = name;
+						camp = new Campaign(name);
+					}
+					
+					camp.addService(jsonObj.getString("service"), new Service(jsonObj.getString("service"), jsonObj.getInt("commission")));
+				}
+				r.add(camp);
+	        }
+	    }
+	    catch (Exception e) {e.printStackTrace();}
+        
+        return r;
 	}
 
 	@Override
 	public boolean addClient(Client c) {
-		// TODO Auto-generated method stub
+
+	    //the mail data to send
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("id", c.getName()));
+	    nameValuePairs.add(new BasicNameValuePair("idType", c.getId().getType()+""));
+	    nameValuePairs.add(new BasicNameValuePair("name", c.getName()));
+	    nameValuePairs.add(new BasicNameValuePair("tlf_1", c.getTlf_1()));
+	    nameValuePairs.add(new BasicNameValuePair("tlf_2", c.getTlf_2()));
+	    nameValuePairs.add(new BasicNameValuePair("mail", c.getMail()));
+	    nameValuePairs.add(new BasicNameValuePair("address", c.getAddress()));
+	    
+	    try {
+	        getDataFromDB(App.external_path+"/db_add_client.php", nameValuePairs);
+	        return true;
+	    }
+	    catch (Exception e) {e.printStackTrace();}
+	    
 		return false;
 	}
 
 	@Override
 	public ArrayList<Client> getClients() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Client> r = new ArrayList<Client>();
+	    
+	    try {
+	        JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_clients.php", new ArrayList<NameValuePair>());
+				
+			for (int i = 0; i < jsonArray.length(); i++) {
+				Client cl = new Client();
+				JSONObject jsonObj = jsonArray.getJSONObject(i);
+				
+				switch (jsonObj.getInt("idType")) {
+					case Id.DNI: cl.setId(new Dni(jsonObj.getString("id"))); break;
+					case Id.NIE: cl.setId(new Nie(jsonObj.getString("id"))); break;
+					case Id.CIF: cl.setId(new Dni(jsonObj.getString("id"))); break;
+				}
+				
+				cl.setName(jsonObj.getString("name"));
+				cl.setTlf_1(jsonObj.getString("tlf_1"));
+				cl.setTlf_2(jsonObj.getString("tlf_2"));
+				cl.setMail(jsonObj.getString("mail"));
+				cl.setAddress(jsonObj.getString("address"));
+				
+				r.add(cl);
+			}
+	    }
+	    catch (Exception e) {e.printStackTrace();}
+		
+		return r;
 	}
 
 	@Override
 	public ArrayList<Client> getCampaignClients(Campaign c) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -5,8 +5,6 @@
 	mysql_select_db($mysql_database);
 	
 	$q = mysql_query("DELETE FROM Campaigns");
-	
-	print("db_clear_campaigns.php executed.");
-	
+		
 	mysql_close();
 ?>

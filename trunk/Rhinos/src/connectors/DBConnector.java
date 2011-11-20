@@ -186,9 +186,9 @@ public class DBConnector implements Connector {
 										"clients.tlf_1", 
 										"clients.tlf_2", 
 										"mail",
-										"clients.address"};
+										"address"};
 		
-		String sel = "(clients._id == _iduser) and (campaign == '"+campaign.getName()+"')";
+		String sel = "(clients._id = _iduser) and (campaign = '"+campaign.getName()+"')";
 		
 		Cursor c = db.query(true, "Clients,Services", cols , sel, null, null, null, "name", null);
 		
