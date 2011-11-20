@@ -8,6 +8,8 @@ import com.android.rhinos.gest.Service;
 
 public interface Connector {
 
+	public boolean login(String user, String password);
+	
 	public void clearCampaigns();
 	
 	public boolean addCampaign(Campaign camp);

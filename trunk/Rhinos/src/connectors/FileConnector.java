@@ -8,6 +8,10 @@ import com.android.rhinos.gest.Service;
 
 public class FileConnector implements Connector {
 
+	public boolean login(String user, String password) {
+		return false;
+	}
+	
 	@Override
 	public void clearCampaigns() {
 		// TODO Auto-generated method stub
