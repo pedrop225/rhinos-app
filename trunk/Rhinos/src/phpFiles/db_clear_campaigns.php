@@ -5,6 +5,7 @@
 	mysql_select_db($mysql_database);
 	
 	$q = mysql_query("DELETE FROM Campaigns");
+	$q = mysql_query("DELETE FROM CampInfo");
 		
 	mysql_close();
 ?>

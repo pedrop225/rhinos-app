@@ -9,7 +9,7 @@
 						WHERE 	(idUser = '".$_REQUEST['idUser']."') AND
 								(date = '".$_REQUEST['date']."') AND 
 								(campaign ='".$_REQUEST['campaign']."') AND
-								(service = '".$_REQUEST['service'])."'");
+								(service = '".$_REQUEST['service']."')");
 
 	mysql_close();
 ?>

@@ -1,0 +1,15 @@
+TODO
+
+* 	Causa:
+	- 	El WebService no reconoce las tildes. Si se insertan tildes en la db, al recuperar los datos el campo
+		se convierte en null.
+ 	
+ 	Solucion:
+ 	- 	json_encode() utiliza utf-8.. Hay que pasar las cadenas a esta codificacion previamente.
+ 	
+ * 	Asignar a cada objeto una id externa, para mejor exactitud a la hora de la recuperacion. Requiere 
+ 	modificacion en db
+ 	
+ * 	Evitar que los usuarios puedan borrar clientes no propios.
+ 
+ * 	Arreglar representacion de la clase Date() en db, para realizar operaciones en db. 

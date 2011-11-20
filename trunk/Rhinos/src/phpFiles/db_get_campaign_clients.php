@@ -6,11 +6,13 @@
 	
 	$q = mysql_query("	SELECT DISTINCT Clients.id, idType, name, Clients.tlf_1, Clients.tlf_2, mail, address 
 						FROM Clients, Services 
-						WHERE (Clients.id = idClient) AND (campaign ='".$_REQUEST['campaign']."' 
+						WHERE (Clients.id = idClient) AND (campaign ='".$_REQUEST['campaign']."') 
 						ORDER BY name");
 	
 	while ($e = mysql_fetch_assoc($q))
 		$output[] = $e;
-		
+	
+	print(json_encode($output));
+			
 	mysql_close();
 ?>
