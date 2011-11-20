@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -17,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.database.SQLException;
 
 import com.android.rhinos.App;
 import com.android.rhinos.gest.Campaign;
@@ -50,7 +52,7 @@ public class MySqlConnector implements Connector {
             is.close();
             result = sb.toString();
             
-            return new JSONArray(result);
+            return (result.trim().length() > 0) ? new JSONArray(result) : new JSONArray();
 	    }
 	    catch (Exception e) {e.printStackTrace();}
 	    
@@ -206,37 +208,140 @@ public class MySqlConnector implements Connector {
 
 	@Override
 	public ArrayList<Client> getCampaignClients(Campaign c) {
-		return null;
+		ArrayList<Client> tr = new ArrayList<Client>();
+		
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("campaign", c.getName()));
+	    
+	    JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_campaign_clients.php", nameValuePairs);
+		
+	    try {
+			for (int i = 0; i < jsonArray.length(); i++) {
+				Client cl = new Client();
+				JSONObject jsonObj = jsonArray.getJSONObject(i);
+				
+				switch (jsonObj.getInt("idType")) {
+					case Id.DNI: cl.setId(new Dni(jsonObj.getString("id"))); break;
+					case Id.NIE: cl.setId(new Nie(jsonObj.getString("id"))); break;
+					case Id.CIF: cl.setId(new Dni(jsonObj.getString("id"))); break;
+				}
+				cl.setName(jsonObj.getString("name"));
+				cl.setTlf_1(jsonObj.getString("tlf_1"));
+				cl.setTlf_2(jsonObj.getString("tlf_2"));
+				cl.setMail(jsonObj.getString("mail"));
+				cl.setAddress(jsonObj.getString("address"));
+				
+				tr.add(cl);
+			}
+	    }
+	    catch (Exception e) {e.printStackTrace();}
+		
+		return tr;
 	}
 
 	@Override
-	public Client clientExists(String _id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Client clientExists(String id) {
+		Client client = null;
+		
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("id", id));
+		
+	    JSONArray jsonArray = getDataFromDB(App.external_path+"/db_client_exists.php", nameValuePairs);
+		
+	    try {
+		    if (jsonArray.length() > 0) {
+				client = new Client();
+				JSONObject jsonObj = jsonArray.getJSONObject(0);
+				
+				client.setName(jsonObj.getString("name"));
+				client.setTlf_1(jsonObj.getString("tlf_1"));
+				client.setTlf_2(jsonObj.getString("tlf_2"));
+				client.setMail(jsonObj.getString("mail"));
+				client.setAddress(jsonObj.getString("address"));
+			}
+	    }
+	    catch (Exception e) {e.printStackTrace();}
+
+		return client;
 	}
 
 	@Override
 	public boolean addService(Service s, Client c) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean tr = true;
+		
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("idClient", c.getId().toString()));
+	    nameValuePairs.add(new BasicNameValuePair("service", s.getService()));
+	    nameValuePairs.add(new BasicNameValuePair("campaign", s.getCampaign()));
+	    nameValuePairs.add(new BasicNameValuePair("tlf_1", s.getTlf_1()));
+	    nameValuePairs.add(new BasicNameValuePair("tlf_2", s.getTlf_2()));
+	    nameValuePairs.add(new BasicNameValuePair("commission", s.getCommission()+""));
+	    nameValuePairs.add(new BasicNameValuePair("date", s.getDate().toGMTString()));
+		
+		try {
+			getDataFromDB(App.external_path+"/db_add_service.php", nameValuePairs);
+		}
+		catch (SQLException e) { e.printStackTrace(); tr = false;}
+		
+		return tr;
 	}
 
 	@Override
-	public ArrayList<Service> getServices(String _id) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Service> getServices(String id) {
+		ArrayList<Service> tr = new ArrayList<Service>();
+		
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("idClient", id));
+	    
+	    JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_services.php", nameValuePairs);
+	    
+		try {
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObj = jsonArray.getJSONObject(i);
+				Service s = new Service(jsonObj.getString("service"), jsonObj.getInt("commission"));
+				
+				s.setCampaign(jsonObj.getString("campaign"));
+				s.setDate(new Date(jsonObj.getString("date")));
+				s.setTlf_1(jsonObj.getString("tlf_1"));
+				s.setTlf_2(jsonObj.getString("tlf_2"));
+				
+				tr.add(s);
+			}
+		}
+		catch (Exception e) {e.printStackTrace();}
+		
+		return tr;	
 	}
 
 	@Override
-	public int getSumCommissions(Client c) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getSumCommissions(Client c) {		
+
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("idUser", App.user.getExtId()+""));
+	    nameValuePairs.add(new BasicNameValuePair("idClient", c.getId().toString()));
+	    
+		int res = 0;
+	    JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_sum_commissions.php", nameValuePairs);
+		 
+	    try {
+			if (jsonArray.length() > 0) {
+				res = jsonArray.getJSONObject(0).getInt("SUM(commission)");
+			}
+	    } 
+	    catch (Exception e) {e.printStackTrace();}
+		
+		return res;
 	}
 
 	@Override
 	public void deleteService(Service service) {
-		// TODO Auto-generated method stub
-
+		
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("idUser", App.user.getExtId()+""));
+	    nameValuePairs.add(new BasicNameValuePair("date", service.getDate().toGMTString()));
+	    nameValuePairs.add(new BasicNameValuePair("campaign", service.getCampaign()));
+	    nameValuePairs.add(new BasicNameValuePair("service", service.getService()));
+	 
+	    getDataFromDB(App.external_path+"/db_delete_service.php", nameValuePairs);
 	}
-
 }

@@ -10,4 +10,6 @@
 		$output[] = $e;
 	
 	print(json_encode($output));
+	
+	mysql_close();
 ?>

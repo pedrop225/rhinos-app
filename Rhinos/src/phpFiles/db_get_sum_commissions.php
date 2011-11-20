@@ -6,11 +6,12 @@
 	
 	$q = mysql_query("	SELECT SUM(commission)
 						FROM Services 
-						WHERE (idUser = '".$_REQUEST['idUser']."') AND (idClient ='".$_REQUEST['idClient']."' 
-						ORDER BY name");
+						WHERE (idUser = '".$_REQUEST['idUser']."') AND (idClient ='".$_REQUEST['idClient']."')");
 	
 	while ($e = mysql_fetch_assoc($q))
-	$output[] = $e;
+		$output[] = $e;
+	
+	print(json_encode($output));
 	
 	mysql_close();
 ?>

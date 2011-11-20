@@ -6,11 +6,13 @@
 	
 	$q = mysql_query("	SELECT *
 						FROM Services 
-						WHERE idClient ='".$_REQUEST['id']."' 
+						WHERE idClient ='".$_REQUEST['idClient']."' 
 						ORDER BY commission");
 	
 	while ($e = mysql_fetch_assoc($q))
 	$output[] = $e;
+	
+	print(json_encode($output));
 	
 	mysql_close();
 ?>
