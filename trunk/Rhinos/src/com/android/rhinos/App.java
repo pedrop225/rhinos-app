@@ -1,13 +1,11 @@
 package com.android.rhinos;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import android.app.Application;
-import android.util.Base64;
 import android.util.Log;
 
+import com.android.rhinos.cipher.RCipher;
 import com.android.rhinos.gest.User;
 
 import connectors.Connector;
@@ -28,26 +26,17 @@ public class App extends Application {
 		super.onCreate();	
 		user = new User();
 		
+		String p = "Pedro Alfonso Pérez";
+		String q = "";
+		
 		try {
-			String p = "Pedro Alfonso Pérez";
-			SecretKey key = KeyGenerator.getInstance("DES").generateKey();
+			SecretKey key = RCipher.importKeyFromUrl(App.external_path+"/security/security.keys");
+			RCipher rc = new RCipher(key);
 			
-			Cipher c_enc = Cipher.getInstance("DES");
-			Cipher c_dec = Cipher.getInstance("DES");
-			
-			c_enc.init(Cipher.ENCRYPT_MODE, key);
-			c_dec.init(Cipher.DECRYPT_MODE, key);
-			
-			byte [] utf8 = p.getBytes("UTF8");
-			
-			byte [] enc = c_enc.doFinal(utf8);
-			
-			Log.v("log_tag", Base64.encodeToString(enc, Base64.DEFAULT));
-			
-			String rec = new String(c_dec.doFinal(enc), "UTF8"); 
-			
-			Log.v("log_tag", rec);
-		} 
-		catch (Exception e) {e.printStackTrace();};
+			Log.v("log_tag", p);
+			Log.v("log_tag", q = rc.encode(p));
+			Log.v("log_tag", rc.decode(q));
+		}
+		catch (Exception e) {e.printStackTrace();}
 	}
 }
