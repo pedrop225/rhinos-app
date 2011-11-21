@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 public class Menu extends ListActivity {
 
-	private String list[] = {"Añadir Contrato", "Gestión de Contratos", "Informes", "Gestión de Campañas"};
+	private String list[] = {"Añadir Contrato", "Gestión de Contratos", "Gestión de Campañas", "Cambiar Contraseña", "Crear Cuenta"};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +33,11 @@ public class Menu extends ListActivity {
 			case 1:
 				execute = "ContractGest"; break;
 			case 2:
-				execute = "Informes"; break;
-			case 3:
 				execute = "CampGest"; break;
+			case 3:
+				execute = "ChangePassword"; break;
+			case 4:
+				execute = "CreateAccount"; break;
 		}
 		
 		try {
