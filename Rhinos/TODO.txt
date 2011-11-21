@@ -13,3 +13,7 @@ TODO
  * 	Evitar que los usuarios puedan borrar clientes no propios.
  
  * 	Arreglar representacion de la clase Date() en db, para realizar operaciones en db. 
+ 
+ * 	Export pdf file
+ 
+ * 	Encriptar informacion en db
