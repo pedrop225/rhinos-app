@@ -159,13 +159,13 @@ public class MySqlConnector implements Connector {
 
 	    //the mail data to send
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-	    nameValuePairs.add(new BasicNameValuePair("id", c.getName()));
+	    nameValuePairs.add(new BasicNameValuePair("id", App.cipher.encode(c.getName())));
 	    nameValuePairs.add(new BasicNameValuePair("idType", c.getId().getType()+""));
-	    nameValuePairs.add(new BasicNameValuePair("name", c.getName()));
-	    nameValuePairs.add(new BasicNameValuePair("tlf_1", c.getTlf_1()));
-	    nameValuePairs.add(new BasicNameValuePair("tlf_2", c.getTlf_2()));
-	    nameValuePairs.add(new BasicNameValuePair("mail", c.getMail()));
-	    nameValuePairs.add(new BasicNameValuePair("address", c.getAddress()));
+	    nameValuePairs.add(new BasicNameValuePair("name", App.cipher.encode(c.getName())));
+	    nameValuePairs.add(new BasicNameValuePair("tlf_1", App.cipher.encode(c.getTlf_1())));
+	    nameValuePairs.add(new BasicNameValuePair("tlf_2", App.cipher.encode(c.getTlf_2())));
+	    nameValuePairs.add(new BasicNameValuePair("mail", App.cipher.encode(c.getMail())));
+	    nameValuePairs.add(new BasicNameValuePair("address", App.cipher.encode(c.getAddress())));
 	    
 	    try {
 	        getDataFromDB(App.external_path+"/db_add_client.php", nameValuePairs);
@@ -188,16 +188,16 @@ public class MySqlConnector implements Connector {
 				JSONObject jsonObj = jsonArray.getJSONObject(i);
 				
 				switch (jsonObj.getInt("idType")) {
-					case Id.DNI: cl.setId(new Dni(jsonObj.getString("id"))); break;
-					case Id.NIE: cl.setId(new Nie(jsonObj.getString("id"))); break;
-					case Id.CIF: cl.setId(new Dni(jsonObj.getString("id"))); break;
+					case Id.DNI: cl.setId(new Dni(App.cipher.decode(jsonObj.getString("id")))); break;
+					case Id.NIE: cl.setId(new Nie(App.cipher.decode(jsonObj.getString("id")))); break;
+					case Id.CIF: cl.setId(new Dni(App.cipher.decode(jsonObj.getString("id")))); break;
 				}
 				
-				cl.setName(jsonObj.getString("name"));
-				cl.setTlf_1(jsonObj.getString("tlf_1"));
-				cl.setTlf_2(jsonObj.getString("tlf_2"));
-				cl.setMail(jsonObj.getString("mail"));
-				cl.setAddress(jsonObj.getString("address"));
+				cl.setName(App.cipher.decode(jsonObj.getString("name")));
+				cl.setTlf_1(App.cipher.decode(jsonObj.getString("tlf_1")));
+				cl.setTlf_2(App.cipher.decode(jsonObj.getString("tlf_2")));
+				cl.setMail(App.cipher.decode(jsonObj.getString("mail")));
+				cl.setAddress(App.cipher.decode(jsonObj.getString("address")));
 				
 				r.add(cl);
 			}
@@ -245,7 +245,7 @@ public class MySqlConnector implements Connector {
 		Client client = null;
 		
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-	    nameValuePairs.add(new BasicNameValuePair("id", id));
+	    nameValuePairs.add(new BasicNameValuePair("id", App.cipher.decode(id)));
 		
 	    JSONArray jsonArray = getDataFromDB(App.external_path+"/db_client_exists.php", nameValuePairs);
 		
@@ -254,11 +254,11 @@ public class MySqlConnector implements Connector {
 				client = new Client();
 				JSONObject jsonObj = jsonArray.getJSONObject(0);
 				
-				client.setName(jsonObj.getString("name"));
-				client.setTlf_1(jsonObj.getString("tlf_1"));
-				client.setTlf_2(jsonObj.getString("tlf_2"));
-				client.setMail(jsonObj.getString("mail"));
-				client.setAddress(jsonObj.getString("address"));
+				client.setName(App.cipher.decode(jsonObj.getString("name")));
+				client.setTlf_1(App.cipher.decode(jsonObj.getString("tlf_1")));
+				client.setTlf_2(App.cipher.decode(jsonObj.getString("tlf_2")));
+				client.setMail(App.cipher.decode(jsonObj.getString("mail")));
+				client.setAddress(App.cipher.decode(jsonObj.getString("address")));
 			}
 	    }
 	    catch (Exception e) {e.printStackTrace();}
