@@ -188,7 +188,7 @@ public class DBConnector implements Connector {
 										"mail",
 										"address"};
 		
-		String sel = "(clients._id = _iduser) and (campaign = '"+campaign.getName()+"')";
+		String sel = "(clients._id = _idClient) and (campaign = '"+campaign.getName()+"')";
 		
 		Cursor c = db.query(true, "Clients,Services", cols , sel, null, null, null, "name", null);
 		
@@ -248,7 +248,7 @@ public class DBConnector implements Connector {
 		boolean tr = true;
 		
 		ContentValues cv = new ContentValues();
-		cv.put("_idUser", c.getId().toString());
+		cv.put("_idClient", c.getId().toString());
 		cv.put("service", s.getService());
 		cv.put("campaign", s.getCampaign());
 		cv.put("tlf_1", s.getTlf_1());
@@ -273,7 +273,7 @@ public class DBConnector implements Connector {
 		db = dbHelper.getReadableDatabase();
 		ArrayList<Service> tr = new ArrayList<Service>();
 		
-		Cursor c = db.query("Services", null, "_idUser='"+_id+"'", null, null, null, "commission");
+		Cursor c = db.query("Services", null, "_idClient='"+_id+"'", null, null, null, "commission");
 		
 		if (c.moveToFirst()) {
 			for (int i = 0; i < c.getCount(); i++) {
@@ -297,7 +297,7 @@ public class DBConnector implements Connector {
 	public int getSumCommissions(Client client) {
 		db = dbHelper.getReadableDatabase();
 		
-		Cursor c = db.query("Services", new String[] {"sum(commission)"}, "_idUser='"+client.getId()+"'", null, null, null, null);
+		Cursor c = db.query("Services", new String[] {"sum(commission)"}, "_idClient='"+client.getId()+"'", null, null, null, null);
 		
 		int res = 0;
 		if (c.moveToFirst()) {
@@ -320,4 +320,7 @@ public class DBConnector implements Connector {
 	private void activateFlags() {
 		db.execSQL("PRAGMA FOREIGN_KEYS=ON");
 	}
+	
+	@Override
+	public void changePassword(String user, String newpass) {}
 }

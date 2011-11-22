@@ -44,14 +44,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		//Creating table Services
 		db.execSQL("CREATE TABLE Services (" +
 						"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-						"_idUser INTEGER," +
+						"_idClient TEXT," +
 						"service TEXT NOT NULL," +
 						"campaign TEXT NOT NULL," +
 						"tlf_1 TEXT," +
 						"tlf_2 TEXT," +
 						"commission INTEGER NOT NULL," +
 						"date TEXT NOT NULL," +
-						"FOREIGN KEY (_idUser) REFERENCES Clients(_id) ON DELETE CASCADE)");
+						"FOREIGN KEY (_idClient) REFERENCES Clients(_id) ON DELETE CASCADE)");
 	}
 
 	@Override

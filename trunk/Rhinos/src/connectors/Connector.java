@@ -27,4 +27,6 @@ public interface Connector {
 	public int getSumCommissions(Client c);
 
 	public void deleteService(Service service);
+
+	public void changePassword(String user, String newpass);
 }
