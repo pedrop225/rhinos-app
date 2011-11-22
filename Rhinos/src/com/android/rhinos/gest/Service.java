@@ -8,6 +8,7 @@ public class Service implements Comparable<Service>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private int extId;
 	private int commission;
 	private String service;
 	private String campaign;
@@ -23,7 +24,15 @@ public class Service implements Comparable<Service>, Serializable {
 		tlf_2 = "";
 		date = new Date();
 	}
-	
+
+	public int getExtId() {
+		return extId;
+	}
+
+	public void setExtId(int extId) {
+		this.extId = extId;
+	}
+
 	public Service(String service, int commission) {
 		this.service = service;
 		this.commission = commission;

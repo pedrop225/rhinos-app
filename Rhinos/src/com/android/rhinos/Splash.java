@@ -1,5 +1,7 @@
 package com.android.rhinos;
 
+import com.android.rhinos.gest.User;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -48,8 +50,10 @@ public class Splash extends Activity {
 				String user = splash_user.getText().toString();
 				String pass = splash_pass.getText().toString();
 				
-				if (App.src.login(user, pass))
+				if (App.src.login(user, pass)) {
+					App.user.setConnectionMode(User.ONLINE);
 					startActivity();
+				}
 				else
 					splash_status_bar.setText("\tDatos erróneos!!");
 			}
@@ -59,6 +63,8 @@ public class Splash extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				App.src = new DBConnector(getApplicationContext());
+				App.user.setConnectionMode(User.OFFLINE);
+				App.user.doRoot();
 				startActivity();
 			}
 		});

@@ -72,6 +72,7 @@ public class MySqlConnector implements Connector {
 	        if (jsonObj.getString("password").equals(password)) {
 	        	App.user.setExtId(jsonObj.getInt("id"));
 	        	App.user.setType(jsonObj.getInt("type"));
+	        	App.user.setUser(user);
 	        	App.user.setMail(jsonObj.getString("user"));
 	        	return true;
 	        }
@@ -300,6 +301,7 @@ public class MySqlConnector implements Connector {
 				JSONObject jsonObj = jsonArray.getJSONObject(i);
 				Service s = new Service(jsonObj.getString("service"), jsonObj.getInt("commission"));
 				
+				s.setExtId(jsonObj.getInt("id"));
 				s.setCampaign(jsonObj.getString("campaign"));
 				s.setDate(new Date(jsonObj.getString("date")));
 				s.setTlf_1(jsonObj.getString("tlf_1"));
@@ -337,11 +339,18 @@ public class MySqlConnector implements Connector {
 	public void deleteService(Service service) {
 		
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-	    nameValuePairs.add(new BasicNameValuePair("idUser", App.user.getExtId()+""));
-	    nameValuePairs.add(new BasicNameValuePair("date", service.getDate().toGMTString()));
-	    nameValuePairs.add(new BasicNameValuePair("campaign", service.getCampaign()));
-	    nameValuePairs.add(new BasicNameValuePair("service", service.getService()));
+	    nameValuePairs.add(new BasicNameValuePair("id", service.getExtId()+""));
 	 
 	    getDataFromDB(App.external_path+"/db_delete_service.php", nameValuePairs);
+	}
+	
+	@Override
+	public void changePassword(String user, String newpass) {
+		
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("user", user));
+	    nameValuePairs.add(new BasicNameValuePair("newpass", newpass));
+	 
+	    getDataFromDB(App.external_path+"/db_change_password.php", nameValuePairs);
 	}
 }
