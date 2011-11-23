@@ -34,7 +34,7 @@ public class RCipher {
 			byte [] utf8 = word.getBytes("UTF8");
 			byte [] enc = c_enc.doFinal(utf8);
 			
-			return (Base64.encodeToString(enc, Base64.DEFAULT));
+			return Base64.encodeToString(enc, Base64.DEFAULT);
 		} 
 		catch (Exception e) {e.printStackTrace();}
 		
@@ -45,7 +45,7 @@ public class RCipher {
 		
 		try {
 			byte [] dec = Base64.decode(word, Base64.DEFAULT);
-			
+
 			return (new String(c_dec.doFinal(dec), "UTF8"));
 		} 
 		catch (Exception e) {e.printStackTrace();}

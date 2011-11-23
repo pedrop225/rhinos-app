@@ -1,10 +1,7 @@
 package com.android.rhinos;
 
-import javax.crypto.SecretKey;
-
 import android.app.Application;
 
-import com.android.rhinos.cipher.RCipher;
 import com.android.rhinos.gest.User;
 
 import connectors.Connector;
@@ -16,7 +13,6 @@ public class App extends Application {
 	
 	public static Connector src;
 	public static User user;
-	public static RCipher cipher;
 		
 	public static final int STORED = 0;
 	public static final int NOT_STORED = 1; 
@@ -25,11 +21,5 @@ public class App extends Application {
 	public void onCreate() {
 		super.onCreate();	
 		user = new User();
-		
-		try {
-			SecretKey key = RCipher.importKeyFromUrl(App.external_path+"/security/security.keys");
-			cipher = new RCipher(key);
-		}
-		catch (Exception e) {e.printStackTrace();}
 	}
 }
