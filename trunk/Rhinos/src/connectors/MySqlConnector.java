@@ -76,17 +76,17 @@ public class MySqlConnector implements Connector {
 
 	    //the mail data to send
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-	    nameValuePairs.add(new BasicNameValuePair("user", user));
+	    nameValuePairs.add(new BasicNameValuePair("user", cipher.encode(user)));
 	    
 	    try {
 	        JSONArray jsonArray = getDataFromDB(App.external_path+"/db_login.php", nameValuePairs);
 	        JSONObject jsonObj = jsonArray.getJSONObject(0);
 	            
-	        if (jsonObj.getString("password").equals(password)) {
+	        if (cipher.decode(jsonObj.getString("password")).equals(password)) {
 	        	App.user.setExtId(jsonObj.getInt("id"));
 	        	App.user.setType(jsonObj.getInt("type"));
 	        	App.user.setUser(user);
-	        	App.user.setMail(jsonObj.getString("user"));
+	        	App.user.setMail(cipher.decode(jsonObj.getString("user")));
 	        	return true;
 	        }
 	    }
@@ -363,8 +363,8 @@ public class MySqlConnector implements Connector {
 	public void changePassword(String user, String newpass) {
 		
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-	    nameValuePairs.add(new BasicNameValuePair("user", user));
-	    nameValuePairs.add(new BasicNameValuePair("newpass", newpass));
+	    nameValuePairs.add(new BasicNameValuePair("user", cipher.encode(user)));
+	    nameValuePairs.add(new BasicNameValuePair("newpass", cipher.encode(newpass)));
 	 
 	    getDataFromDB(App.external_path+"/db_change_password.php", nameValuePairs);
 	}
@@ -373,14 +373,14 @@ public class MySqlConnector implements Connector {
 	public boolean createAccount(User u, String password) {
 		
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-	    nameValuePairs.add(new BasicNameValuePair("user", u.getUser()));
-	    nameValuePairs.add(new BasicNameValuePair("mail", u.getMail()));
+	    nameValuePairs.add(new BasicNameValuePair("user", cipher.encode(u.getUser())));
+	    nameValuePairs.add(new BasicNameValuePair("mail", cipher.encode(u.getMail())));
 	    
 	    JSONArray jsonArray = getDataFromDB(App.external_path+"/db_user_or_mail_exists.php", nameValuePairs);
 	    
 	    if (jsonArray == null) {
-		    nameValuePairs.add(new BasicNameValuePair("name", u.getName()));
-		    nameValuePairs.add(new BasicNameValuePair("password", password));
+		    nameValuePairs.add(new BasicNameValuePair("name", cipher.encode(u.getName())));
+		    nameValuePairs.add(new BasicNameValuePair("password", cipher.encode(password)));
 	    	
 		    getDataFromDB(App.external_path+"/db_create_account.php", nameValuePairs);
 	    	return true;
