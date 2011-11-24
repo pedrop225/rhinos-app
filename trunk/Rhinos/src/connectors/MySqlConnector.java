@@ -30,6 +30,7 @@ import com.android.rhinos.gest.Dni;
 import com.android.rhinos.gest.Id;
 import com.android.rhinos.gest.Nie;
 import com.android.rhinos.gest.Service;
+import com.android.rhinos.gest.User;
 
 public class MySqlConnector implements Connector {
 
@@ -111,7 +112,7 @@ public class MySqlConnector implements Connector {
 	        getDataFromDB(App.external_path+"/db_add_campaign.php", nameValuePairs);
 	       
 	        //looking up campaign id
-	        JSONArray JsonArray = getDataFromDB(App.external_path+"/db_get_id_campaign.php", nameValuePairs);
+	        JSONArray JsonArray = getDataFromDB(App.external_path+"/db_get_campaign_id.php", nameValuePairs);
 	        int c_id = JsonArray.getJSONObject(0).getInt("id");
 	        
 	        //inserting into campinfo
@@ -366,5 +367,25 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("newpass", newpass));
 	 
 	    getDataFromDB(App.external_path+"/db_change_password.php", nameValuePairs);
+	}
+	
+	@Override
+	public boolean createAccount(User u, String password) {
+		
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("user", u.getUser()));
+	    nameValuePairs.add(new BasicNameValuePair("mail", u.getMail()));
+	    
+	    JSONArray jsonArray = getDataFromDB(App.external_path+"/db_user_or_mail_exists.php", nameValuePairs);
+	    
+	    if (jsonArray == null) {
+		    nameValuePairs.add(new BasicNameValuePair("name", u.getName()));
+		    nameValuePairs.add(new BasicNameValuePair("password", password));
+	    	
+		    getDataFromDB(App.external_path+"/db_create_account.php", nameValuePairs);
+	    	return true;
+	    }
+	    else
+	    	return false;
 	}
 }

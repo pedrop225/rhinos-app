@@ -16,6 +16,7 @@ import com.android.rhinos.gest.Dni;
 import com.android.rhinos.gest.Id;
 import com.android.rhinos.gest.Nie;
 import com.android.rhinos.gest.Service;
+import com.android.rhinos.gest.User;
 
 public class DBConnector implements Connector {
 
@@ -323,4 +324,9 @@ public class DBConnector implements Connector {
 	
 	@Override
 	public void changePassword(String user, String newpass) {}
+	
+@Override
+	public boolean createAccount(User u, String pass) {
+		return false;
+	}
 }
