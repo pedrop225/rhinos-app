@@ -90,7 +90,7 @@ public class MySqlConnector implements Connector {
 	        	return true;
 	        }
 	    }
-	    catch (Exception e) {}
+	    catch (Exception e) {e.printStackTrace();}
         
         return false;
 	}
@@ -357,6 +357,15 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("id", service.getExtId()+""));
 	 
 	    getDataFromDB(App.external_path+"/db_delete_service.php", nameValuePairs);
+	}
+	
+	@Override
+	public void deleteClient(String id) {
+	    
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("id", cipher.encode(id)));
+	    
+	    getDataFromDB(App.external_path+"/db_delete_client.php", nameValuePairs);
 	}
 	
 	@Override
