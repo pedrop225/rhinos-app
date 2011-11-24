@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.Client;
 import com.android.rhinos.gest.Service;
+import com.android.rhinos.gest.User;
 
 public interface Connector {
 
@@ -29,4 +30,6 @@ public interface Connector {
 	public void deleteService(Service service);
 
 	public void changePassword(String user, String newpass);
+
+	public boolean createAccount(User u, String pass);
 }

@@ -27,27 +27,38 @@ public class ChangePassword extends Activity {
 		cp_button = (Button) findViewById(R.id.change_password_button);
 		cp_status_bar = (TextView) findViewById(R.id.change_password_status_bar);
 		
+		cp_button.setEnabled(App.user.isOnline());
+		
 		cp_button.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
-				if (checkPasswords()) {
+				if (checkForm()) {
 					App.src.changePassword(App.user.getUser(), cp_newpass1.getText().toString().trim());
 					cp_status_bar.setText(" Cambio efectuado con éxito ..");
 				}
-				else
-					cp_status_bar.setText(" Datos incorrectos o insuficientes ..");
 			}
 		});
 	}
 	
-	private boolean checkPasswords() {
+	private boolean checkForm() {
 		
-		if (!cp_newpass1.getText().toString().trim().equals(cp_newpass2.getText().toString().trim())) {
+		if (!cp_newpass1.getText().toString().equals(cp_newpass2.getText().toString())) {
+			cp_status_bar.setText("Error:  Las contraseñas no coinciden!!");
+			return false;
+		}
+		
+		if ((cp_pass.getText().toString().trim().length() == 0) ||
+			(cp_newpass1.getText().toString().trim().length() == 0) ||
+			(cp_newpass2.getText().toString().trim().length() == 0)) {
+			
+			cp_status_bar.setText("Error:  Datos incompletos!!");
+
 			return false;
 		}
 		
 		if (!App.src.login(App.user.getUser(), cp_pass.getText().toString().trim())) {
+			cp_status_bar.setText("Error:  Contraseña actual incorrecta!!");
 			return false;
 		}
 		

@@ -92,7 +92,7 @@
                         android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Constraseña "
+                        android:text="Contraseña "
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold" />
 
@@ -112,7 +112,7 @@
                         android:id="@+id/TextView01"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Constraseña "
+                        android:text="Contraseña "
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold" />
 

@@ -11,7 +11,6 @@ public class User extends Client {
 	private static final long serialVersionUID = 1L;
 	
 	private String user;
-	
 	private int extId;
 	private int type;
 	private int connectionMode;
