@@ -25,6 +25,7 @@ import android.database.SQLException;
 import com.android.rhinos.App;
 import com.android.rhinos.cipher.RCipher;
 import com.android.rhinos.gest.Campaign;
+import com.android.rhinos.gest.Cif;
 import com.android.rhinos.gest.Client;
 import com.android.rhinos.gest.Dni;
 import com.android.rhinos.gest.Id;
@@ -204,7 +205,7 @@ public class MySqlConnector implements Connector {
 				switch (jsonObj.getInt("idType")) {
 					case Id.DNI: cl.setId(new Dni(cipher.decode(jsonObj.getString("id")))); break;
 					case Id.NIE: cl.setId(new Nie(cipher.decode(jsonObj.getString("id")))); break;
-					case Id.CIF: cl.setId(new Dni(cipher.decode(jsonObj.getString("id")))); break;
+					case Id.CIF: cl.setId(new Cif(cipher.decode(jsonObj.getString("id")))); break;
 				}
 				
 				cl.setName(cipher.decode(jsonObj.getString("name")));
@@ -238,7 +239,7 @@ public class MySqlConnector implements Connector {
 				switch (jsonObj.getInt("idType")) {
 					case Id.DNI: cl.setId(new Dni(cipher.decode(jsonObj.getString("id")))); break;
 					case Id.NIE: cl.setId(new Nie(cipher.decode(jsonObj.getString("id")))); break;
-					case Id.CIF: cl.setId(new Dni(cipher.decode(jsonObj.getString("id")))); break;
+					case Id.CIF: cl.setId(new Cif(cipher.decode(jsonObj.getString("id")))); break;
 				}
 				cl.setName(cipher.decode(jsonObj.getString("name")));
 				cl.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));

@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.android.rhinos.DatabaseHelper;
 import com.android.rhinos.gest.Campaign;
+import com.android.rhinos.gest.Cif;
 import com.android.rhinos.gest.Client;
 import com.android.rhinos.gest.Dni;
 import com.android.rhinos.gest.Id;
@@ -156,7 +157,7 @@ public class DBConnector implements Connector {
 				switch (c.getInt(1)) {
 					case Id.DNI: cl.setId(new Dni(c.getString(0))); break;
 					case Id.NIE: cl.setId(new Nie(c.getString(0))); break;
-					case Id.CIF: cl.setId(new Dni(c.getString(0))); break;
+					case Id.CIF: cl.setId(new Cif(c.getString(0))); break;
 				}
 				cl.setName(c.getString(2));
 				cl.setTlf_1(c.getString(3));
@@ -201,7 +202,7 @@ public class DBConnector implements Connector {
 				switch (c.getInt(1)) {
 					case Id.DNI: cl.setId(new Dni(c.getString(0))); break;
 					case Id.NIE: cl.setId(new Nie(c.getString(0))); break;
-					case Id.CIF: cl.setId(new Dni(c.getString(0))); break;
+					case Id.CIF: cl.setId(new Cif(c.getString(0))); break;
 				}
 				cl.setName(c.getString(2));
 				cl.setTlf_1(c.getString(3));
