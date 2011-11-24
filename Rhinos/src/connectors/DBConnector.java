@@ -318,6 +318,12 @@ public class DBConnector implements Connector {
 		db.close();
 	}
 	
+	@Override
+	public void deleteClient(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	private void activateFlags() {
 		db.execSQL("PRAGMA FOREIGN_KEYS=ON");
 	}
@@ -325,7 +331,7 @@ public class DBConnector implements Connector {
 	@Override
 	public void changePassword(String user, String newpass) {}
 	
-@Override
+	@Override
 	public boolean createAccount(User u, String pass) {
 		return false;
 	}

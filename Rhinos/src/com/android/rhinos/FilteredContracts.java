@@ -3,7 +3,9 @@ package com.android.rhinos;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -22,10 +24,16 @@ public class FilteredContracts extends Activity {
 	
 	private TableLayout base;
 	private ScrollView scroll;
+	
+	private FilteredContracts profile;
+	public Bundle _bundle;
 			
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		profile = this;
+		_bundle = savedInstanceState;
 		
 		base = new TableLayout(FilteredContracts.this);
 		base.setPadding(0, 2, 0, 2);
@@ -39,7 +47,7 @@ public class FilteredContracts extends Activity {
 		ArrayList<Client> clients = (campaign != null) ? App.src.getCampaignClients(campaign) : App.src.getClients();
 		
 		for (Client u : clients) {
-			ContractItemView item = new ContractItemView(FilteredContracts.this, u);
+			ContractItemView item = new ContractItemView(FilteredContracts.this, u, profile);
 			base.addView(item);
 						
 			View v = new View(getBaseContext());
@@ -65,7 +73,7 @@ class ContractItemView extends LinearLayout implements View.OnClickListener {
 	private TextView name;
 	private Client client;
 		
-	public ContractItemView(Context context, Client c) {
+	public ContractItemView(Context context, Client c, final FilteredContracts profile) {
 		super(context);
 		this.client = c;
 		setClickable(true);
@@ -101,6 +109,39 @@ class ContractItemView extends LinearLayout implements View.OnClickListener {
 		addView(info);
 		
 		setOnClickListener(this);
+		
+		setOnLongClickListener(new OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+				builder.setTitle("Eliminando Cliente");
+				builder.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+				builder.setMessage("¿Desea eliminar el cliente '"+client.getName()+"'?");
+				builder.setCancelable(false);
+				
+				builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						App.src.deleteClient(client.getId().toString());
+						profile.onCreate(profile._bundle);
+					}
+				});
+				
+				builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+					}
+				});
+				
+				AlertDialog alert = builder.create();
+				alert.show();
+								
+				return true;
+			}
+		});
 	}
 	
 	@Override

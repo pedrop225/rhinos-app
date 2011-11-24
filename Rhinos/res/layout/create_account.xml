@@ -34,12 +34,13 @@
                         android:text="Usuario "
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold" />
-
+
                     <EditText
                         android:id="@+id/create_account_user"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight=".65" >
+
                     </EditText>
                 </TableRow>
 
@@ -55,12 +56,14 @@
                         android:text="Nombre "
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold" />
-
+
                     <EditText
                         android:id="@+id/create_account_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".65" />
+                        android:layout_weight=".65"
+                        android:inputType="textCapWords|textPersonName" />
+
                 </TableRow>
 
                 <TableRow
@@ -75,12 +78,14 @@
                         android:text="Mail "
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold" />
-
+
                     <EditText
                         android:id="@+id/create_account_mail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".65" />
+                        android:layout_weight=".65"
+                        android:inputType="textEmailAddress" />
+
                 </TableRow>
 
                 <TableRow
@@ -95,12 +100,14 @@
                         android:text="Contraseña "
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold" />
-
+
                     <EditText
                         android:id="@+id/create_account_password1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".65" />
+                        android:layout_weight=".65"
+                        android:inputType="textPassword" />
+
                 </TableRow>
 
                 <TableRow
@@ -115,12 +122,14 @@
                         android:text="Contraseña "
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold" />
-
+
                     <EditText
                         android:id="@+id/create_account_password2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".65" />
+                        android:layout_weight=".65"
+                        android:inputType="textPassword" />
+
                 </TableRow>
 
             </TableLayout>
