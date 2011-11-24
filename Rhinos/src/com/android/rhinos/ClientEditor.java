@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.android.rhinos.gest.Cif;
 import com.android.rhinos.gest.Client;
 import com.android.rhinos.gest.Dni;
 import com.android.rhinos.gest.Id;
@@ -114,7 +115,7 @@ public class ClientEditor extends Activity {
 		switch (idSpinner.getSelectedItemPosition()) {
 			case Id.DNI: client.setId(new Dni(clientId.getText().toString())); break;
 			case Id.NIE: client.setId(new Nie(clientId.getText().toString())); break;
-			case Id.CIF: client.setId(new Dni(clientId.getText().toString())); break;
+			case Id.CIF: client.setId(new Cif(clientId.getText().toString())); break;
 		}
 		
 		if (client.getId().isValid()) {	
