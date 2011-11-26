@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -17,15 +16,14 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.android.rhinos.gest.Campaign;
-import com.android.rhinos.gest.Client;
+import com.android.rhinos.gest.User;
 
-public class FilteredContracts extends Activity {
+public class UsersList extends Activity {
 	
 	private TableLayout base;
 	private ScrollView scroll;
 	
-	private FilteredContracts profile;
+	private UsersList profile;
 	public Bundle _bundle;
 			
 	@Override
@@ -35,19 +33,17 @@ public class FilteredContracts extends Activity {
 		profile = this;
 		_bundle = savedInstanceState;
 		
-		base = new TableLayout(FilteredContracts.this);
+		base = new TableLayout(UsersList.this);
 		base.setPadding(0, 2, 0, 2);
 				
-		scroll = new ScrollView(FilteredContracts.this);
+		scroll = new ScrollView(UsersList.this);
 		scroll.addView(base);
 		setContentView(scroll);
 		
-		Campaign campaign = (Campaign) getIntent().getSerializableExtra("campaign");
+		ArrayList<User> users = App.src.getUsers();
 		
-		ArrayList<Client> clients = (campaign != null) ? App.src.getCampaignClients(campaign) : App.src.getClients();
-		
-		for (Client u : clients) {
-			ContractItemView item = new ContractItemView(FilteredContracts.this, u, profile);
+		for (User u : users) {
+			UserItemView item = new UserItemView(UsersList.this, u, profile);
 			base.addView(item);
 						
 			View v = new View(getBaseContext());
@@ -58,74 +54,74 @@ public class FilteredContracts extends Activity {
 	}
 }
 
-class ContractItemView extends LinearLayout implements View.OnClickListener {
+class UserItemView extends LinearLayout implements View.OnClickListener {
 	
-	private static final int COMMISION_FONT_SIZE = 16;
-	
-	private static final int ID_FONT_SIZE= 12;
+	private static final int MAIL_FONT_SIZE= 12;
 	private static final int NAME_FONT_SIZE = 14;
 	
 	private LinearLayout base;
-	private TextView comm;
-	private TextView id;
+	private TextView name;
+	private TextView mail;
 	
 	private LinearLayout info;
-	private TextView name;
+	private TextView nick;
 	
-	private Client client;
+	private User user;
 		
-	public ContractItemView(Context context, Client c, final FilteredContracts profile) {
+	public UserItemView(Context context, User u, final UsersList profile) {
 		super(context);
-		this.client = c;
+		this.user = u;
 		setClickable(true);
 		
 		name = new TextView(context);
-		id = new TextView(context);
-		comm = new TextView(context);
+		mail = new TextView(context);
+		nick = new TextView(context);
 				
-		name.setText(c.getName());
+		name.setText(u.getName());
 		name.setTypeface(Typeface.DEFAULT_BOLD);
 		name.setTextSize(NAME_FONT_SIZE);
 		
-		id.setText(c.getId().toString());
-		id.setTextSize(ID_FONT_SIZE);
+		mail.setText(u.getMail());
+		mail.setTextSize(MAIL_FONT_SIZE);
 		
-		comm.setText(""+App.src.getSumCommissions(c)+"€");
-		comm.setTextColor(Color.GREEN);
-		comm.setTextSize(COMMISION_FONT_SIZE);
+		nick.setText(u.getUser());
+		nick.setTextColor(Color.GREEN);
+		nick.setTextSize(MAIL_FONT_SIZE);
 		
 		base = new LinearLayout(context);
 		base.setOrientation(LinearLayout.VERTICAL);
 		base.addView(name);
-		base.addView(id);
+		base.addView(mail);
 		
 		LayoutParams lp = new LayoutParams( LayoutParams.FILL_PARENT,
 											LayoutParams.FILL_PARENT, .75f);
+		
 		info = new LinearLayout(context);
 		info.setOrientation(LinearLayout.VERTICAL);
 		info.addView(new TextView(context));
-		info.addView(comm);
-			
+		info.addView(nick);
+		
 		addView(base, lp);
 		addView(info);
-		
+
+
 		setOnClickListener(this);
-		
+
+
 		setOnLongClickListener(new OnLongClickListener() {
 			
 			@Override
 			public boolean onLongClick(View v) {
 				
 				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-				builder.setTitle("Eliminando Cliente");
+				builder.setTitle("Eliminando Usuario");
 				builder.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
-				builder.setMessage("¿Desea eliminar el cliente '"+client.getName()+"'?");
+				builder.setMessage("¿Desea eliminar el usuario '"+user.getUser()+"'?");
 				builder.setCancelable(false);
 				
 				builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						App.src.deleteClient(client.getId().toString());
 						profile.onCreate(profile._bundle);
 					}
 				});
@@ -148,11 +144,11 @@ class ContractItemView extends LinearLayout implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		setBackgroundColor(Color.BLACK);
-		
+	/*	
 		Intent intent = new Intent().setClass(getContext(), ClientProfile.class);
 		intent.putExtra("client", client);
 		getContext().startActivity(intent);
-	
+*/
 	}
 	
 	@Override

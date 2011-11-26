@@ -8,16 +8,16 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class Menu extends ListActivity {
+public class UsersGestMenu extends ListActivity {
 
-	private String list[] = {"Añadir contrato", "Gestión de contratos", "Gestión de campañas", "Cambiar contraseña", "Gestión de usuarios", "Actualizar"};
+	private String list[] = {"Nuevo usuario", "Lista de usuarios"};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(anim.fade_in, anim.fade_out);
 
-		setListAdapter(new ArrayAdapter<String>(Menu.this, android.R.layout.simple_list_item_1, list));
+		setListAdapter(new ArrayAdapter<String>(UsersGestMenu.this, android.R.layout.simple_list_item_1, list));
 	}
 	
 	@Override
@@ -29,21 +29,13 @@ public class Menu extends ListActivity {
 		
 			//My profile
 			case 0: 
-				execute = "ClientEditor"; break;
+				execute = "CreateAccount"; break;
 			case 1:
-				execute = "ContractGest"; break;
-			case 2:
-				execute = "CampGest"; break;
-			case 3:
-				execute = "ChangePassword"; break;
-			case 4:
-				execute = "UsersGestMenu"; break;
-			case 5:
-				execute = "Update"; break;
+				execute = "UsersList"; break;
 		}
 		
 		try {
-			Intent intent = new Intent(Menu.this, Class.forName("com.android.rhinos."+execute));
+			Intent intent = new Intent(UsersGestMenu.this, Class.forName("com.android.rhinos."+execute));
 			startActivity(intent);
 		} 
 		catch (ClassNotFoundException e) {

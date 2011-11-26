@@ -342,4 +342,10 @@ public class DBConnector implements Connector {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public ArrayList<User> getUsers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

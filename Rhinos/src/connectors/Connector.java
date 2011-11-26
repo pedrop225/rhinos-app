@@ -36,4 +36,6 @@ public interface Connector {
 	public boolean createAccount(User u, String pass);
 
 	public String getCurrentVersion();
+
+	public ArrayList<User> getUsers();
 }
