@@ -10,15 +10,14 @@ import android.widget.ListView;
 
 public class Menu extends ListActivity {
 
-	private String default_list[] = {"Añadir Contrato", "Gestión de Contratos", "Cambiar Contraseña"};
-	private String root_list[] = {"Añadir Contrato", "Gestión de Contratos", "Cambiar Contraseña", "Gestión de Campañas", "Crear Cuenta"};
+	private String list[] = {"Añadir Contrato", "Gestión de Contratos", "Gestión de Campañas", "Cambiar Contraseña", "Crear Cuenta", "Actualizar"};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(anim.fade_in, anim.fade_out);
 
-		setListAdapter(new ArrayAdapter<String>(Menu.this, android.R.layout.simple_list_item_1, (App.user.isRoot()) ? root_list : default_list));
+		setListAdapter(new ArrayAdapter<String>(Menu.this, android.R.layout.simple_list_item_1, list));
 	}
 	
 	@Override
@@ -34,13 +33,13 @@ public class Menu extends ListActivity {
 			case 1:
 				execute = "ContractGest"; break;
 			case 2:
-				execute = "ChangePassword"; break;
-			
-			//only root list
-			case 3:
 				execute = "CampGest"; break;
+			case 3:
+				execute = "ChangePassword"; break;
 			case 4:
 				execute = "CreateAccount"; break;
+			case 5:
+				execute = "Update"; break;
 		}
 		
 		try {

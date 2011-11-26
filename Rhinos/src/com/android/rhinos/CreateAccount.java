@@ -32,7 +32,7 @@ public class CreateAccount extends Activity {
 		ca_status_bar = (TextView) findViewById(R.id.create_account_status_bar);
 		ca_button = (Button) findViewById(R.id.create_account_button);
 		
-		ca_button.setEnabled(App.user.isOnline());
+		ca_button.setEnabled(App.user.isRoot());
 		
 		ca_button.setOnClickListener(new View.OnClickListener() {
 			

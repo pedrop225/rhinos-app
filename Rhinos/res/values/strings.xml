@@ -2,4 +2,7 @@
 <resources>
     <string name="hello">Hello World, RhinosActivity!</string>
     <string name="app_name">Rhinos</string>
+    <string name="app_version">v1.02</string>
+    <string name="app_creator">pedrop225</string>
+    <string name="app_company">RhinosApp Services</string>
 </resources>

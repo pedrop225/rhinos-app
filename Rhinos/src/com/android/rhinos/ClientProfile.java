@@ -53,9 +53,6 @@ public class ClientProfile extends Activity {
 		
 		client = (Client) getIntent().getSerializableExtra("client");
 		
-		Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/rhinos_font.ttf");	
-		cp_name.setTypeface(tf);
-		
 		cp_name.setText(client.getName());
 		cp_id.setText(client.getId().toString());
 		cp_tlf_1.setText(client.getTlf_1());

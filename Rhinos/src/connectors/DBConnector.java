@@ -336,4 +336,10 @@ public class DBConnector implements Connector {
 	public boolean createAccount(User u, String pass) {
 		return false;
 	}
+	
+	@Override
+	public String getCurrentVersion() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

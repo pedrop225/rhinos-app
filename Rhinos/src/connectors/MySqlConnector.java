@@ -398,11 +398,22 @@ public class MySqlConnector implements Connector {
 		    nameValuePairs.add(new BasicNameValuePair("user", u.getUser()));
 		    nameValuePairs.add(new BasicNameValuePair("mail", u.getMail()));
 		    nameValuePairs.add(new BasicNameValuePair("password", password));
+		    nameValuePairs.add(new BasicNameValuePair("c_version", getCurrentVersion()));
 		    getDataFromDB(App.external_path+"/db_send_mail.php", nameValuePairs);
 
 	    	return true;
 	    }
 	    else
 	    	return false;
+	}
+	
+	@Override
+	public String getCurrentVersion() {
+		try {
+			JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_current_version.php", new ArrayList<NameValuePair>()); 
+			return jsonArray.getJSONObject(0).getString("c_version");
+		}
+		catch (Exception e) {e.printStackTrace();}
+		return null;
 	}
 }
