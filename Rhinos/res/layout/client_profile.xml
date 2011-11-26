@@ -27,7 +27,7 @@
                 android:background="@android:drawable/toast_frame"
                 android:gravity="center"
                 android:text="TextView"
-                android:textSize="26dp"
+                android:textSize="24dp"
                 android:textStyle="bold" />
 
             <TableLayout
