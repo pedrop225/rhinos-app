@@ -416,4 +416,28 @@ public class MySqlConnector implements Connector {
 		catch (Exception e) {e.printStackTrace();}
 		return null;
 	}
+	
+	@Override
+	public ArrayList<User> getUsers() {
+		ArrayList<User> result = new ArrayList<User>();
+		
+		try {
+			JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_users.php", new ArrayList<NameValuePair>());
+			
+			for (int i = 0; i < jsonArray.length(); i++) {
+				User u = new User();
+				JSONObject jsonObj = jsonArray.getJSONObject(i);
+				
+				u.setExtId(jsonObj.getInt("id"));
+				u.setUser(cipher.decode(jsonObj.getString("user")));
+				u.setName(cipher.decode(jsonObj.getString("name")));
+				u.setMail(cipher.decode(jsonObj.getString("mail")));
+				
+				result.add(u);
+			}
+		}
+		catch (Exception e) {e.printStackTrace();}
+		
+		return result;
+	}
 }
