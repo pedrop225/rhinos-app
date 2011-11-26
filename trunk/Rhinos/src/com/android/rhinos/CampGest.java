@@ -37,16 +37,13 @@ public class CampGest extends Activity {
 		table = (TableLayout) findViewById(R.id.campaign_table);
 		updt = (Button) findViewById(R.id.bActualizar);
 
-		if (App.user.isRoot())
-			repo.setText(App.repository);
-		else {
-			repo.setEnabled(false);
-			updt.setEnabled(false);
-		}
-		
 		campaigns = App.src.getCampaigns();
 		spin.setAdapter(new ArrayAdapter<Campaign>(CampGest.this, android.R.layout.simple_spinner_item, campaigns));
 
+		repo.setText(App.repository);
+		repo.setEnabled(App.user.isRoot());
+		
+		updt.setEnabled(!App.user.isOnline() || App.user.isRoot());
 		updt.setOnClickListener(new View.OnClickListener() {	
 			@Override
 			public void onClick(View arg0) {

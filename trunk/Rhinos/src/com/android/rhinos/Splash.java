@@ -1,7 +1,5 @@
 package com.android.rhinos;
 
-import com.android.rhinos.gest.User;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -12,6 +10,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.android.rhinos.gest.User;
+
 import connectors.DBConnector;
 import connectors.MySqlConnector;
 
@@ -45,11 +46,12 @@ public class Splash extends Activity {
 		splash_online.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
+				App.user.clear();
 				App.src = new MySqlConnector(getApplicationContext());
 				
 				String user = splash_user.getText().toString();
 				String pass = splash_pass.getText().toString();
-				
+								
 				if (App.src.login(user, pass)) {
 					App.user.setConnectionMode(User.ONLINE);
 					startActivity();
@@ -62,9 +64,9 @@ public class Splash extends Activity {
 		splash_offline.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
+				App.user.clear();
 				App.src = new DBConnector(getApplicationContext());
 				App.user.setConnectionMode(User.OFFLINE);
-				App.user.doRoot();
 				startActivity();
 			}
 		});

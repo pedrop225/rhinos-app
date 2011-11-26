@@ -34,4 +34,6 @@ public interface Connector {
 	public void changePassword(String user, String newpass);
 
 	public boolean createAccount(User u, String pass);
+
+	public String getCurrentVersion();
 }

@@ -64,4 +64,11 @@ public class User extends Client {
 	public boolean isOnline() {
 		return (connectionMode == ONLINE);
 	}
+	
+	public void clear() {
+		user = "";
+		extId = -1;
+		type = DEFAULT;
+		connectionMode = -1;
+	}
 }

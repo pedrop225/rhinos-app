@@ -7,7 +7,7 @@ import com.android.rhinos.gest.User;
 import connectors.Connector;
 
 public class App extends Application {
-	
+		
 	public static final String external_path = "http://pedrop225.comuf.com/rhinos";	
 	public static String repository = external_path+"/campaigns/campaigns_repository.cfg";
 	
@@ -20,6 +20,6 @@ public class App extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();	
-		user = new User();
+		user = new User();			
 	}
 }

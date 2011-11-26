@@ -10,7 +10,7 @@
 	$message .= "	Estimado <b>".$_REQUEST['user'].":</b></br></br>";
 	$message .= "<p>Con este mail le confirmamos que su dirección de correo (".$_REQUEST['mail'].") ha sido registrada recientemente en el servidor ". 
 				"de RhinosApp. Rogamos no responda al mismo, ya que ha sido elaborado por un sistema de gestión automática. ".
-				"Ya puede descargar la aplicación desde: http://pedrop225.comuf.com/rhinos/download/Rhinos.apk .". 
+				"Ya puede descargar la aplicación desde: http://pedrop225.comuf.com/rhinos/download/Rhinos_".$_REQUEST['c_version'].".apk .". 
 				"A continuación se encuentran los datos de su registro. </p></br></br>".
 				
 				"<b>Datos de registro:</b></br>".
