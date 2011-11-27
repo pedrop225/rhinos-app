@@ -40,7 +40,7 @@ public class UsersList extends Activity {
 		scroll.addView(base);
 		setContentView(scroll);
 		
-		ArrayList<User> users = App.src.getUsers();
+		ArrayList<User> users = (App.user.isRoot() ? App.src.getUsers() : new ArrayList<User>());
 		
 		for (User u : users) {
 			UserItemView item = new UserItemView(UsersList.this, u, profile);
