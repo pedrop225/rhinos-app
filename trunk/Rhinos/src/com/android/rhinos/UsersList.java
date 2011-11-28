@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -144,11 +145,10 @@ class UserItemView extends LinearLayout implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		setBackgroundColor(Color.BLACK);
-	/*	
-		Intent intent = new Intent().setClass(getContext(), ClientProfile.class);
-		intent.putExtra("client", client);
+	
+		Intent intent = new Intent().setClass(getContext(), UserProfile.class);
+		intent.putExtra("user", user);
 		getContext().startActivity(intent);
-*/
 	}
 	
 	@Override

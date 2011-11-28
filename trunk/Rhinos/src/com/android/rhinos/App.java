@@ -20,6 +20,6 @@ public class App extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();	
-		user = new User();			
+		user = new User();
 	}
 }
