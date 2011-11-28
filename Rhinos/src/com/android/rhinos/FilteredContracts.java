@@ -43,8 +43,8 @@ public class FilteredContracts extends Activity {
 		setContentView(scroll);
 		
 		Campaign campaign = (Campaign) getIntent().getSerializableExtra("campaign");
-		
-		ArrayList<Client> clients = (campaign != null) ? App.src.getCampaignClients(campaign) : App.src.getClients();
+				
+		ArrayList<Client> clients = (campaign != null) ? App.src.getCampaignClients(campaign, App.user) : App.src.getClients(App.user);
 		
 		for (Client u : clients) {
 			ContractItemView item = new ContractItemView(FilteredContracts.this, u, profile);

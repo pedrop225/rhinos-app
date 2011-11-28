@@ -192,11 +192,21 @@ public class MySqlConnector implements Connector {
 	}
 
 	@Override
-	public ArrayList<Client> getClients() {
+	public ArrayList<Client> getClients(User u) {
 		ArrayList<Client> r = new ArrayList<Client>();
-	    
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		
 	    try {
-	        JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_clients.php", new ArrayList<NameValuePair>());
+	    	String _path = null;
+	    	if (!u.isRoot()) {
+	    		nameValuePairs = new ArrayList<NameValuePair>();
+	    		nameValuePairs.add(new BasicNameValuePair("idUser", u.getExtId()+""));
+	    		_path = "/db_get_user_clients.php";
+	    	}
+	    	else
+	    		_path = "/db_get_clients.php";
+	    		
+	        JSONArray jsonArray = getDataFromDB(App.external_path+ _path, nameValuePairs);
 				
 			for (int i = 0; i < jsonArray.length(); i++) {
 				Client cl = new Client();
@@ -217,19 +227,27 @@ public class MySqlConnector implements Connector {
 				r.add(cl);
 			}
 	    }
-	    catch (Exception e) {}
+	    catch (Exception e) {e.printStackTrace();}
 		
 		return r;
 	}
 
 	@Override
-	public ArrayList<Client> getCampaignClients(Campaign c) {
+	public ArrayList<Client> getCampaignClients(Campaign c, User u) {
 		ArrayList<Client> tr = new ArrayList<Client>();
 		
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	    nameValuePairs.add(new BasicNameValuePair("campaign", cipher.encode(c.getName())));
 	    
-	    JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_campaign_clients.php", nameValuePairs);
+	    String _path = null;
+	    if (!u.isRoot()) {
+	    	nameValuePairs.add(new BasicNameValuePair("idUser", u.getExtId()+""));
+	    	_path = "/db_get_user_campaign_clients.php";
+	    }
+	    else
+	    	_path = "/db_get_campaign_clients.php";
+	    
+	    JSONArray jsonArray = getDataFromDB(App.external_path+ _path, nameValuePairs);
 		
 	    try {
 			for (int i = 0; i < jsonArray.length(); i++) {

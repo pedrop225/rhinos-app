@@ -17,8 +17,9 @@ public interface Connector {
 	public ArrayList<Campaign> getCampaigns();
 		
 	public boolean addClient(Client c);
-	public ArrayList<Client> getClients();
-	public ArrayList<Client> getCampaignClients(Campaign c);
+	
+	public ArrayList<Client> getClients(User u);
+	public ArrayList<Client> getCampaignClients(Campaign c, User u);
 	
 	public Client clientExists(String _id);
 	

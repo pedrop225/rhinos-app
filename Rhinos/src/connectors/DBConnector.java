@@ -143,7 +143,7 @@ public class DBConnector implements Connector {
 		return tr;
 	}
 
-	public ArrayList<Client> getClients() {
+	public ArrayList<Client> getClients(User u) {
 		ArrayList<Client> tr = new ArrayList<Client>();
 		db = dbHelper.getReadableDatabase();
 				
@@ -178,7 +178,7 @@ public class DBConnector implements Connector {
 	}
 	
 	@Override
-	public ArrayList<Client> getCampaignClients(Campaign campaign) {
+	public ArrayList<Client> getCampaignClients(Campaign campaign, User u) {
 		ArrayList<Client> tr = new ArrayList<Client>();
 		db = dbHelper.getReadableDatabase();
 		
