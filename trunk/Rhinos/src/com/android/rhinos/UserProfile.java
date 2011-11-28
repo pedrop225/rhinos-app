@@ -40,7 +40,7 @@ public class UserProfile extends Activity {
 		up_name.setText(user.getName());
 		up_mail.setText(user.getMail());
 		
-		/*
+		/* 
 		ArrayList<Service> services = App.src.getServices(client.getId().toString());
 		for (Service s : services) {
 			ServiceRowItem item = new ServiceRowItem(ClientProfile.this, s, _this);
