@@ -3,6 +3,7 @@ package connectors;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -36,8 +37,11 @@ import com.android.rhinos.gest.User;
 public class MySqlConnector implements Connector {
 
 	private RCipher cipher;
+	private SimpleDateFormat formatter;
 	
 	public MySqlConnector(Context context) {
+		
+		formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
 		try {
 			SecretKey key = RCipher.importKeyFromUrl(App.external_path+"/security/security.keys");
@@ -311,7 +315,7 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("tlf_1", cipher.encode(s.getTlf_1())));
 	    nameValuePairs.add(new BasicNameValuePair("tlf_2", cipher.encode(s.getTlf_2())));
 	    nameValuePairs.add(new BasicNameValuePair("commission", s.getCommission()+""));
-	    nameValuePairs.add(new BasicNameValuePair("date", cipher.encode(s.getDate().toGMTString())));
+	    nameValuePairs.add(new BasicNameValuePair("date", formatter.format(s.getDate())));
 		
 		try {
 			getDataFromDB(App.external_path+"/db_add_service.php", nameValuePairs);
@@ -337,7 +341,7 @@ public class MySqlConnector implements Connector {
 				
 				s.setExtId(jsonObj.getInt("id"));
 				s.setCampaign(cipher.decode(jsonObj.getString("campaign")));
-				s.setDate(new Date(cipher.decode(jsonObj.getString("date"))));
+				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
 				s.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
 				s.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
 				
