@@ -144,7 +144,7 @@ class ServiceRowItem extends TableRow {
 		tv_date.setTypeface(null, Typeface.BOLD);
 		TextView tv_date_data = new TextView(context);
 		
-		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss");
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		tv_date_data.setText(df.format(service.getDate()));
 		
 		tr_date.addView(tv_date);

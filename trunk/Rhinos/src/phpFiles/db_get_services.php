@@ -7,10 +7,10 @@
 	$q = mysql_query("	SELECT *
 						FROM Services 
 						WHERE idClient ='".$_REQUEST['idClient']."' 
-						ORDER BY commission");
+						ORDER BY date");
 	
 	while ($e = mysql_fetch_assoc($q))
-	$output[] = $e;
+		$output[] = $e;
 	
 	print(json_encode($output));
 	
