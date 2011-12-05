@@ -14,7 +14,7 @@ public interface Connector {
 	public void clearCampaigns();
 	
 	public boolean addCampaign(Campaign camp);
-	public ArrayList<Campaign> getCampaigns();
+	public ArrayList<Campaign> getCampaigns(User u);
 		
 	public boolean addClient(Client c);
 	
@@ -39,4 +39,10 @@ public interface Connector {
 	public String getCurrentVersion();
 
 	public ArrayList<User> getUsers();
+
+	public ArrayList<String> getAuthorizedCampaigns(User user);
+
+	public void grantCampaignPermission(User user, Campaign campaign);
+
+	public void removeCampaingPermission(User user, Campaign campaign);
 }

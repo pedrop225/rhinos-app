@@ -83,7 +83,7 @@ public class DBConnector implements Connector {
 	}
 	
 	@Override
-	public ArrayList<Campaign> getCampaigns() {
+	public ArrayList<Campaign> getCampaigns(User u) {
 		ArrayList<Campaign> r = new ArrayList<Campaign>();
 		db = dbHelper.getReadableDatabase();
 		
@@ -347,5 +347,22 @@ public class DBConnector implements Connector {
 	public ArrayList<User> getUsers() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public ArrayList<String> getAuthorizedCampaigns(User user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void grantCampaignPermission(User user, Campaign campaign) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void removeCampaingPermission(User user, Campaign campaign) {
+		// TODO Auto-generated method stub	
 	}
 }

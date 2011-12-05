@@ -28,7 +28,7 @@ public class ContractGest extends TabActivity {
 		spec = host.newTabSpec("All").setIndicator("	Vista General	", res.getDrawable(R.drawable.all_campaign)).setContent(intent);
 		host.addTab(spec);
 		
-		for (Campaign a : App.src.getCampaigns()) {
+		for (Campaign a : App.src.getCampaigns(App.user)) {
 			intent = new Intent().setClass(this, FilteredContracts.class);
 			intent.putExtra("campaign", a);
 			spec = host.newTabSpec(a.getName()).setIndicator("  "+a.getName()+"  ").setContent(intent);

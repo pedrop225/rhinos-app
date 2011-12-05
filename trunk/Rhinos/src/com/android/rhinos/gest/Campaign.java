@@ -10,8 +10,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-import android.util.Log;
-
 public class Campaign implements Serializable, Comparable<Campaign> {
 
 	private String name;
@@ -77,10 +75,7 @@ public class Campaign implements Serializable, Comparable<Campaign> {
 				}
 			}
 		}
-		catch (Exception e) {
-			Log.e("", ""+e.toString());
-			status = false;
-		}
+		catch (Exception e) {status = false;}
 		finally {
 			try {
 				if (in != null)

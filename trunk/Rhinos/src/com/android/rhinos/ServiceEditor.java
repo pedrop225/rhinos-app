@@ -50,7 +50,7 @@ public class ServiceEditor extends Activity {
 		addServicio = (Button) findViewById(R.id.addServicio);
 		
 		service = new Service();
-		campaigns = App.src.getCampaigns();
+		campaigns = App.src.getCampaigns(App.user);
 		
 		campaignSpinner.setAdapter(new ArrayAdapter<Campaign>(ServiceEditor.this, android.R.layout.simple_spinner_item, campaigns));
 		  
