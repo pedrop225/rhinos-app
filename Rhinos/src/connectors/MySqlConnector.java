@@ -102,7 +102,7 @@ public class MySqlConnector implements Connector {
 	
 	@Override
 	public void clearCampaigns() {
-		getDataFromDB(App.external_path+"/db_clear_campaigns.php", null);
+		getDataFromDB(App.external_path+"/db_clear_campaigns.php", new ArrayList<NameValuePair>());
 	}
 
 	@Override
@@ -138,12 +138,15 @@ public class MySqlConnector implements Connector {
 	}
 
 	@Override
-	public ArrayList<Campaign> getCampaigns() {
+	public ArrayList<Campaign> getCampaigns(User u) {
 		
 		ArrayList<Campaign> r = new ArrayList<Campaign>();
 	    
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("idUser", u.getExtId()+""));
+	    
 	    try {
-	        JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_campaigns.php", new ArrayList<NameValuePair>());
+	        JSONArray jsonArray = getDataFromDB(App.external_path+ ((u.isRoot()) ? "/db_get_all_campaigns.php" : "/db_get_campaigns.php"), nameValuePairs);
 	        
 	        if (jsonArray.length() > 0) {
 				
@@ -451,6 +454,7 @@ public class MySqlConnector implements Connector {
 				JSONObject jsonObj = jsonArray.getJSONObject(i);
 				
 				u.setExtId(jsonObj.getInt("id"));
+				u.setType(jsonObj.getInt("type"));
 				u.setUser(cipher.decode(jsonObj.getString("user")));
 				u.setName(cipher.decode(jsonObj.getString("name")));
 				u.setMail(cipher.decode(jsonObj.getString("mail")));
@@ -461,5 +465,42 @@ public class MySqlConnector implements Connector {
 		catch (Exception e) {e.printStackTrace();}
 		
 		return result;
+	}
+	
+	@Override
+	public ArrayList<String> getAuthorizedCampaigns(User user) {
+		ArrayList<String> r = new ArrayList<String>();
+		
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("idUser", user.getExtId()+""));
+	    
+	    JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_authorized_campaigns.php", nameValuePairs);
+	    
+	    try {
+	    	for (int i = 0; i < jsonArray.length(); i++) {
+	    		r.add(cipher.decode(jsonArray.getJSONObject(i).getString("campaign")));
+	    	}
+	    }
+	    catch (Exception e) {e.printStackTrace();}
+	    	
+		return r;
+	}
+	
+	@Override
+	public void grantCampaignPermission(User user, Campaign campaign) {
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("idUser", user.getExtId()+""));
+	    nameValuePairs.add(new BasicNameValuePair("campaign", cipher.encode(campaign.getName())));
+	    
+	    getDataFromDB(App.external_path+"/db_grant_campaign_permission.php", nameValuePairs);
+	}
+	
+	@Override
+	public void removeCampaingPermission(User user, Campaign campaign) {
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("idUser", user.getExtId()+""));
+	    nameValuePairs.add(new BasicNameValuePair("campaign", cipher.encode(campaign.getName())));
+	    
+	    getDataFromDB(App.external_path+"/db_remove_campaign_permission.php", nameValuePairs);
 	}
 }

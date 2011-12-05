@@ -37,7 +37,7 @@ public class CampGest extends Activity {
 		table = (TableLayout) findViewById(R.id.campaign_table);
 		updt = (Button) findViewById(R.id.bActualizar);
 
-		campaigns = App.src.getCampaigns();
+		campaigns = App.src.getCampaigns(App.user);
 		spin.setAdapter(new ArrayAdapter<Campaign>(CampGest.this, android.R.layout.simple_spinner_item, campaigns));
 
 		repo.setText(App.repository);
