@@ -1,6 +1,8 @@
 package com.android.rhinos;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -34,7 +36,14 @@ public class ChangePassword extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				if (checkForm()) {
-					App.src.changePassword(App.user.getUser(), cp_newpass1.getText().toString().trim());
+					
+					AsyncChangePassword asynccp = new AsyncChangePassword();
+					asynccp.execute();
+					
+					cp_pass.setText("");
+					cp_newpass1.setText("");
+					cp_newpass2.setText("");
+					
 					cp_status_bar.setText(" Cambio efectuado con éxito ..");
 				}
 			}
@@ -63,5 +72,38 @@ public class ChangePassword extends Activity {
 		}
 		
 		return true;
+	}
+	
+	private class AsyncChangePassword extends AsyncTask<Void, Void, Void> {
+
+		ProgressDialog dialog;
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			
+			dialog = new ProgressDialog(ChangePassword.this);
+			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			dialog.setCancelable(false);
+			dialog.setMessage("Actualizando ...");
+			
+			dialog.show();
+		}
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+			try {
+				App.src.changePassword(App.user.getUser(), cp_newpass1.getText().toString().trim());
+			}
+			catch (Exception e) {}
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			dialog.dismiss();
+		}
 	}
 }

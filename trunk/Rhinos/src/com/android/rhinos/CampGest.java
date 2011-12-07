@@ -1,12 +1,13 @@
 package com.android.rhinos;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -48,17 +49,12 @@ public class CampGest extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				App.repository = repo.getText().toString();		
-				try {
-					campaigns = Campaign.containerLoader(new URL(App.repository));					
-					spin.setAdapter(new ArrayAdapter<Campaign>(CampGest.this, android.R.layout.simple_spinner_item, campaigns));
-					
-					//adding to source connector
-					App.src.clearCampaigns();
-					for (Campaign c : campaigns) {
-						App.src.addCampaign(c);
-					}
-				}
-				catch (MalformedURLException e) {}
+
+				//inserting data into db
+				AsyncAddCampaign ic = new AsyncAddCampaign();
+				ic.execute();
+
+				spin.setAdapter(new ArrayAdapter<Campaign>(CampGest.this, android.R.layout.simple_spinner_item, campaigns));
 			}
 		});
 		
@@ -101,5 +97,44 @@ public class CampGest extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.campaigns);
 		initialize();
+	}
+	
+	private class AsyncAddCampaign extends AsyncTask<Void, Void, Void> {
+
+		ProgressDialog dialog;
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			
+			dialog = new ProgressDialog(CampGest.this);
+			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			dialog.setCancelable(false);
+			dialog.setMessage("Actualizando ...");
+			
+			dialog.show();
+		}
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+			try {
+				campaigns = Campaign.containerLoader(new URL(App.repository));					
+				
+				//adding to source connector
+				App.src.clearCampaigns();
+				for (Campaign c : campaigns) {
+					App.src.addCampaign(c);
+				}
+			}
+			catch (Exception e) {}
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			dialog.dismiss();
+		}
 	}
 }
