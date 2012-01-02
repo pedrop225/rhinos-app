@@ -60,6 +60,11 @@ public class FilteredContracts extends Activity {
 		Campaign campaign = (Campaign) getIntent().getSerializableExtra("campaign");
 		
 		ArrayList<Client> clients = (campaign != null) ? App.src.getCampaignClients(campaign, App.user) : App.src.getClients(App.user);
+		
+		for (int i = 0; i < clients.size(); i++) {
+			clients.get(i).setServices(App.src.getServices(clients.get(i).getId().toString()));
+		}
+		
 		clients = ApplyDateFilter(clients);
 		
 		for (Client u : clients) {
@@ -100,23 +105,15 @@ public class FilteredContracts extends Activity {
 	private ArrayList<Client> ApplyDateFilter(ArrayList<Client> clients) {
 		ArrayList<Client> r = new ArrayList<Client>(clients);
 		
-		if ((dateIn != null) && (dateOut != null)) {
-			for (int i = 0; i < clients.size(); i++) {
-				
-				for (int j = 0; j < clients.get(i).getServices().size(); j++) {
-					Service s = clients.get(i).getServices().get(j);
-					
-					if ((s.getDate().after(FilteredContracts.dateIn)) || (s.getDate().before(FilteredContracts.dateOut))) {
-						r.get(i).getServices().remove(j);
-					}
-				}
-				
-				if (clients.get(i).getServices().isEmpty()) {
-					r.remove(clients.get(i));
-				}
+		for (int i = 0; i < clients.size(); i++) {
+			Log.v("", clients.get(i).getName());
+			
+			for (int j = 0; j < clients.get(i).getServices().size(); j++) {
+				Log.v("", clients.get(i).getServices().get(i).getService());
 			}
 		}
-		return r;
+				
+		return clients;
 	}
 }
 

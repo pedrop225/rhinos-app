@@ -60,7 +60,7 @@ public class ClientProfile extends Activity {
 		cp_mail.setText(client.getMail());
 		cp_address.setText(client.getAddress());
 		
-		ArrayList<Service> services = App.src.getServices(client.getId().toString());
+		ArrayList<Service> services = client.getServices();
 		for (Service s : services) {
 			ServiceRowItem item = new ServiceRowItem(ClientProfile.this, s, _this);
 			
