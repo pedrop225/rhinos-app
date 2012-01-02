@@ -41,7 +41,7 @@ public class Client implements Serializable, Comparable<Client> {
 	}
 	
 	public void setServices(ArrayList<Service> services) {
-		this.services = services;
+		this.services = new ArrayList<Service>(services);
 	}
 
 	public String getTlf_1() {
