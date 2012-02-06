@@ -1,6 +1,7 @@
 package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -24,9 +25,6 @@ public class AddContract extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private static final int WIDTH = 720;
-	private static final int HEIGHT = 680;
-	
 	private ClientData cliData;
 	private ConsultantData conData;
 	private ServiceData serData;
@@ -38,11 +36,16 @@ public class AddContract extends JFrame {
 	
 	public AddContract() {
 		init();
-		setVisible(true);
+	}
+	
+	public AddContract(JFrame locIn) {
+		this();
+		setLocationRelativeTo(locIn);
 	}
 	
 	private void init() {
-		setSize(WIDTH, HEIGHT);
+		setTitle("Añadir Contrato");
+		setResizable(false);
 		setLayout(new BorderLayout(6, 3));
 		
 		cliData = new ClientData();
@@ -52,7 +55,7 @@ public class AddContract extends JFrame {
 		JPanel buttons = new JPanel();
 		buttons.add(accept);
 		
-		centerPanel = new JPanel(new BorderLayout());
+		centerPanel = new JPanel();
 		southPanel = new JPanel(new BorderLayout());
 		
 		centerPanel.add(cliData);
@@ -60,29 +63,56 @@ public class AddContract extends JFrame {
 		
 		add(centerPanel);
 		add(southPanel, BorderLayout.SOUTH);
+		
+		pack();
 	}
 }
 
 class ClientData extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
-
+	private static final int SSFIELD = 4;
+	private static final int SFIELD = 10;
+	private static final int LFIELD = 20;
+	
 	private JComboBox idSelector;
 	private JLabel labName;
 	private JLabel labTel;
 	private JLabel labTelAux;
 	private JLabel labMail;
-	private JLabel labAddress;
 	
 	private JTextField nif;
 	private JTextField name;
 	private JTextField tel;
 	private JTextField telAux;
 	private JTextField mail;
-	private JTextArea address;
+	
+	private JLabel labsStType;
+	private JLabel labStName;
+	private JLabel labStNumber;
+	private JLabel labStFloor;
+	private JLabel labStStairs;
+	private JLabel labsDoor;
+	private JLabel labTown;
+	private JLabel labProvince;
+	private JLabel labPostcode;
+	
+	private JComboBox stType;
+	private JTextField stName;
+	private JTextField stNumber;
+	private JTextField stFloor;
+	private JTextField stStairs;
+	private JTextField door;
+	private JTextField town;
+	private JTextField province;
+	private JTextField postCode;
+	
+	private JPanel addressPanel_west;
+	private JPanel addressPanel_east;
 	
 	private JPanel labsPanel;
 	private JPanel dataPanel;
+	private JPanel addressPanel;
 	
 	public ClientData() {
 		init();
@@ -91,52 +121,112 @@ class ClientData extends JPanel {
 	
 	private void init() {
 		
-		setLayout(new BorderLayout(6, 3));
+		setLayout(new BorderLayout());
 		
-		String [] ids = {"Dni", "Nie", "Cif"};
+		String [] ids = {"", "Dni", "Nie", "Cif"};
 		idSelector = new JComboBox(ids);
 		labName = new JLabel("Nombre:");
 		labTel = new JLabel("Teléfono:");
 		labTelAux = new JLabel("Teléfono Aux:");
 		labMail = new JLabel("Mail:");
-		labAddress = new JLabel("Dirección:");
 		
-		nif = new JTextField();
-		name = new JTextField();
-		tel = new JTextField();
-		telAux = new JTextField();
-		mail = new JTextField();
-		address = new JTextArea();
+		nif = new JTextField(SFIELD);
+		name = new JTextField(LFIELD);
+		tel = new JTextField(SFIELD);
+		telAux = new JTextField(SFIELD);
+		mail = new JTextField(LFIELD);
 		
-		labsPanel = new JPanel(new GridLayout(6, 1, 6, 6));
-		labsPanel.add(idSelector);
-		labsPanel.add(labName);
-		labsPanel.add(labTel);
-		labsPanel.add(labTelAux);
-		labsPanel.add(labMail);
-		labsPanel.add(labAddress);
+		labsPanel = new JPanel(new GridLayout(6, 1));
+		labsPanel.add(Util.packInJP(idSelector));
+		labsPanel.add(Util.packInJP(labName));
+		labsPanel.add(Util.packInJP(labTel));
+		labsPanel.add(Util.packInJP(labTelAux));
+		labsPanel.add(Util.packInJP(labMail));
 		
-		dataPanel = new JPanel(new GridLayout(6, 1, 6, 6));
-		dataPanel.add(nif);
-		dataPanel.add(name);
-		dataPanel.add(tel);
-		dataPanel.add(telAux);
-		dataPanel.add(mail);
-		dataPanel.add(new JScrollPane(address));
+		dataPanel = new JPanel(new GridLayout(6, 1));
+		dataPanel.add(Util.packInJP(nif));
+		dataPanel.add(Util.packInJP(name));
+		dataPanel.add(Util.packInJP(tel));
+		dataPanel.add(Util.packInJP(telAux));
+		dataPanel.add(Util.packInJP(mail));
+		
+		labsStType = new JLabel("Tipo de vía:");
+		labStName = new JLabel("Nombre de via:");
+		labStNumber = new JLabel("Número:");
+		labStFloor = new JLabel("Piso:");
+		labStStairs = new JLabel("Escalera:");
+		labsDoor = new JLabel("Puerta:");
+		labTown = new JLabel("Localidad:");
+		labProvince = new JLabel("Provincia:");
+		labPostcode = new JLabel("Código Postal:");
+		
+		String [] streetTypes = {"", "Alameda", "Autopista", 
+								"Autovía", "Avenida", "Bulevar", 
+								"Calle", "Carrer", "Camino", 
+								"Carretera", "Glorieta", "Paseo", 
+								"Plaza", "Pasaje", "Rambla", 
+								"Ronda", "Sector", "Travesía"};
+		
+		stType = new JComboBox(streetTypes);
+		stName = new JTextField(LFIELD);
+		stNumber = new JTextField(SSFIELD);
+		stFloor = new JTextField(SSFIELD);
+		stStairs = new JTextField(SSFIELD);
+		door = new JTextField(SSFIELD);
+		town = new JTextField(LFIELD);
+		province = new JTextField(LFIELD);
+		postCode = new JTextField(SFIELD);
+		
+		addressPanel_west = new JPanel(new GridLayout(9, 1));
+		addressPanel_east = new JPanel(new GridLayout(9, 1));
+		
+		addressPanel = new JPanel(new BorderLayout());
+		addressPanel.setBorder(BorderFactory.createTitledBorder("Dirección"));
+		
+		addressPanel_west.add(Util.packInJP(labsStType));
+		addressPanel_east.add(Util.packInJP(stType));
+		addressPanel_west.add(Util.packInJP(labStName));
+		addressPanel_east.add(Util.packInJP(stName));
+		addressPanel_west.add(Util.packInJP(labStNumber));
+		addressPanel_east.add(Util.packInJP(stNumber));
+		addressPanel_west.add(Util.packInJP(labStStairs));
+		addressPanel_east.add(Util.packInJP(stStairs));
+		addressPanel_west.add(Util.packInJP(labStFloor));
+		addressPanel_east.add(Util.packInJP(stFloor));
+		addressPanel_west.add(Util.packInJP(labsDoor));
+		addressPanel_east.add(Util.packInJP(door));
+		addressPanel_west.add(Util.packInJP(labTown));
+		addressPanel_east.add(Util.packInJP(town));
+		addressPanel_west.add(Util.packInJP(labProvince));
+		addressPanel_east.add(Util.packInJP(province));
+		addressPanel_west.add(Util.packInJP(labPostcode));
+		addressPanel_east.add(Util.packInJP(postCode));
+		
+		addressPanel.add(addressPanel_west, BorderLayout.WEST);
+		addressPanel.add(addressPanel_east, BorderLayout.EAST);
 		
 		editableFields(false);
 		setFieldProperties();
 		
 		add(labsPanel, BorderLayout.WEST);
 		add(dataPanel);
+		add(addressPanel, BorderLayout.SOUTH);
 	}
 	
-	private void editableFields(boolean enabled) {
-		name.setEditable(enabled);
-		tel.setEditable(enabled);
-		telAux.setEditable(enabled);
-		mail.setEditable(enabled);
-		address.setEditable(enabled);
+	private void editableFields(boolean editable) {
+		name.setEditable(editable);
+		tel.setEditable(editable);
+		telAux.setEditable(editable);
+		mail.setEditable(editable);
+		
+		stName.setEditable(editable);
+		stNumber.setEditable(editable);
+		stFloor.setEditable(editable);
+		stStairs.setEditable(editable);
+		door.setEditable(editable);
+		town.setEditable(editable);
+		province.setEditable(editable);
+		postCode.setEditable(editable);
 	}
 	
 	private void setFieldProperties() {
@@ -156,8 +246,7 @@ class ClientData extends JPanel {
 					default:
 							id = new Cif(nif.getText());
 							break;
-				}
-				
+				}			
 				editableFields(id.isValid());
 			}
 		});

@@ -15,8 +15,9 @@ public class RhinosDesktop {
 		log.setVisible(true);
 		
 		MySqlConnector conn = new MySqlConnector();
-		System.out.println(conn.login("pedroap", "register"));
+//		System.out.println(conn.login("pedroap", "register"));
 		
-		AddContract ac = new AddContract();
+		AddContract ac = new AddContract(rh);
+		ac.setVisible(true);
 	}
 }
