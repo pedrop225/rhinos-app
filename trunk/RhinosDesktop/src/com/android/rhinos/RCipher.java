@@ -1,16 +1,14 @@
-package com.android.rhinos.cipher;
+package com.android.rhinos;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.URL;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 
-import android.content.Context;
-import android.util.Base64;
+import org.apache.commons.codec.binary.Base64;
 
 public class RCipher {
 
@@ -34,7 +32,7 @@ public class RCipher {
 			byte [] utf8 = word.getBytes("UTF8");
 			byte [] enc = c_enc.doFinal(utf8);
 			
-			return Base64.encodeToString(enc, Base64.DEFAULT);
+			return Base64.encodeBase64String(enc)+'\n';
 		} 
 		catch (Exception e) {e.printStackTrace();}
 		
@@ -44,7 +42,7 @@ public class RCipher {
 	public String decode(String word) {
 		
 		try {
-			byte [] dec = Base64.decode(word, Base64.DEFAULT);
+			byte [] dec = Base64.decodeBase64(word);
 
 			return (new String(c_dec.doFinal(dec), "UTF8"));
 		} 
@@ -70,17 +68,6 @@ public class RCipher {
 			ObjectInputStream ois = new ObjectInputStream(new URL(url).openStream());
 			return ((SecretKey)ois.readObject());
 		} 
-		catch (Exception e) {e.printStackTrace();}
-		
-		return null;
-	}
-	
-	public static SecretKey exportKeytoFile(SecretKey key, String file, Context context) {
-		try {
-			ObjectOutputStream oos = new ObjectOutputStream(context.openFileOutput(file, Context.MODE_PRIVATE));
-			oos.writeObject(key);
-			return key;
-		}
 		catch (Exception e) {e.printStackTrace();}
 		
 		return null;
