@@ -3,5 +3,9 @@
 	<classpathentry excluding="com/android/rhinos/cipher/RCipher.java|com/android/rhinos/cipher/|com/android/rhinos/cipher/" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="java-json.jar"/>
+	<classpathentry kind="lib" path="commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="httpclient-4.1.2.jar"/>
+	<classpathentry kind="lib" path="httpcore-4.1.2.jar"/>
+	<classpathentry kind="lib" path="commons-logging-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

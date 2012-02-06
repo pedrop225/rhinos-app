@@ -1,4 +1,4 @@
-import com.desktop.rhinos.connector.MysqlConnector;
+import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.gui.Logger;
 import com.desktop.rhinos.gui.RhFrame;
 
@@ -13,6 +13,7 @@ public class RhinosDesktop {
 		Logger log = new Logger(rh);
 		log.setVisible(true);
 		
-		MysqlConnector conn = new MysqlConnector();
+		MySqlConnector conn = new MySqlConnector();
+		System.out.println(conn.login("pedroap", "register"));
 	}
 }
