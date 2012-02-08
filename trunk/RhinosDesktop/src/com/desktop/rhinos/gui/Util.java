@@ -15,4 +15,12 @@ public class Util {
 				
 		return r;
 	}
+	
+	public static JPanel packInJP( LayoutManager lm, Component...o) {
+		JPanel r = new JPanel(lm);
+		for (Component c : o)
+			r.add(c);
+				
+		return r;
+	}
 }
