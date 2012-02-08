@@ -2,8 +2,6 @@ package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -26,7 +24,7 @@ public class Logger extends JDialog {
 	private JTextField userField;
 	private JPasswordField passField;
 	
-	private JButton acept;
+	private JButton accept;
 	
 	private JLabel status;
 	
@@ -69,19 +67,12 @@ public class Logger extends JDialog {
 			public void keyTyped(KeyEvent e) {
 				super.keyTyped(e);
 				if (e.getKeyChar() == '\n')
-					acept.doClick();
+					accept.doClick();
 			}
 		});
 		
-		acept = new JButton("Aceptar");
-		acept.setFocusable(false);
-		acept.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-			}
-		});
+		accept = new JButton("Aceptar");
+		accept.setFocusable(false);
 		
 		status = new JLabel("", JLabel.CENTER);
 		
@@ -99,16 +90,28 @@ public class Logger extends JDialog {
 		aux.add(labels);
 		aux.add(text);
 		
-		JPanel aux_acept = new JPanel();
-		aux_acept.add(acept);
+		JPanel aux_accept = new JPanel();
+		aux_accept.add(accept);
 		
 		button = new JPanel(new BorderLayout());
 		button.add(status, BorderLayout.NORTH);
-		button.add(aux_acept, BorderLayout.SOUTH);
+		button.add(aux_accept, BorderLayout.SOUTH);
 		
 		add(aux);
 		add(button, BorderLayout.SOUTH);
 		
 		pack();
+	}
+	
+	public JButton getAcceptButton() {
+		return accept;
+	}
+	
+	public String getUserString() {
+		return user.getText();
+	}
+	
+	public String getPasswordString() {
+		return pass.getText();
 	}
 }
