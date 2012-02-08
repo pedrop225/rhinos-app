@@ -3,8 +3,8 @@ package com.desktop.rhinos.gui;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -12,18 +12,16 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-
-import com.android.rhinos.gest.Cif;
-import com.android.rhinos.gest.Dni;
-import com.android.rhinos.gest.Id;
-import com.android.rhinos.gest.Nie;
 
 public class AddContract extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
+	
+	public static final int SSFIELD = 4;
+	public static final int SFIELD = 10;
+	public static final int LFIELD = 20;
 	
 	private ClientData cliData;
 	private ConsultantData conData;
@@ -49,20 +47,32 @@ public class AddContract extends JFrame {
 		setLayout(new BorderLayout(6, 3));
 		
 		cliData = new ClientData();
+		conData = new ConsultantData();
+		serData = new ServiceData();
+				
 		accept = new JButton("Aceptar");
-
 		
 		JPanel buttons = new JPanel();
 		buttons.add(accept);
 		
-		centerPanel = new JPanel();
+		centerPanel = new JPanel(new BorderLayout());
 		southPanel = new JPanel(new BorderLayout());
 		
 		centerPanel.add(cliData);
+		centerPanel.add(Util.packInJP(conData), BorderLayout.EAST);
+		centerPanel.add(serData, BorderLayout.SOUTH);
+		
 		southPanel.add(buttons, BorderLayout.EAST);
 		
 		add(centerPanel);
 		add(southPanel, BorderLayout.SOUTH);
+		
+		accept.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+			}
+		});
 		
 		pack();
 	}
@@ -71,9 +81,6 @@ public class AddContract extends JFrame {
 class ClientData extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
-	private static final int SSFIELD = 4;
-	private static final int SFIELD = 10;
-	private static final int LFIELD = 20;
 	
 	private JComboBox idSelector;
 	private JLabel labName;
@@ -116,7 +123,7 @@ class ClientData extends JPanel {
 	
 	public ClientData() {
 		init();
-		setBorder(BorderFactory.createTitledBorder("Datos del Cliente"));
+		setBorder(BorderFactory.createTitledBorder(" Cliente "));
 	}
 	
 	private void init() {
@@ -130,11 +137,11 @@ class ClientData extends JPanel {
 		labTelAux = new JLabel("Teléfono Aux:");
 		labMail = new JLabel("Mail:");
 		
-		nif = new JTextField(SFIELD);
-		name = new JTextField(LFIELD);
-		tel = new JTextField(SFIELD);
-		telAux = new JTextField(SFIELD);
-		mail = new JTextField(LFIELD);
+		nif = new JTextField(AddContract.SFIELD);
+		name = new JTextField(AddContract.LFIELD);
+		tel = new JTextField(AddContract.SFIELD);
+		telAux = new JTextField(AddContract.SFIELD);
+		mail = new JTextField(AddContract.LFIELD);
 		
 		labsPanel = new JPanel(new GridLayout(6, 1));
 		labsPanel.add(Util.packInJP(idSelector));
@@ -151,7 +158,7 @@ class ClientData extends JPanel {
 		dataPanel.add(Util.packInJP(mail));
 		
 		labsStType = new JLabel("Tipo de vía:");
-		labStName = new JLabel("Nombre de via:");
+		labStName = new JLabel("Nombre de vía:");
 		labStNumber = new JLabel("Número:");
 		labStFloor = new JLabel("Piso:");
 		labStStairs = new JLabel("Escalera:");
@@ -168,20 +175,20 @@ class ClientData extends JPanel {
 								"Ronda", "Sector", "Travesía"};
 		
 		stType = new JComboBox(streetTypes);
-		stName = new JTextField(LFIELD);
-		stNumber = new JTextField(SSFIELD);
-		stFloor = new JTextField(SSFIELD);
-		stStairs = new JTextField(SSFIELD);
-		door = new JTextField(SSFIELD);
-		town = new JTextField(LFIELD);
-		province = new JTextField(LFIELD);
-		postCode = new JTextField(SFIELD);
+		stName = new JTextField(AddContract.LFIELD);
+		stNumber = new JTextField(AddContract.SSFIELD);
+		stFloor = new JTextField(AddContract.SSFIELD);
+		stStairs = new JTextField(AddContract.SSFIELD);
+		door = new JTextField(AddContract.SSFIELD);
+		town = new JTextField(AddContract.LFIELD);
+		province = new JTextField(AddContract.LFIELD);
+		postCode = new JTextField(AddContract.SFIELD);
 		
 		addressPanel_west = new JPanel(new GridLayout(9, 1));
 		addressPanel_east = new JPanel(new GridLayout(9, 1));
 		
 		addressPanel = new JPanel(new BorderLayout());
-		addressPanel.setBorder(BorderFactory.createTitledBorder("Dirección"));
+		addressPanel.setBorder(BorderFactory.createTitledBorder(" Dirección "));
 		
 		addressPanel_west.add(Util.packInJP(labsStType));
 		addressPanel_east.add(Util.packInJP(stType));
@@ -204,16 +211,13 @@ class ClientData extends JPanel {
 		
 		addressPanel.add(addressPanel_west, BorderLayout.WEST);
 		addressPanel.add(addressPanel_east, BorderLayout.EAST);
-		
-		editableFields(false);
-		setFieldProperties();
-		
+				
 		add(labsPanel, BorderLayout.WEST);
 		add(dataPanel);
 		add(addressPanel, BorderLayout.SOUTH);
 	}
 	
-	private void editableFields(boolean editable) {
+	public void editableFields(boolean editable) {
 		name.setEditable(editable);
 		tel.setEditable(editable);
 		telAux.setEditable(editable);
@@ -228,53 +232,99 @@ class ClientData extends JPanel {
 		province.setEditable(editable);
 		postCode.setEditable(editable);
 	}
-	
-	private void setFieldProperties() {
-		
-		nif.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				super.keyReleased(e);
-				
-				Id id;
-				switch (idSelector.getSelectedIndex()) {
-					case 0: id = new Dni(nif.getText());
-							break;
-							
-					case 1: id = new Nie(nif.getText());
-							break;
-					default:
-							id = new Cif(nif.getText());
-							break;
-				}			
-				editableFields(id.isValid());
-			}
-		});
-	}
 }
 
 class ConsultantData extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 
+	private JLabel labCons;
+	private JLabel labPerson;
+	private JLabel labTel;
+	private JLabel labMail;
+	
+	private JTextField cons;
+	private JTextField person;
+	private JTextField tel;
+	private JTextField mail;
+	
+	private JPanel labsPanel;
+	private JPanel dataPanel;
+	
+	private JButton buscar;
+	
 	public ConsultantData() {
 		init();
+		setBorder(BorderFactory.createTitledBorder(" Asesoría "));
+	}
+	
+	public void editableFields(boolean editable) {
+		cons.setEditable(editable);
+		person.setEditable(editable);
+		tel.setEditable(editable);
+		mail.setEditable(editable);
 	}
 	
 	private void init() {
+		labCons = new JLabel("Asesoría:");
+		labPerson = new JLabel("Asesor:");
+		labTel = new JLabel("Teléfono:");
+		labMail = new JLabel("Mail:");
 		
+		cons = new JTextField(AddContract.LFIELD);
+		person = new JTextField(AddContract.LFIELD);
+		tel = new JTextField(AddContract.SFIELD);
+		mail = new JTextField(AddContract.LFIELD);
+		
+		labsPanel = new JPanel(new GridLayout(4, 1));
+		dataPanel = new JPanel(new GridLayout(4, 1));
+		
+		labsPanel.add(Util.packInJP(labCons));
+		labsPanel.add(Util.packInJP(labPerson));
+		labsPanel.add(Util.packInJP(labTel));
+		labsPanel.add(Util.packInJP(labMail));
+		
+		dataPanel.add(Util.packInJP(cons));
+		dataPanel.add(Util.packInJP(person));
+		dataPanel.add(Util.packInJP(tel));
+		dataPanel.add(Util.packInJP(mail));
+		
+		buscar = new JButton("Buscar");
+		
+		setLayout(new BorderLayout());
+		
+		add(labsPanel, BorderLayout.WEST);
+		add(dataPanel);
+		add(Util.packInJP(new FlowLayout(FlowLayout.RIGHT), buscar), BorderLayout.SOUTH);
 	}
+	
+	
 }
 
 class ServiceData extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 
+	private static final String [] headers = {"Campaña", "Servicio", "Fecha", "Comisión"};
+	private static final Object [][] emptyTable = {{"", "", "", ""}, {"", "", "", ""}, {"", "", "", ""}};
+	
+	private JTable table;
+	
 	public ServiceData() {
 		init();
+		setBorder(BorderFactory.createTitledBorder(" Servicios "));
 	}
 	
 	private void init() {
 		
+		table = new JTable(emptyTable, headers);
+		table.setFillsViewportHeight(true);
+		table.setRowSelectionAllowed(true);
+		table.setColumnSelectionAllowed(false);
+		
+		setLayout(new BorderLayout());
+		
+		add(table.getTableHeader(), BorderLayout.PAGE_START);
+		add(table);
 	}
 }
