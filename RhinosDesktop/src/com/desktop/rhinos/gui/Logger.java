@@ -108,10 +108,10 @@ public class Logger extends JDialog {
 	}
 	
 	public String getUserString() {
-		return user.getText();
+		return userField.getText().trim();
 	}
 	
 	public String getPasswordString() {
-		return pass.getText();
+		return new String(passField.getPassword());
 	}
 }
