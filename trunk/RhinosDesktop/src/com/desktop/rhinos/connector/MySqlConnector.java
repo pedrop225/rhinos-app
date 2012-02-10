@@ -33,7 +33,7 @@ import com.android.rhinos.gest.User;
 public class MySqlConnector implements Connector {
 
 	public static class App {
-		public static final String external_path = "http://pedrop225.comuf.com/rhinos";
+		private static final String external_path = "http://pedrop225.comuf.com/rhinos";
 		public static User user = new User();
 	}
 	
@@ -49,32 +49,6 @@ public class MySqlConnector implements Connector {
 			cipher = new RCipher(key);
 		}
 		catch (Exception e) {}
-	}
-	
-	private JSONArray getDataFromDB(String url, ArrayList<NameValuePair> nameValuePairs) {
-	    
-		String result = "";
-	    InputStream is = null;
-	    
-	    try {
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(url);
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
-            is = entity.getContent();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            StringBuilder sb = new StringBuilder();
-            sb.append(reader.readLine());
-	        
-            is.close();
-            result = sb.toString();
-            return ((result.trim().length() > 0) ? new JSONArray(result) : new JSONArray());
-	    }
-	    catch (Exception e) {}
-	    
-		return null;
 	}
 	
 	public boolean login(String user, String password) {
@@ -503,5 +477,31 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("campaign", cipher.encode(campaign.getName())));
 	    
 	    getDataFromDB(App.external_path+"/db_remove_campaign_permission.php", nameValuePairs);
+	}
+	
+	private JSONArray getDataFromDB(String url, ArrayList<NameValuePair> nameValuePairs) {
+	    
+		String result = "";
+	    InputStream is = null;
+	    
+	    try {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(url);
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity entity = response.getEntity();
+            is = entity.getContent();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            StringBuilder sb = new StringBuilder();
+            sb.append(reader.readLine());
+	        
+            is.close();
+            result = sb.toString();
+            return ((result.trim().length() > 0) ? new JSONArray(result) : new JSONArray());
+	    }
+	    catch (Exception e) {}
+	    
+		return null;
 	}
 }

@@ -32,12 +32,8 @@ public class AddContract extends JFrame {
 	
 	private JButton accept;
 	
-	public AddContract() {
-		init();
-	}
-	
 	public AddContract(JFrame locIn) {
-		this();
+		init();
 		setLocationRelativeTo(locIn);
 	}
 	

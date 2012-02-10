@@ -1,5 +1,6 @@
 package com.desktop.rhinos.gui;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,9 +13,6 @@ public class RhFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final int WIDTH = 540;
-	private static final int HEIGHT = 480;
-	
 	private JMenuBar mBar;
 	
 	private JMenu mFile;
@@ -25,22 +23,33 @@ public class RhFrame extends JFrame {
 	
 	private JMenu help;
 	private JMenuItem about;
+	
+	private RhPanel rhPanel;
 		
 	public RhFrame() {
 		init();
+		setLocationRelativeTo(null);
+	}
+
+	private void init() {
+		setTitle("Rhinos Desktop");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		initMenuBar();
-		setVisible(true);
+		
+		rhPanel = new RhPanel();
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(rhPanel);
+		
+		pack();
 	}
 	
 	public void exit() {
 		exit.doClick();
 	}
-
-	private void init() {
-		setTitle("Rhinos Desktop");
-		setSize(WIDTH, HEIGHT);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	
+	public void setRhPanel(RhPanel rh) {
+		rhPanel = rh;
 	}
 	
 	private void initMenuBar() {
@@ -68,7 +77,7 @@ public class RhFrame extends JFrame {
 		mBar.add(help);
 		
 		setJMenuBar(mBar);
-		initmBarListeners();
+		initmBarListeners();		
 	}
 	
 	private void initmBarListeners() {
