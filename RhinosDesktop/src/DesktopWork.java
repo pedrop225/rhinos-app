@@ -15,10 +15,11 @@ public class DesktopWork {
 	private RhPanel rhPanel;
 	private Logger log;
 	private MySqlConnector mySql;
+	private Object [][] data;
 	
 	public DesktopWork() {
 		rh = new RhFrame();
-		rhPanel = new RhPanel();
+		rhPanel = new RhPanel(data);
 		log = new Logger(rh);
 		mySql = new MySqlConnector();
 		
@@ -40,7 +41,6 @@ public class DesktopWork {
 	}
 	
 	private void fillRhPanelClients() {
-		
 		for (Client c : mySql.getClients(App.user)) {
 			Object [] d = new Object[6];
 			d[0] = new String(c.getId().toString());
@@ -49,8 +49,6 @@ public class DesktopWork {
 			d[3] = new String(c.getTlf_2());
 			d[4] = new String(c.getMail());
 			d[5] = new Integer(0);
-			
-			rhPanel.addTableData(d);
 		}
 	}
 }
