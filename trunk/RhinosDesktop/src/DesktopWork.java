@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import com.android.rhinos.gest.Client;
 import com.desktop.rhinos.connector.MySqlConnector;
@@ -15,11 +16,10 @@ public class DesktopWork {
 	private RhPanel rhPanel;
 	private Logger log;
 	private MySqlConnector mySql;
-	private Object [][] data;
 	
 	public DesktopWork() {
 		rh = new RhFrame();
-		rhPanel = new RhPanel(data);
+		rhPanel = new RhPanel();
 		log = new Logger(rh);
 		mySql = new MySqlConnector();
 		
@@ -29,7 +29,7 @@ public class DesktopWork {
 
 				if (mySql.login(log.getUserString(), log.getPasswordString())) {
 					log.setVisible(false);
-					fillRhPanelClients();
+					rhPanel.updateClientsData(importMySqlClients());
 				}
 			}
 		});
@@ -40,15 +40,18 @@ public class DesktopWork {
 		log.setVisible(true);
 	}
 	
-	private void fillRhPanelClients() {
-		for (Client c : mySql.getClients(App.user)) {
-			Object [] d = new Object[6];
-			d[0] = new String(c.getId().toString());
-			d[1] = new String(c.getName());
-			d[2] = new String(c.getTlf_1());
-			d[3] = new String(c.getTlf_2());
-			d[4] = new String(c.getMail());
-			d[5] = new Integer(0);
+	private Object [][] importMySqlClients() {
+		ArrayList<Client> c = mySql.getClients(App.user);
+		Object [][] d = new Object[c.size()][6];
+		
+		for (int i = 0; i < c.size(); i++) {
+			d[i][0] = new String(c.get(i).getId().toString());
+			d[i][1] = new String(c.get(i).getName());
+			d[i][2] = new String(c.get(i).getTlf_1());
+			d[i][3] = new String(c.get(i).getTlf_2());
+			d[i][4] = new String(c.get(i).getMail());
+			d[i][5] = new Integer(0);
 		}
+		return d;
 	}
 }

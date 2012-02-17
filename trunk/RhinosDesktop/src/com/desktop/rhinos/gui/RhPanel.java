@@ -3,27 +3,24 @@ package com.desktop.rhinos.gui;
 import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
-import javax.swing.table.DefaultTableModel;
 
 public class RhPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
-	private static final String [][] default_data = {{"", "", "", "", ""}};
 	
 	private JPanel north;
 	private JPanel west;
-	private ClientsTablePanel cliPanel;
+	private ClientsTable cliPanel;
 	private JPanel south;
 	
-	
-	public RhPanel(Object [][] data) {
-		init(data);
+	public RhPanel() {
+		init();
 	}
 	
-	private void init(Object [][] data) {
+	private void init() {
 		north = new JPanel();
 		west = new JPanel();
-		cliPanel = new ClientsTablePanel(data);
+		cliPanel = new ClientsTable(ClientsTable.EMPTY_TABLE);
 		south = new JPanel();
 		
 		setLayout(new BorderLayout());
@@ -32,5 +29,10 @@ public class RhPanel extends JPanel {
 		add(west, BorderLayout.WEST);
 		add(cliPanel);
 		add(south, BorderLayout.SOUTH);
+	}
+	
+	public void updateClientsData(Object [][] d) {
+		remove(cliPanel);
+		validate();
 	}
 }
