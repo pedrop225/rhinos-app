@@ -1,8 +1,13 @@
 package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import com.desktop.rhinos.connector.MySqlConnector.App;
 
 public class RhPanel extends JPanel {
 	
@@ -10,7 +15,7 @@ public class RhPanel extends JPanel {
 	
 	private JPanel north;
 	private JPanel west;
-	private ClientsTable cliPanel;
+	private ClientsTable clients;
 	private JPanel south;
 	
 	public RhPanel() {
@@ -18,21 +23,44 @@ public class RhPanel extends JPanel {
 	}
 	
 	private void init() {
-		north = new JPanel();
+		north = new JPanel(new BorderLayout());
 		west = new JPanel();
-		cliPanel = new ClientsTable(ClientsTable.EMPTY_TABLE);
+		clients = new ClientsTable();
 		south = new JPanel();
 		
 		setLayout(new BorderLayout());
 		
+		north.add(getUserBanner());
+		
 		add(north, BorderLayout.NORTH);
 		add(west, BorderLayout.WEST);
-		add(cliPanel);
+		add(clients);
 		add(south, BorderLayout.SOUTH);
 	}
 	
-	public void updateClientsData(Object [][] d) {
-		remove(cliPanel);
-		validate();
+	private JPanel getUserBanner() {
+		JPanel b = new JPanel();
+		JLabel l = new JLabel((App.user != null) ? App.user.getUser() : "", JLabel.RIGHT);
+		
+		Font f = new Font(Font.MONOSPACED, Font.BOLD, 24);
+		l.setFont(f);
+		b.setBackground(Color.LIGHT_GRAY);
+		b.add(l);
+		
+		return b;
+	}
+	
+	public void showUserBanner() {
+		north.add(getUserBanner());
+	}
+	
+	public void setClientsData(Object [][] d) {
+		for (Object [] md : d) {
+			clients.addTableData(md);
+		}
+	}
+	
+	public void cleanClientsData() {
+		clients.cleanTableData();
 	}
 }
