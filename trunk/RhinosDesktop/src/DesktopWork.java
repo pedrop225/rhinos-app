@@ -7,19 +7,15 @@ import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.Logger;
 import com.desktop.rhinos.gui.RhFrame;
-import com.desktop.rhinos.gui.RhPanel;
-
 
 public class DesktopWork {
 	
 	private RhFrame rh;
-	private RhPanel rhPanel;
 	private Logger log;
 	private MySqlConnector mySql;
 	
 	public DesktopWork() {
 		rh = new RhFrame();
-		rhPanel = new RhPanel();
 		log = new Logger(rh);
 		mySql = new MySqlConnector();
 		
@@ -29,12 +25,12 @@ public class DesktopWork {
 
 				if (mySql.login(log.getUserString(), log.getPasswordString())) {
 					log.setVisible(false);
-					rhPanel.updateClientsData(importMySqlClients());
+					rh.showUserBanner();
+					rh.validate();
+					rh.setClientsTableData(importMySqlClients());					
 				}
 			}
 		});
-		
-		rh.setRhPanel(rhPanel);
 		
 		rh.setVisible(true);
 		log.setVisible(true);

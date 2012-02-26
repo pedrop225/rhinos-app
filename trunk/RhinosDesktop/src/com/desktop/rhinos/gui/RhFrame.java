@@ -48,8 +48,13 @@ public class RhFrame extends JFrame {
 		exit.doClick();
 	}
 	
-	public void setRhPanel(RhPanel rh) {
-		rhPanel = rh;
+	public void setClientsTableData(Object [][] d) {
+		rhPanel.cleanClientsData();
+		rhPanel.setClientsData(d);
+	}
+	
+	public void showUserBanner() {
+		rhPanel.showUserBanner();
 	}
 	
 	private void initMenuBar() {
