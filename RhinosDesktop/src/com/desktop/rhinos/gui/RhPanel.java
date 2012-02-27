@@ -2,6 +2,7 @@ package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.JLabel;
@@ -39,10 +40,10 @@ public class RhPanel extends JPanel {
 	}
 	
 	private JPanel getUserBanner() {
-		JPanel b = new JPanel();
-		JLabel l = new JLabel((App.user != null) ? App.user.getUser() : "", JLabel.RIGHT);
+		JPanel b = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		JLabel l = new JLabel((App.user.getUser() != null) ? App.user.getUser()+"  " : "", JLabel.RIGHT);
 		
-		Font f = new Font(Font.MONOSPACED, Font.BOLD, 24);
+		Font f = new Font(Font.MONOSPACED, Font.BOLD, 16);
 		l.setFont(f);
 		b.setBackground(Color.LIGHT_GRAY);
 		b.add(l);
