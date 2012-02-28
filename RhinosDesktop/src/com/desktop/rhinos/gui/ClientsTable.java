@@ -7,6 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -15,6 +16,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import com.android.rhinos.gest.Client;
+import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 
 public class ClientsTable extends JPanel {
@@ -28,7 +31,7 @@ public class ClientsTable extends JPanel {
 		init();
 	}
 	
-	public void init() {
+	private void init() {
 		tm = new RhTableModel();
 		table = new JTable(tm);
 		table.setFont(App.DEFAULT_FONT);
@@ -72,18 +75,34 @@ public class ClientsTable extends JPanel {
 				
 				switch (e.getKeyCode()) {
 					case KeyEvent.VK_DELETE: removeSelected(); break;
+					case KeyEvent.VK_F5: updateTableData(); break;
 					default:
 				}
 			}
 		});
 	}
 	
-	public void addTableData(Object [] d) {
-		tm.addRow(d);
+	private Object [][] importMySqlClients() {
+		MySqlConnector con = MySqlConnector.getInstance();
+		ArrayList<Client> c = con.getClients(App.user);
+		Object [][] d = new Object[c.size()][4];
+		
+		for (int i = 0; i < c.size(); i++) {
+			d[i][0] = new String(c.get(i).getId().toString());
+			d[i][1] = new String(c.get(i).getName());
+			d[i][2] = new String(c.get(i).getTlf_1());
+			d[i][3] = new String(c.get(i).getMail());
+		}
+		return d;
 	}
 	
-	public void cleanTableData() {
+	public void updateTableData() {
 		tm.setRowCount(0);
+		Object [][] c = importMySqlClients();
+		
+		for (Object [] d : c){
+			tm.addRow(d);
+		}
 	}
 	
 	public void removeSelected() {

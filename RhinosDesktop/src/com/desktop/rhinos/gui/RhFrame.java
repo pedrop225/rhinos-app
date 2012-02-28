@@ -136,9 +136,8 @@ public class RhFrame extends JFrame {
 		exit.doClick();
 	}
 	
-	public void setClientsTableData(Object [][] d) {
-		rhPanel.cleanClientsData();
-		rhPanel.setClientsData(d);
+	public void updateClientsTableData() {
+		rhPanel.updateClientsTableData();
 	}
 	
 	public void showUserBanner() {
