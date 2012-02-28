@@ -17,7 +17,16 @@ public class DesktopWork {
 	public DesktopWork() {
 		rh = new RhFrame();
 		log = new Logger(rh);
-		mySql = new MySqlConnector();
+		mySql = MySqlConnector.getInstance();
+		
+		rh.setUpdateAction(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				rh.setClientsTableData(importMySqlClients());
+				rh.validate();
+			}
+		});
 		
 		log.getAcceptButton().addActionListener(new ActionListener() {
 			@Override
@@ -26,8 +35,8 @@ public class DesktopWork {
 				if (mySql.login(log.getUserString(), log.getPasswordString())) {
 					log.setVisible(false);
 					rh.showUserBanner();
-					rh.validate();
-					rh.setClientsTableData(importMySqlClients());					
+					rh.setClientsTableData(importMySqlClients());
+					rh.validate();					
 				}
 			}
 		});

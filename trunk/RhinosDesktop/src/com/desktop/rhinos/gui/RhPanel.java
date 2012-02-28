@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -19,6 +22,9 @@ public class RhPanel extends JPanel {
 	private ClientsTable clients;
 	private JPanel south;
 	
+	private JButton lookUp;
+	private JButton delete;
+
 	public RhPanel() {
 		init();
 	}
@@ -27,11 +33,35 @@ public class RhPanel extends JPanel {
 		north = new JPanel(new BorderLayout());
 		west = new JPanel();
 		clients = new ClientsTable();
-		south = new JPanel();
+		south = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		
+		lookUp = new JButton("Ver");
+		delete = new JButton("Eliminar");
+		
+		lookUp.setFont(App.DEFAULT_FONT);
+		delete.setFont(App.DEFAULT_FONT);
+		
+		lookUp.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				clients.lookUpSelected();
+			}
+		});
+		
+		delete.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				clients.removeSelected();
+			}
+		});
 		
 		setLayout(new BorderLayout());
 		
 		north.add(getUserBanner());
+		south.add(lookUp);
+		south.add(delete);
 		
 		add(north, BorderLayout.NORTH);
 		add(west, BorderLayout.WEST);
@@ -41,7 +71,7 @@ public class RhPanel extends JPanel {
 	
 	private JPanel getUserBanner() {
 		JPanel b = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JLabel l = new JLabel((App.user.getUser() != null) ? App.user.getUser()+"  " : "", JLabel.RIGHT);
+		JLabel l = new JLabel((App.user.getName() != null) ? App.user.getName()+"  " : "", JLabel.RIGHT);
 		
 		Font f = new Font(Font.MONOSPACED, Font.BOLD, 16);
 		l.setFont(f);
@@ -63,5 +93,10 @@ public class RhPanel extends JPanel {
 	
 	public void cleanClientsData() {
 		clients.cleanTableData();
+	}
+	
+	public void addContract() {
+		AddContract ac = new AddContract(null);
+		ac.setVisible(true);
 	}
 }
