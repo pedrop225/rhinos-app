@@ -1,6 +1,7 @@
 package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -13,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import com.desktop.rhinos.connector.MySqlConnector.App;
 
 
 public class Logger extends JDialog {
@@ -49,18 +52,19 @@ public class Logger extends JDialog {
 		});
 	}
 	
-	public void clean() {
-		userField.setText("");
-		passField.setText("");
-	}
-	
 	private void init() {
 		setModal(true);
+		setTitle("Login ..");
 		
 		user = new JLabel("Usuario: ");
 		pass = new JLabel("Contraseña: ");
 		userField = new JTextField(10);
 		passField = new JPasswordField();
+		
+		user.setFont(App.DEFAULT_FONT.deriveFont(Font.BOLD).deriveFont(12f));
+		pass.setFont(App.DEFAULT_FONT.deriveFont(Font.BOLD).deriveFont(12f));
+		userField.setFont(App.DEFAULT_FONT);
+		passField.setFont(App.DEFAULT_FONT);
 		
 		passField.addKeyListener(new KeyAdapter() {
 			@Override
@@ -72,6 +76,7 @@ public class Logger extends JDialog {
 		});
 		
 		accept = new JButton("Aceptar");
+		accept.setFont(App.DEFAULT_FONT);
 		accept.setFocusable(false);
 		
 		status = new JLabel("", JLabel.CENTER);
@@ -101,6 +106,11 @@ public class Logger extends JDialog {
 		add(button, BorderLayout.SOUTH);
 		
 		pack();
+	}
+	
+	public void clean() {
+		userField.setText("");
+		passField.setText("");
 	}
 	
 	public JButton getAcceptButton() {

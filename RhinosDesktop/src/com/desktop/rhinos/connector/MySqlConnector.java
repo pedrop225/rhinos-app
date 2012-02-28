@@ -1,5 +1,6 @@
 package com.desktop.rhinos.connector;
 
+import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,13 +35,17 @@ public class MySqlConnector implements Connector {
 
 	public static class App {
 		private static final String external_path = "http://pedrop225.comuf.com/rhinos";
-		public static User user = new User();
+		public static final User user = new User();
+		
+		public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 11);
+
 	}
 	
 	private RCipher cipher;
 	private SimpleDateFormat formatter;
+	private static MySqlConnector INSTANCE = new MySqlConnector();
 	
-	public MySqlConnector() {
+	private MySqlConnector() {
 		
 		formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -49,6 +54,10 @@ public class MySqlConnector implements Connector {
 			cipher = new RCipher(key);
 		}
 		catch (Exception e) {}
+	}
+	
+	public synchronized static MySqlConnector getInstance() {
+		return INSTANCE;
 	}
 	
 	public boolean login(String user, String password) {
@@ -65,6 +74,7 @@ public class MySqlConnector implements Connector {
 	        	App.user.setExtId(jsonObj.getInt("id"));
 	        	App.user.setType(jsonObj.getInt("type"));
 	        	App.user.setUser(user);
+	        	App.user.setName(cipher.decode(jsonObj.getString("name")));
 	        	App.user.setMail(cipher.decode(jsonObj.getString("user")));
 	        	return true;
 	        }

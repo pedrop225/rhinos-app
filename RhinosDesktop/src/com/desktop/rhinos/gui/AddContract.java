@@ -2,9 +2,12 @@ package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -12,8 +15,19 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+
+import com.android.rhinos.gest.Cif;
+import com.android.rhinos.gest.Client;
+import com.android.rhinos.gest.Dni;
+import com.android.rhinos.gest.Id;
+import com.android.rhinos.gest.Nie;
+import com.desktop.rhinos.connector.MySqlConnector;
+import com.desktop.rhinos.connector.MySqlConnector.App;
 
 public class AddContract extends JFrame {
 	
@@ -21,7 +35,7 @@ public class AddContract extends JFrame {
 	
 	public static final int SSFIELD = 4;
 	public static final int SFIELD = 10;
-	public static final int LFIELD = 20;
+	public static final int LFIELD = 32;
 	
 	private ClientData cliData;
 	private ConsultantData conData;
@@ -37,6 +51,12 @@ public class AddContract extends JFrame {
 		setLocationRelativeTo(locIn);
 	}
 	
+	public AddContract(JFrame locIn, String id) {
+		init();
+		setLocationRelativeTo(locIn);
+		prepareNonEditableContract(id);
+	}
+	
 	private void init() {
 		setTitle("Añadir Contrato");
 		setResizable(false);
@@ -50,6 +70,8 @@ public class AddContract extends JFrame {
 		
 		JPanel buttons = new JPanel();
 		buttons.add(accept);
+		
+		setFieldsEditable(false);
 		
 		centerPanel = new JPanel(new BorderLayout());
 		southPanel = new JPanel(new BorderLayout());
@@ -70,11 +92,50 @@ public class AddContract extends JFrame {
 			}
 		});
 		
+		cliData.getNif().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				super.keyReleased(e);
+								
+				Id id;
+				cliData.getNif().setText(cliData.getNif().getText().toUpperCase());
+				String t = cliData.getNif().getText();
+				switch (cliData.getIdSelector().getSelectedIndex()) {
+					case 1: id = new Dni(t); break;
+					case 2: id = new Nie(t); break;
+					case 3: id = new Cif(t);
+					default: id = new Dni("");
+				}
+				
+				setFieldsEditable(id.isValid());
+			}
+		});
+		
 		pack();
+	}
+	
+	private void prepareNonEditableContract(String id) {
+		//¿?¿? weirddd
+		MySqlConnector con =  MySqlConnector.getInstance();
+		Client c = con.clientExists(id);
+		
+		cliData.getNif().setEditable(false);
+		cliData.getIdSelector().setVisible(false);
+		conData.getSearchButton().setVisible(false);
+		accept.setVisible(false);
+		
+		cliData.getNif().setText(id);
+		cliData.getClientName().setText(c.getName());
+		cliData.getTel().setText(c.getTlf_1());
+		cliData.getTelAux().setText(c.getTlf_2());
+		cliData.getMail().setText(c.getMail());
 	}
 	
 	public JComboBox getIdSelector() {
 		return cliData.getIdSelector();
+	}
+	public JTextField getNif() {
+		return cliData.getNif();
 	}
 	
 	public JTextField getClientName() {
@@ -157,12 +218,10 @@ public class AddContract extends JFrame {
 		return conData.getSearchButton();
 	}
 	
-	public void setClientEditableFields(boolean editable) {
-		cliData.editableFields(editable);
-	}
-	
-	public void setConsultantEditableFields(boolean editable) {
-		conData.editableFields(editable);
+	public void setFieldsEditable(boolean editable) {
+		cliData.setFieldsEditable(editable);
+		conData.setFieldsEditable(editable);
+		serData.setFieldsEditable(editable);
 	}
 }
 
@@ -231,6 +290,12 @@ class ClientData extends JPanel {
 		telAux = new JTextField(AddContract.SFIELD);
 		mail = new JTextField(AddContract.LFIELD);
 		
+		nif.setFont(App.DEFAULT_FONT);
+		name.setFont(App.DEFAULT_FONT);
+		tel.setFont(App.DEFAULT_FONT);
+		telAux.setFont(App.DEFAULT_FONT);
+		mail.setFont(App.DEFAULT_FONT);
+		
 		labsPanel = new JPanel(new GridLayout(0, 1));
 		labsPanel.add(Util.packInJP(idSelector));
 		labsPanel.add(Util.packInJP(labName));
@@ -272,6 +337,16 @@ class ClientData extends JPanel {
 		province = new JTextField(AddContract.LFIELD);
 		postCode = new JTextField(AddContract.SFIELD);
 		
+		stType.setFont(App.DEFAULT_FONT);
+		stName.setFont(App.DEFAULT_FONT);
+		stNumber.setFont(App.DEFAULT_FONT);
+		stFloor.setFont(App.DEFAULT_FONT);
+		stStairs.setFont(App.DEFAULT_FONT);
+		door.setFont(App.DEFAULT_FONT);
+		town.setFont(App.DEFAULT_FONT);
+		province.setFont(App.DEFAULT_FONT);
+		postCode.setFont(App.DEFAULT_FONT);
+		
 		addressPanel_west = new JPanel(new GridLayout(0, 1));
 		addressPanel_east = new JPanel(new GridLayout(0, 1));
 		
@@ -305,8 +380,28 @@ class ClientData extends JPanel {
 		add(addressPanel, BorderLayout.SOUTH);
 	}
 	
+	public void setFieldsEditable(boolean editable) {
+		name.setEditable(editable);
+		tel.setEditable(editable);
+		telAux.setEditable(editable);
+		mail.setEditable(editable);
+		
+		stName.setEditable(editable);
+		stNumber.setEditable(editable);
+		stFloor.setEditable(editable);
+		stStairs.setEditable(editable);
+		door.setEditable(editable);
+		town.setEditable(editable);
+		province.setEditable(editable);
+		postCode.setEditable(editable);
+	}
+	
 	public JComboBox getIdSelector() {
 		return idSelector;
+	}
+	
+	public JTextField getNif() {
+		return nif;
 	}
 	
 	public JTextField getClientName() {
@@ -360,22 +455,6 @@ class ClientData extends JPanel {
 	public JTextField getPostCode() {
 		return postCode;
 	}
-
-	public void editableFields(boolean editable) {
-		name.setEditable(editable);
-		tel.setEditable(editable);
-		telAux.setEditable(editable);
-		mail.setEditable(editable);
-		
-		stName.setEditable(editable);
-		stNumber.setEditable(editable);
-		stFloor.setEditable(editable);
-		stStairs.setEditable(editable);
-		door.setEditable(editable);
-		town.setEditable(editable);
-		province.setEditable(editable);
-		postCode.setEditable(editable);
-	}
 }
 
 class ConsultantData extends JPanel {
@@ -417,6 +496,12 @@ class ConsultantData extends JPanel {
 		telAux = new JTextField(AddContract.SFIELD);
 		mail = new JTextField(AddContract.LFIELD);
 		
+		cons.setFont(App.DEFAULT_FONT);
+		person.setFont(App.DEFAULT_FONT);
+		tel.setFont(App.DEFAULT_FONT);
+		telAux.setFont(App.DEFAULT_FONT);
+		mail.setFont(App.DEFAULT_FONT);
+		
 		labsPanel = new JPanel(new GridLayout(0, 1));
 		dataPanel = new JPanel(new GridLayout(0, 1));
 		
@@ -441,7 +526,7 @@ class ConsultantData extends JPanel {
 		add(Util.packInJP(new FlowLayout(FlowLayout.RIGHT), search), BorderLayout.SOUTH);
 	}
 	
-	public void editableFields(boolean editable) {
+	public void setFieldsEditable(boolean editable) {
 		cons.setEditable(editable);
 		person.setEditable(editable);
 		tel.setEditable(editable);
@@ -477,11 +562,9 @@ class ConsultantData extends JPanel {
 class ServiceData extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
-
-	private static final String [] headers = {"Campaña", "Servicio", "Fecha", "Comisión"};
-	private static final Object [][] emptyTable = {{"", "", "", ""}, {"", "", "", ""}, {"", "", "", ""}};
 	
 	private JTable table;
+	private ServiceTable st;
 	
 	public ServiceData() {
 		init();
@@ -489,14 +572,37 @@ class ServiceData extends JPanel {
 	}
 	
 	private void init() {
-		
-		table = new JTable(emptyTable, headers);
-		table.setFillsViewportHeight(true);
-		table.setEnabled(false);
+		st = new ServiceTable();
+		table = new JTable(st);
+		table.setFont(App.DEFAULT_FONT);
+		table.getTableHeader().setFont(App.DEFAULT_FONT.deriveFont(Font.BOLD).deriveFont(12f));
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		
 		setLayout(new BorderLayout());
 		
 		add(table.getTableHeader(), BorderLayout.PAGE_START);
-		add(table);
+		add(new JScrollPane(table));
+	}
+	
+	public void setFieldsEditable(boolean editable) {
+		table.setEnabled(editable);
+	}
+}
+
+class ServiceTable extends DefaultTableModel {
+
+	private static final long serialVersionUID = 1L;
+
+	public ServiceTable() {
+		addColumn("Campaña");
+		addColumn("Servicio");
+		addColumn("Fecha");
+		addColumn("Comisión");
+	}
+	
+	@Override
+	public boolean isCellEditable(int row, int column) {
+		return false;
 	}
 }
