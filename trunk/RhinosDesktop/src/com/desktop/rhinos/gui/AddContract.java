@@ -15,7 +15,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -59,8 +58,7 @@ public class AddContract extends JFrame {
 	
 	private void init() {
 		setTitle("Añadir Contrato");
-		setResizable(false);
-		setLayout(new BorderLayout(6, 3));
+		setLayout(new BorderLayout());
 		
 		cliData = new ClientData();
 		conData = new ConsultantData();
@@ -582,7 +580,7 @@ class ServiceData extends JPanel {
 		setLayout(new BorderLayout());
 		
 		add(table.getTableHeader(), BorderLayout.PAGE_START);
-		add(new JScrollPane(table));
+		add(table);
 	}
 	
 	public void setFieldsEditable(boolean editable) {
@@ -599,6 +597,8 @@ class ServiceTable extends DefaultTableModel {
 		addColumn("Servicio");
 		addColumn("Fecha");
 		addColumn("Comisión");
+		
+		setRowCount(5);
 	}
 	
 	@Override
