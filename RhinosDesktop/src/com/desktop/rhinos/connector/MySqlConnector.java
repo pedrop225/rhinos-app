@@ -277,6 +277,7 @@ public class MySqlConnector implements Connector {
 				client = new Client();
 				JSONObject jsonObj = jsonArray.getJSONObject(0);
 				
+				client.setId(new Dni(id));
 				client.setName(cipher.decode(jsonObj.getString("name")));
 				client.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
 				client.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
