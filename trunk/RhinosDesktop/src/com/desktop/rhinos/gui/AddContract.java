@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -80,7 +81,7 @@ public class AddContract extends JFrame {
 		
 		southPanel.add(buttons, BorderLayout.EAST);
 		
-		add(centerPanel);
+		add(new JScrollPane(centerPanel));
 		add(southPanel, BorderLayout.SOUTH);
 		
 		accept.addActionListener(new ActionListener() {
@@ -113,7 +114,6 @@ public class AddContract extends JFrame {
 	}
 	
 	private void prepareNonEditableContract(String id) {
-		//¿?¿? weirddd
 		MySqlConnector con =  MySqlConnector.getInstance();
 		Client c = con.clientExists(id);
 		
@@ -219,7 +219,6 @@ public class AddContract extends JFrame {
 	public void setFieldsEditable(boolean editable) {
 		cliData.setFieldsEditable(editable);
 		conData.setFieldsEditable(editable);
-		serData.setFieldsEditable(editable);
 	}
 }
 
@@ -582,10 +581,6 @@ class ServiceData extends JPanel {
 		add(table.getTableHeader(), BorderLayout.PAGE_START);
 		add(table);
 	}
-	
-	public void setFieldsEditable(boolean editable) {
-		table.setEnabled(editable);
-	}
 }
 
 class ServiceTable extends DefaultTableModel {
@@ -597,8 +592,6 @@ class ServiceTable extends DefaultTableModel {
 		addColumn("Servicio");
 		addColumn("Fecha");
 		addColumn("Comisión");
-		
-		setRowCount(5);
 	}
 	
 	@Override

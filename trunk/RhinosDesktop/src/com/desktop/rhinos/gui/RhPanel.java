@@ -85,14 +85,8 @@ public class RhPanel extends JPanel {
 		north.add(getUserBanner());
 	}
 	
-	public void setClientsData(Object [][] d) {
-		for (Object [] md : d) {
-			clients.addTableData(md);
-		}
-	}
-	
-	public void cleanClientsData() {
-		clients.cleanTableData();
+	public void updateClientsTableData() {
+		clients.updateTableData();
 	}
 	
 	public void addContract() {
