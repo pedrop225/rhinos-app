@@ -106,7 +106,12 @@ public class AddContract extends JFrame {
 					default: id = new Dni("");
 				}
 				
-				setFieldsEditable(id.isValid());
+				Client c = MySqlConnector.getInstance().clientExists(id.toString());
+				if (id.isValid() && (c != null)) {
+					prepareNonEditableContract(c);
+				}
+				else 		
+					setFieldsEditable(id.isValid());
 			}
 		});
 		
@@ -117,16 +122,26 @@ public class AddContract extends JFrame {
 		MySqlConnector con =  MySqlConnector.getInstance();
 		Client c = con.clientExists(id);
 		
+		prepareNonEditableContract(c);
+	}
+
+	private void formatAddress(String address) {
+		
+	}
+	
+	private void prepareNonEditableContract(Client c) {
+		
 		cliData.getNif().setEditable(false);
 		cliData.getIdSelector().setVisible(false);
 		conData.getSearchButton().setVisible(false);
-		accept.setVisible(false);
 		
-		cliData.getNif().setText(id);
+		cliData.getNif().setText(c.getId().toString());
 		cliData.getClientName().setText(c.getName());
 		cliData.getTel().setText(c.getTlf_1());
 		cliData.getTelAux().setText(c.getTlf_2());
 		cliData.getMail().setText(c.getMail());
+		
+		System.out.println(c.getAddress());
 	}
 	
 	public JComboBox getIdSelector() {
