@@ -1,6 +1,7 @@
 package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -17,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
@@ -35,7 +37,7 @@ public class AddContract extends JFrame {
 	
 	public static final int SSFIELD = 4;
 	public static final int SFIELD = 10;
-	public static final int LFIELD = 32;
+	public static final int LFIELD = 37;
 	
 	private ClientData cliData;
 	private ConsultantData conData;
@@ -81,13 +83,16 @@ public class AddContract extends JFrame {
 		
 		southPanel.add(buttons, BorderLayout.EAST);
 		
-		add(new JScrollPane(centerPanel));
+		add(centerPanel);
 		add(southPanel, BorderLayout.SOUTH);
 		
 		accept.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				dispose();
+				if (checkData()) {
+					MySqlConnector.getInstance().addClient(cliData.getClient());
+					dispose();
+				}
 			}
 		});
 		
@@ -95,27 +100,48 @@ public class AddContract extends JFrame {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				super.keyReleased(e);
-								
-				Id id;
-				cliData.getNif().setText(cliData.getNif().getText().toUpperCase());
-				String t = cliData.getNif().getText();
-				switch (cliData.getIdSelector().getSelectedIndex()) {
-					case 1: id = new Dni(t); break;
-					case 2: id = new Nie(t); break;
-					case 3: id = new Cif(t);
-					default: id = new Dni("");
-				}
-				
-				Client c = MySqlConnector.getInstance().clientExists(id.toString());
-				if (id.isValid() && (c != null)) {
-					prepareNonEditableContract(c);
-				}
-				else 		
-					setFieldsEditable(id.isValid());
+				checkClientId();
+			}
+		});
+		
+		cliData.getIdSelector().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				checkClientId();
 			}
 		});
 		
 		pack();
+	}
+
+	private void checkClientId() {
+		Id id;
+		cliData.getNif().setText(cliData.getNif().getText().toUpperCase());
+		String t = cliData.getNif().getText();
+		switch (cliData.getIdSelector().getSelectedIndex()) {
+			case 1: id = new Dni(t); break;
+			case 2: id = new Nie(t); break;
+			case 3: id = new Cif(t);
+			default: id = new Dni("");
+		}
+		
+		boolean v = id.isValid();
+		
+		if (v) {
+			Client c = MySqlConnector.getInstance().clientExists(id.toString());
+			if (c != null) {
+				prepareNonEditableContract(c);
+			}
+			else
+				setFieldsEditable(v);
+		}
+		else	
+			setFieldsEditable(v);
+	}
+	
+	private boolean checkData() {
+		return (cliData.checkData() && conData.checkData() && serData.checkData());
 	}
 	
 	private void prepareNonEditableContract(String id) {
@@ -123,10 +149,6 @@ public class AddContract extends JFrame {
 		Client c = con.clientExists(id);
 		
 		prepareNonEditableContract(c);
-	}
-
-	private void formatAddress(String address) {
-		
 	}
 	
 	private void prepareNonEditableContract(Client c) {
@@ -140,8 +162,13 @@ public class AddContract extends JFrame {
 		cliData.getTel().setText(c.getTlf_1());
 		cliData.getTelAux().setText(c.getTlf_2());
 		cliData.getMail().setText(c.getMail());
-		
-		System.out.println(c.getAddress());
+		cliData.getAddress().setText(c.getAddress());
+	}
+	
+	private void setFieldsEditable(boolean editable) {
+		cliData.setFieldsEditable(editable);
+		conData.setFieldsEditable(editable);
+		accept.setVisible(editable);
 	}
 	
 	public JComboBox getIdSelector() {
@@ -165,42 +192,6 @@ public class AddContract extends JFrame {
 
 	public JTextField getMail() {
 		return cliData.getMail();
-	}
-
-	public JComboBox getStType() {
-		return cliData.getStType();
-	}
-
-	public JTextField getStName() {
-		return cliData.getStName();
-	}
-
-	public JTextField getStNumber() {
-		return cliData.getStNumber();
-	}
-
-	public JTextField getStFloor() {
-		return cliData.getStFloor();
-	}
-
-	public JTextField getStStairs() {
-		return cliData.getStStairs();
-	}
-
-	public JTextField getDoor() {
-		return cliData.getDoor();
-	}
-
-	public JTextField getTown() {
-		return cliData.getTown();
-	}
-
-	public JTextField getProvince() {
-		return cliData.getProvince();
-	}
-
-	public JTextField getPostCode() {
-		return cliData.getPostCode();
 	}
 	
 	public JButton getAcceptButton() {
@@ -230,11 +221,6 @@ public class AddContract extends JFrame {
 	public JButton getSearchButton() {
 		return conData.getSearchButton();
 	}
-	
-	public void setFieldsEditable(boolean editable) {
-		cliData.setFieldsEditable(editable);
-		conData.setFieldsEditable(editable);
-	}
 }
 
 class ClientData extends JPanel {
@@ -252,29 +238,7 @@ class ClientData extends JPanel {
 	private JTextField tel;
 	private JTextField telAux;
 	private JTextField mail;
-	
-	private JLabel labsStType;
-	private JLabel labStName;
-	private JLabel labStNumber;
-	private JLabel labStFloor;
-	private JLabel labStStairs;
-	private JLabel labsDoor;
-	private JLabel labTown;
-	private JLabel labProvince;
-	private JLabel labPostcode;
-	
-	private JComboBox stType;
-	private JTextField stName;
-	private JTextField stNumber;
-	private JTextField stFloor;
-	private JTextField stStairs;
-	private JTextField door;
-	private JTextField town;
-	private JTextField province;
-	private JTextField postCode;
-	
-	private JPanel addressPanel_west;
-	private JPanel addressPanel_east;
+	private JTextArea address;
 	
 	private JPanel labsPanel;
 	private JPanel dataPanel;
@@ -301,12 +265,16 @@ class ClientData extends JPanel {
 		tel = new JTextField(AddContract.SFIELD);
 		telAux = new JTextField(AddContract.SFIELD);
 		mail = new JTextField(AddContract.LFIELD);
+		address = new JTextArea(4, 0);
+		address.setWrapStyleWord(true);
+		address.setLineWrap(true);
 		
 		nif.setFont(App.DEFAULT_FONT);
 		name.setFont(App.DEFAULT_FONT);
 		tel.setFont(App.DEFAULT_FONT);
 		telAux.setFont(App.DEFAULT_FONT);
 		mail.setFont(App.DEFAULT_FONT);
+		address.setFont(App.DEFAULT_FONT);
 		
 		labsPanel = new JPanel(new GridLayout(0, 1));
 		labsPanel.add(Util.packInJP(idSelector));
@@ -322,70 +290,9 @@ class ClientData extends JPanel {
 		dataPanel.add(Util.packInJP(telAux));
 		dataPanel.add(Util.packInJP(mail));
 		
-		labsStType = new JLabel("Tipo de vía:");
-		labStName = new JLabel("Nombre de vía:");
-		labStNumber = new JLabel("Número:");
-		labStFloor = new JLabel("Piso:");
-		labStStairs = new JLabel("Escalera:");
-		labsDoor = new JLabel("Puerta:");
-		labTown = new JLabel("Localidad:");
-		labProvince = new JLabel("Provincia:");
-		labPostcode = new JLabel("Código Postal:");
-		
-		String [] streetTypes = {"", "Alameda", "Autopista", 
-								"Autovía", "Avenida", "Bulevar", 
-								"Calle", "Carrer", "Camino", 
-								"Carretera", "Glorieta", "Paseo", 
-								"Plaza", "Pasaje", "Rambla", 
-								"Ronda", "Sector", "Travesía"};
-		
-		stType = new JComboBox(streetTypes);
-		stName = new JTextField(AddContract.LFIELD);
-		stNumber = new JTextField(AddContract.SSFIELD);
-		stFloor = new JTextField(AddContract.SSFIELD);
-		stStairs = new JTextField(AddContract.SSFIELD);
-		door = new JTextField(AddContract.SSFIELD);
-		town = new JTextField(AddContract.LFIELD);
-		province = new JTextField(AddContract.LFIELD);
-		postCode = new JTextField(AddContract.SFIELD);
-		
-		stType.setFont(App.DEFAULT_FONT);
-		stName.setFont(App.DEFAULT_FONT);
-		stNumber.setFont(App.DEFAULT_FONT);
-		stFloor.setFont(App.DEFAULT_FONT);
-		stStairs.setFont(App.DEFAULT_FONT);
-		door.setFont(App.DEFAULT_FONT);
-		town.setFont(App.DEFAULT_FONT);
-		province.setFont(App.DEFAULT_FONT);
-		postCode.setFont(App.DEFAULT_FONT);
-		
-		addressPanel_west = new JPanel(new GridLayout(0, 1));
-		addressPanel_east = new JPanel(new GridLayout(0, 1));
-		
 		addressPanel = new JPanel(new BorderLayout());
 		addressPanel.setBorder(BorderFactory.createTitledBorder(" Dirección "));
-		
-		addressPanel_west.add(Util.packInJP(labsStType));
-		addressPanel_east.add(Util.packInJP(stType));
-		addressPanel_west.add(Util.packInJP(labStName));
-		addressPanel_east.add(Util.packInJP(stName));
-		addressPanel_west.add(Util.packInJP(labStNumber));
-		addressPanel_east.add(Util.packInJP(stNumber));
-		addressPanel_west.add(Util.packInJP(labStStairs));
-		addressPanel_east.add(Util.packInJP(stStairs));
-		addressPanel_west.add(Util.packInJP(labStFloor));
-		addressPanel_east.add(Util.packInJP(stFloor));
-		addressPanel_west.add(Util.packInJP(labsDoor));
-		addressPanel_east.add(Util.packInJP(door));
-		addressPanel_west.add(Util.packInJP(labTown));
-		addressPanel_east.add(Util.packInJP(town));
-		addressPanel_west.add(Util.packInJP(labProvince));
-		addressPanel_east.add(Util.packInJP(province));
-		addressPanel_west.add(Util.packInJP(labPostcode));
-		addressPanel_east.add(Util.packInJP(postCode));
-		
-		addressPanel.add(addressPanel_west, BorderLayout.WEST);
-		addressPanel.add(addressPanel_east, BorderLayout.EAST);
+		addressPanel.add(new JScrollPane(address));
 				
 		add(labsPanel, BorderLayout.WEST);
 		add(dataPanel);
@@ -397,15 +304,7 @@ class ClientData extends JPanel {
 		tel.setEditable(editable);
 		telAux.setEditable(editable);
 		mail.setEditable(editable);
-		
-		stName.setEditable(editable);
-		stNumber.setEditable(editable);
-		stFloor.setEditable(editable);
-		stStairs.setEditable(editable);
-		door.setEditable(editable);
-		town.setEditable(editable);
-		province.setEditable(editable);
-		postCode.setEditable(editable);
+		address.setEditable(editable);
 	}
 	
 	public JComboBox getIdSelector() {
@@ -431,41 +330,33 @@ class ClientData extends JPanel {
 	public JTextField getMail() {
 		return mail;
 	}
-
-	public JComboBox getStType() {
-		return stType;
+	
+	public JTextArea getAddress() {
+		return address;
 	}
-
-	public JTextField getStName() {
-		return stName;
+	
+	public boolean checkData() {
+		return true;
 	}
-
-	public JTextField getStNumber() {
-		return stNumber;
-	}
-
-	public JTextField getStFloor() {
-		return stFloor;
-	}
-
-	public JTextField getStStairs() {
-		return stStairs;
-	}
-
-	public JTextField getDoor() {
-		return door;
-	}
-
-	public JTextField getTown() {
-		return town;
-	}
-
-	public JTextField getProvince() {
-		return province;
-	}
-
-	public JTextField getPostCode() {
-		return postCode;
+	
+	public Client getClient() {
+		Client c = new Client();
+		
+		String t = nif.getText();
+		switch (idSelector.getSelectedIndex()) {
+			case 1: c.setId(new Dni(t)); break;
+			case 2: c.setId(new Nie(t)); break;
+			case 3: c.setId(new Cif(t));
+			default: c.setId(new Dni(""));
+		}
+		
+		c.setName(name.getText().trim());
+		c.setTlf_1(tel.getText().trim());
+		c.setTlf_2(telAux.getText().trim());
+		c.setMail(mail.getText().trim());
+		c.setAddress(address.getText().trim());
+		
+		return c;
 	}
 }
 
@@ -569,6 +460,10 @@ class ConsultantData extends JPanel {
 	public JButton getSearchButton() {
 		return search;
 	}
+	
+	public boolean checkData() {
+		return true;
+	}
 }
 
 class ServiceData extends JPanel {
@@ -590,11 +485,16 @@ class ServiceData extends JPanel {
 		table.getTableHeader().setFont(App.DEFAULT_FONT.deriveFont(Font.BOLD).deriveFont(12f));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		table.setPreferredScrollableViewportSize(new Dimension(0, 75));
 		
 		setLayout(new BorderLayout());
 		
 		add(table.getTableHeader(), BorderLayout.PAGE_START);
-		add(table);
+		add(new JScrollPane(table));
+	}
+	
+	public boolean checkData() {
+		return (st.getRowCount() > 0);
 	}
 }
 

@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -106,8 +107,21 @@ public class ClientsTable extends JPanel {
 	}
 	
 	public void removeSelected() {
-		if (table.getSelectedRowCount() > 0)
-			tm.removeRow(table.convertRowIndexToModel(table.getSelectedRow()));
+		if (table.getSelectedRowCount() > 0) {
+			
+			int r = table.convertRowIndexToModel(table.getSelectedRow());
+			int c = table.convertColumnIndexToModel(0);
+			int _c = table.convertColumnIndexToModel(1);
+			String id = (String)table.getValueAt(r, c);
+			String name = (String)table.getValueAt(r, _c);
+			
+			if (JOptionPane.showConfirmDialog(null, "Desea eliminar el cliente \""+name+"\"? ", "Elimindo cliente ..", 
+											  JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
+				System.out.println("yes");
+				tm.removeRow(r);
+				MySqlConnector.getInstance().deleteClient(id);
+			}
+		}
 	}
 	
 	public void lookUpSelected() {
