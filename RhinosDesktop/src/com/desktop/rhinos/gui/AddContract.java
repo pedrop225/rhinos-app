@@ -11,6 +11,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -27,6 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
+import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.Cif;
 import com.android.rhinos.gest.Client;
 import com.android.rhinos.gest.Dni;
@@ -65,7 +67,8 @@ public class AddContract extends JFrame {
 	}
 	
 	private void init() {
-		setTitle("Aï¿½adir Contrato");
+		setTitle("Añadir Contrato");
+		setResizable(false);
 		setLayout(new BorderLayout());
 		
 		cliData = new ClientData();
@@ -170,6 +173,7 @@ public class AddContract extends JFrame {
 		cliData.getAddress().setText(c.getAddress());
 		
 		serData.updateData(c.getId().toString());
+		serData.addServiceActivated(true);
 	}
 	
 	private void setFieldsEditable(boolean editable) {
@@ -263,8 +267,8 @@ class ClientData extends JPanel {
 		String [] ids = {"", "Dni", "Nie", "Cif"};
 		idSelector = new JComboBox(ids);
 		labName = new JLabel("Nombre:");
-		labTel = new JLabel("Telï¿½fono:");
-		labTelAux = new JLabel("Telï¿½fono Aux:");
+		labTel = new JLabel("Teléfono:");
+		labTelAux = new JLabel("Teléfono Aux:");
 		labMail = new JLabel("Mail:");
 		
 		nif = new JTextField(AddContract.SFIELD);
@@ -298,7 +302,7 @@ class ClientData extends JPanel {
 		dataPanel.add(Util.packInJP(mail));
 		
 		addressPanel = new JPanel(new BorderLayout());
-		addressPanel.setBorder(BorderFactory.createTitledBorder(" Direcciï¿½n "));
+		addressPanel.setBorder(BorderFactory.createTitledBorder(" Dirección "));
 		addressPanel.add(new JScrollPane(address));
 				
 		add(labsPanel, BorderLayout.WEST);
@@ -390,14 +394,14 @@ class ConsultantData extends JPanel {
 	
 	public ConsultantData() {
 		init();
-		setBorder(BorderFactory.createTitledBorder(" Asesorï¿½a "));
+		setBorder(BorderFactory.createTitledBorder(" Asesoría "));
 	}
 	
 	private void init() {
-		labCons = new JLabel("Asesorï¿½a:");
+		labCons = new JLabel("Asesoría:");
 		labPerson = new JLabel("Asesor:");
-		labTel = new JLabel("Telï¿½fono:");
-		labTelAux = new JLabel("Telï¿½fono Aux:");
+		labTel = new JLabel("Teléfono:");
+		labTelAux = new JLabel("Teléfono Aux:");
 		labMail = new JLabel("Mail:");
 		
 		cons = new JTextField(AddContract.LFIELD);
@@ -481,6 +485,7 @@ class ServiceData extends JPanel {
 	private ServiceTable st;
 	private JButton addService;
 	
+	private String clientId;
 	private ArrayList<Integer> ids;
 	
 	public ServiceData() {
@@ -493,6 +498,7 @@ class ServiceData extends JPanel {
 		table = new JTable(st);
 		ids = new ArrayList<Integer>();
 		addService = new JButton("Nuevo");
+		addService.setVisible(false);
 		
 		table.setFont(App.DEFAULT_FONT);
 		table.getTableHeader().setFont(App.DEFAULT_FONT.deriveFont(Font.BOLD).deriveFont(12f));
@@ -507,6 +513,7 @@ class ServiceData extends JPanel {
 				
 				switch (e.getKeyCode()) {
 					case KeyEvent.VK_DELETE: removeSelected(); break;
+					case KeyEvent.VK_F5: updateData(); break;
 					default:
 				}
 			}
@@ -516,7 +523,20 @@ class ServiceData extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Adding new Service ...");
+				final ServiceEditor se = new ServiceEditor(clientId);
+				se.setVisible(true);
+				
+				new Thread() {
+					public void run() {
+						while (se.isVisible()) {
+							try {
+								sleep(500);
+							}
+							catch (InterruptedException e) {interrupt();}
+						}
+						updateData();
+					};
+				}.start();
 			}
 		});
 		
@@ -526,21 +546,26 @@ class ServiceData extends JPanel {
 		add(Util.packInJP(new FlowLayout(FlowLayout.LEFT), addService), BorderLayout.EAST);
 	}
 	
-	public boolean checkData() {
-		return (st.getRowCount() > 0);
-	}
-	
-	public void updateData(String id) {
+	private void updateData() {
 		st.setRowCount(0);
 		ids.clear();
 		
-		ArrayList<Service> as = MySqlConnector.getInstance().getServices(id);
+		ArrayList<Service> as = MySqlConnector.getInstance().getServices(clientId);
 		
 		for (Service s : as) {
 			ids.add(s.getExtId());
 			Object [] o = {s.getCampaign(), s.getService(), new SimpleDateFormat("dd-MM-yyyy").format(s.getDate())};
 			st.addRow(o);
-		}
+		}		
+	}
+	
+	public boolean checkData() {
+		return true;
+	}
+	
+	public void updateData(String id) {
+		clientId = id;
+		updateData();
 	}
 	
 	public void removeSelected() {
@@ -561,6 +586,10 @@ class ServiceData extends JPanel {
 			}
 		}
 	}
+	
+	public void addServiceActivated(boolean b) {
+		addService.setVisible(b);
+	}
 }
 
 class ServiceTable extends DefaultTableModel {
@@ -568,7 +597,7 @@ class ServiceTable extends DefaultTableModel {
 	private static final long serialVersionUID = 1L;
 
 	public ServiceTable() {
-		addColumn("Campaï¿½a");
+		addColumn("Campaña");
 		addColumn("Servicio");
 		addColumn("Fecha");
 	}
@@ -582,14 +611,134 @@ class ServiceTable extends DefaultTableModel {
 class ServiceEditor extends JDialog {
 
 	private static final long serialVersionUID = 1L;
+	
+	private JComboBox campaign;
+	private JComboBox service;
+	private JTextField yyyy;
+	private JTextField MM;
+	private JTextField dd;
+	
+	private JLabel labCampaign;
+	private JLabel labService;
+	private JLabel labDate;
+	
+	private JPanel labPanel;
+	private JPanel dataPanel;
+	
+	private JButton accept;
+	
+	private JPanel c;
+	
+	private String clientId;
 
-	public ServiceEditor() {
+	public ServiceEditor(String _c) {
+		clientId = _c;
 		init();
+		setLocationRelativeTo(null);
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void init() {
 		setModal(true);
+		setTitle("Nuevo Servicio");
+		setResizable(false);
+		
+		c = new JPanel(new BorderLayout());
+		c.setBorder(BorderFactory.createTitledBorder(" Servicio "));
+		
+		campaign = new JComboBox(importUserCampaigns().toArray());
+		service = new JComboBox();
+		updateServices();
+		
+		campaign.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				updateServices();
+			}
+		});
+		
+		yyyy = new JTextField(""+(new Date().getYear() + 1900), 5);
+		MM = new JTextField(""+(new Date().getMonth() + 1), 3);
+		dd = new JTextField(""+new Date().getDate(), 3);
+		accept = new JButton("Aceptar");
+		
+		labCampaign = new JLabel("Campaña");
+		labService = new JLabel("Servicio");
+		labDate = new JLabel("Fecha");
+		
+		labPanel = new JPanel(new GridLayout(0, 1, 0, 3));
+		dataPanel = new JPanel(new GridLayout(0, 1, 0, 3));
+		
+		campaign.setFont(App.DEFAULT_FONT);
+		service.setFont(App.DEFAULT_FONT);
+		yyyy.setFont(App.DEFAULT_FONT);
+		MM.setFont(App.DEFAULT_FONT);
+		dd.setFont(App.DEFAULT_FONT);
+		
+		accept.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Client client = new Client();
+				client.setId(new Dni(clientId));
+								
+				if (checkData()) {
+					
+					int y = Integer.parseInt(yyyy.getText().trim());
+					int m = Integer.parseInt(MM.getText().trim());
+					int d = Integer.parseInt(dd.getText().trim());
+					
+					Service ms = (Service)service.getSelectedItem();
+					ms.setCampaign(((Campaign)campaign.getSelectedItem()).toString());
+					ms.setDate(new Date(y - 1900, m - 1, d));
+					ms.setTlf_1("");
+					ms.setTlf_2("");
+					
+					MySqlConnector.getInstance().addService(ms, client);
+					dispose();
+				}
+			}
+		});
+		
+		labPanel.add(labCampaign);
+		labPanel.add(labService);
+		labPanel.add(labDate);
+		
+		dataPanel.add(campaign);
+		dataPanel.add(service);
+		dataPanel.add(Util.packInJP(new FlowLayout(), dd, new JLabel("/"), MM, new JLabel("/"), yyyy));
+		
+		c.setLayout(new BorderLayout(10, 5));
+		c.add(labPanel, BorderLayout.WEST);
+		c.add(dataPanel);
+		c.add(Util.packInJP(new FlowLayout(FlowLayout.LEFT), accept), BorderLayout.SOUTH);
+		
+		setLayout(new BorderLayout());
+		add(c);
 		
 		pack();
+	}
+	
+	private boolean checkData() {
+		try {
+			Integer.parseInt(yyyy.getText().trim());
+			Integer.parseInt(MM.getText().trim());
+			Integer.parseInt(dd.getText().trim());
+		}
+		catch (NumberFormatException e) {return false;}
+		
+		return true;
+	}
+	private ArrayList<Campaign> importUserCampaigns() {
+		return MySqlConnector.getInstance().getCampaigns(App.user);
+	}
+	
+	private void updateServices() {
+		service.removeAllItems();
+		
+		for (Service s : ((Campaign)campaign.getSelectedItem()).getServices().values()) {
+			service.addItem(s);
+		}
 	}
 }
