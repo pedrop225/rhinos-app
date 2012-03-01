@@ -65,7 +65,7 @@ public class AddContract extends JFrame {
 	}
 	
 	private void init() {
-		setTitle("Añadir Contrato");
+		setTitle("Aï¿½adir Contrato");
 		setLayout(new BorderLayout());
 		
 		cliData = new ClientData();
@@ -263,8 +263,8 @@ class ClientData extends JPanel {
 		String [] ids = {"", "Dni", "Nie", "Cif"};
 		idSelector = new JComboBox(ids);
 		labName = new JLabel("Nombre:");
-		labTel = new JLabel("Teléfono:");
-		labTelAux = new JLabel("Teléfono Aux:");
+		labTel = new JLabel("Telï¿½fono:");
+		labTelAux = new JLabel("Telï¿½fono Aux:");
 		labMail = new JLabel("Mail:");
 		
 		nif = new JTextField(AddContract.SFIELD);
@@ -298,7 +298,7 @@ class ClientData extends JPanel {
 		dataPanel.add(Util.packInJP(mail));
 		
 		addressPanel = new JPanel(new BorderLayout());
-		addressPanel.setBorder(BorderFactory.createTitledBorder(" Dirección "));
+		addressPanel.setBorder(BorderFactory.createTitledBorder(" Direcciï¿½n "));
 		addressPanel.add(new JScrollPane(address));
 				
 		add(labsPanel, BorderLayout.WEST);
@@ -390,14 +390,14 @@ class ConsultantData extends JPanel {
 	
 	public ConsultantData() {
 		init();
-		setBorder(BorderFactory.createTitledBorder(" Asesoría "));
+		setBorder(BorderFactory.createTitledBorder(" Asesorï¿½a "));
 	}
 	
 	private void init() {
-		labCons = new JLabel("Asesoría:");
+		labCons = new JLabel("Asesorï¿½a:");
 		labPerson = new JLabel("Asesor:");
-		labTel = new JLabel("Teléfono:");
-		labTelAux = new JLabel("Teléfono Aux:");
+		labTel = new JLabel("Telï¿½fono:");
+		labTelAux = new JLabel("Telï¿½fono Aux:");
 		labMail = new JLabel("Mail:");
 		
 		cons = new JTextField(AddContract.LFIELD);
@@ -516,7 +516,7 @@ class ServiceData extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Adding new Service ..");
+				System.out.println("Adding new Service ...");
 			}
 		});
 		
@@ -568,7 +568,7 @@ class ServiceTable extends DefaultTableModel {
 	private static final long serialVersionUID = 1L;
 
 	public ServiceTable() {
-		addColumn("Campaña");
+		addColumn("Campaï¿½a");
 		addColumn("Servicio");
 		addColumn("Fecha");
 	}
