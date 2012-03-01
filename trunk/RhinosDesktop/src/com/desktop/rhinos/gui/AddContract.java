@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -28,6 +30,7 @@ import com.android.rhinos.gest.Client;
 import com.android.rhinos.gest.Dni;
 import com.android.rhinos.gest.Id;
 import com.android.rhinos.gest.Nie;
+import com.android.rhinos.gest.Service;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 
@@ -163,6 +166,8 @@ public class AddContract extends JFrame {
 		cliData.getTelAux().setText(c.getTlf_2());
 		cliData.getMail().setText(c.getMail());
 		cliData.getAddress().setText(c.getAddress());
+		
+		serData.updateData(c.getId().toString());
 	}
 	
 	private void setFieldsEditable(boolean editable) {
@@ -496,6 +501,16 @@ class ServiceData extends JPanel {
 	public boolean checkData() {
 		return (st.getRowCount() > 0);
 	}
+	
+	public void updateData(String id) {
+		st.setRowCount(0);
+		ArrayList<Service> as = MySqlConnector.getInstance().getServices(id);
+		
+		for (Service s : as) {
+			Object [] o = {s.getCampaign(), s.getService(), new SimpleDateFormat("dd-MM-yyyy").format(s.getDate())};
+			st.addRow(o);
+		}
+	}
 }
 
 class ServiceTable extends DefaultTableModel {
@@ -506,7 +521,6 @@ class ServiceTable extends DefaultTableModel {
 		addColumn("Campaña");
 		addColumn("Servicio");
 		addColumn("Fecha");
-		addColumn("Comisión");
 	}
 	
 	@Override
