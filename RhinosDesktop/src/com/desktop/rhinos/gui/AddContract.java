@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -477,6 +479,9 @@ class ServiceData extends JPanel {
 	
 	private JTable table;
 	private ServiceTable st;
+	private JButton addService;
+	
+	private ArrayList<Integer> ids;
 	
 	public ServiceData() {
 		init();
@@ -486,16 +491,39 @@ class ServiceData extends JPanel {
 	private void init() {
 		st = new ServiceTable();
 		table = new JTable(st);
+		ids = new ArrayList<Integer>();
+		addService = new JButton("Nuevo");
+		
 		table.setFont(App.DEFAULT_FONT);
 		table.getTableHeader().setFont(App.DEFAULT_FONT.deriveFont(Font.BOLD).deriveFont(12f));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		table.setPreferredScrollableViewportSize(new Dimension(0, 75));
 		
-		setLayout(new BorderLayout());
+		table.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				super.keyReleased(e);
+				
+				switch (e.getKeyCode()) {
+					case KeyEvent.VK_DELETE: removeSelected(); break;
+					default:
+				}
+			}
+		});
 		
-		add(table.getTableHeader(), BorderLayout.PAGE_START);
+		addService.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Adding new Service ..");
+			}
+		});
+		
+		setLayout(new BorderLayout());
+	
 		add(new JScrollPane(table));
+		add(Util.packInJP(new FlowLayout(FlowLayout.LEFT), addService), BorderLayout.EAST);
 	}
 	
 	public boolean checkData() {
@@ -504,11 +532,33 @@ class ServiceData extends JPanel {
 	
 	public void updateData(String id) {
 		st.setRowCount(0);
+		ids.clear();
+		
 		ArrayList<Service> as = MySqlConnector.getInstance().getServices(id);
 		
 		for (Service s : as) {
+			ids.add(s.getExtId());
 			Object [] o = {s.getCampaign(), s.getService(), new SimpleDateFormat("dd-MM-yyyy").format(s.getDate())};
 			st.addRow(o);
+		}
+	}
+	
+	public void removeSelected() {
+		if (table.getSelectedRowCount() > 0) {
+			
+			int r = table.convertRowIndexToModel(table.getSelectedRow());
+			int c = table.convertColumnIndexToModel(1);
+			String name = (String)table.getValueAt(r, c);
+			
+			if (JOptionPane.showConfirmDialog(null, "Desea eliminar el servicio \""+name+"\"? ", "Elimindo servicio ..", 
+											  JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
+				
+				Service s = new Service();
+				s.setExtId(ids.get(r));
+				
+				st.removeRow(r);
+				MySqlConnector.getInstance().deleteService(s);
+			}
 		}
 	}
 }
@@ -526,5 +576,20 @@ class ServiceTable extends DefaultTableModel {
 	@Override
 	public boolean isCellEditable(int row, int column) {
 		return false;
+	}
+}
+
+class ServiceEditor extends JDialog {
+
+	private static final long serialVersionUID = 1L;
+
+	public ServiceEditor() {
+		init();
+	}
+	
+	private void init() {
+		setModal(true);
+		
+		pack();
 	}
 }
