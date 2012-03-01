@@ -1,7 +1,6 @@
 package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -14,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import com.android.rhinos.gest.Client;
@@ -41,22 +39,8 @@ public class ClientsTable extends JPanel {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		
-		table.getColumn(tm.getColumnName(0)).setCellRenderer(new DefaultTableCellRenderer() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value,
-					boolean isSelected, boolean hasFocus, int row, int column) {
-				
-				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				return c;
-			}
-		});
-		
 		setLayout(new BorderLayout());
 		
-		add(table.getTableHeader(), BorderLayout.PAGE_START);
 		add(new JScrollPane(table));
 		
 		table.addMouseListener(new MouseAdapter() {
@@ -117,7 +101,6 @@ public class ClientsTable extends JPanel {
 			
 			if (JOptionPane.showConfirmDialog(null, "Desea eliminar el cliente \""+name+"\"? ", "Elimindo cliente ..", 
 											  JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
-				System.out.println("yes");
 				tm.removeRow(r);
 				MySqlConnector.getInstance().deleteClient(id);
 			}
