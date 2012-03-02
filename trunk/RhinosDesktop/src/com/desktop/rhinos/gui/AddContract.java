@@ -154,7 +154,7 @@ public class AddContract extends JFrame {
 											  	"Error", JOptionPane.ERROR_MESSAGE);
 			}
 			else
-				setFieldsEditable(false);
+				setFieldsEditable(v);
 		}
 		else	
 			setFieldsEditable(false);
