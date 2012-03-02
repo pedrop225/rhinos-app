@@ -54,7 +54,7 @@ public class Logger extends JDialog {
 	
 	private void init() {
 		setModal(true);
-		setTitle("Login ..");
+		setTitle("Login");
 		
 		user = new JLabel("Usuario: ");
 		pass = new JLabel("Contraseña: ");
@@ -108,7 +108,7 @@ public class Logger extends JDialog {
 		pack();
 	}
 	
-	public void clean() {
+	public void clear() {
 		userField.setText("");
 		passField.setText("");
 	}

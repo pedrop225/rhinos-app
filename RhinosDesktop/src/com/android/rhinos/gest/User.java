@@ -66,6 +66,7 @@ public class User extends Client {
 	}
 	
 	public void clear() {
+		super.clear();
 		user = "";
 		extId = -1;
 		type = DEFAULT;

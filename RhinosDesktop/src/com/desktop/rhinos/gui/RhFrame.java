@@ -10,6 +10,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
+import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 
 public class RhFrame extends JFrame {
@@ -27,7 +28,6 @@ public class RhFrame extends JFrame {
 	private JMenuItem edClients;
 	private JMenu edContracts;
 	private JMenuItem addContract;
-	private JMenuItem editContract;
 	private JMenu edCampaigns;
 	private JMenu edUsers;
 	
@@ -35,6 +35,9 @@ public class RhFrame extends JFrame {
 	private JMenuItem about;
 	
 	private RhPanel rhPanel;
+	
+	private Logger log;
+	private MySqlConnector mySql;
 		
 	public RhFrame() {
 		init();
@@ -44,6 +47,9 @@ public class RhFrame extends JFrame {
 	private void init() {
 		setTitle("Rhinos Desktop");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		log = new Logger(this);
+		mySql = MySqlConnector.getInstance();
 		
 		initMenuBar();
 		
@@ -59,7 +65,7 @@ public class RhFrame extends JFrame {
 		
 		//----------------------------------------
 		mFile = new JMenu("Archivo");
-		logOut = new JMenuItem("Cerrar Sesion");
+		logOut = new JMenuItem("Cerrar Sesión");
 		update = new JMenuItem("Actualizar");
 		exit = new JMenuItem("Salir");
 		
@@ -77,7 +83,6 @@ public class RhFrame extends JFrame {
 		edClients = new JMenuItem("Cliente .."); 
 		edContracts = new JMenu("Contratos");
 		addContract = new JMenuItem("Añadir Contrato");
-		editContract = new JMenuItem("Editar Contrato");
 		edCampaigns = new JMenu("Campañas");
 		edUsers = new JMenu("Usuarios");
 		
@@ -85,14 +90,12 @@ public class RhFrame extends JFrame {
 		edClients.setFont(App.DEFAULT_FONT);
 		edContracts.setFont(App.DEFAULT_FONT);
 		addContract.setFont(App.DEFAULT_FONT);
-		editContract.setFont(App.DEFAULT_FONT);
 		edCampaigns.setFont(App.DEFAULT_FONT);
 		edUsers.setFont(App.DEFAULT_FONT);
 	
 		mEdit.add(edClients);
 		mEdit.add(edContracts);
 		edContracts.add(addContract);
-		edContracts.add(editContract);
 		mEdit.add(edCampaigns);
 		mEdit.add(edUsers);
 		//----------------------------------------
@@ -115,6 +118,38 @@ public class RhFrame extends JFrame {
 	
 	private void initmBarListeners() {
 		//----------------------------------------
+		log.getAcceptButton().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {	
+
+				if (mySql.login(log.getUserString(), log.getPasswordString())) {
+					log.setVisible(false);
+					log.clear();
+					showUserBanner();
+					updateClientsTableData();
+					validate();				
+				}
+			}
+		});
+		
+		logOut.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				App.user.clear();
+				rhPanel.clear();
+				log.setVisible(true);
+			}
+		});
+		
+		update.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updateClientsTableData();
+			}
+		});
+		
 		exit.addActionListener(new ActionListener() {
 			
 			@Override
@@ -146,5 +181,9 @@ public class RhFrame extends JFrame {
 	
 	public void setUpdateAction(ActionListener e) {
 		update.addActionListener(e);
+	}
+	
+	public Logger getLogger() {
+		return log;
 	}
 }
