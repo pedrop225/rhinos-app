@@ -55,6 +55,8 @@ public class AddContract extends JFrame {
 	
 	private JButton accept;
 	
+	private boolean editMode;
+	
 	public AddContract(JFrame locIn) {
 		init();
 		setLocationRelativeTo(locIn);
@@ -62,12 +64,12 @@ public class AddContract extends JFrame {
 	
 	public AddContract(JFrame locIn, String id) {
 		init();
-		setLocationRelativeTo(locIn);
-		prepareNonEditableContract(id);
+		setLocationRelativeTo(locIn);		
+		prepareContract(id);
 	}
 	
 	private void init() {
-		setTitle("Añadir Contrato");
+		setTitle((editMode) ? "Editar Cliente" : "Añadir Contrato");
 		setResizable(false);
 		setLayout(new BorderLayout());
 		
@@ -98,7 +100,12 @@ public class AddContract extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (checkData()) {
-					MySqlConnector.getInstance().addClient(cliData.getClient());
+					if (editMode){
+						System.out.println("Modificando ..");
+					}
+					else
+						MySqlConnector.getInstance().addClient(cliData.getClient());
+					
 					dispose();
 				}
 			}
@@ -139,24 +146,52 @@ public class AddContract extends JFrame {
 		if (v) {
 			Client c = MySqlConnector.getInstance().clientExists(id.toString());
 			if (c != null) {
-				prepareNonEditableContract(c);
+				prepareContract(c);
+			}
+			else if (editMode) {
+				JOptionPane.showMessageDialog(this, "Error: No se han registrado servicios para este cliente.", 
+											  	"Error", JOptionPane.ERROR_MESSAGE);
 			}
 			else
-				setFieldsEditable(v);
+				setFieldsEditable(false);
 		}
 		else	
-			setFieldsEditable(v);
+			setFieldsEditable(false);
 	}
 	
 	private boolean checkData() {
 		return (cliData.checkData() && conData.checkData() && serData.checkData());
 	}
 	
-	private void prepareNonEditableContract(String id) {
+	private void prepareEditableContract(Client c) {		
+		accept.setVisible(true);
+		cliData.setFieldsEditable(true);
+		
+		cliData.getNif().setEditable(false);
+		cliData.getIdSelector().setVisible(false);
+		
+		serData.updateData(c.getId().toString());
+	}
+	
+	private void prepareContract(String id) {
 		MySqlConnector con =  MySqlConnector.getInstance();
 		Client c = con.clientExists(id);
 		
-		prepareNonEditableContract(c);
+		prepareContract(c);
+	}
+	
+	private void prepareContract(Client c) {
+		cliData.getNif().setText(c.getId().toString());
+		cliData.getClientName().setText(c.getName());
+		cliData.getTel().setText(c.getTlf_1());
+		cliData.getTelAux().setText(c.getTlf_2());
+		cliData.getMail().setText(c.getMail());
+		cliData.getAddress().setText(c.getAddress());
+		
+		if (editMode)
+			prepareEditableContract(c);
+		else
+			prepareNonEditableContract(c);
 	}
 	
 	private void prepareNonEditableContract(Client c) {
@@ -164,13 +199,6 @@ public class AddContract extends JFrame {
 		cliData.getNif().setEditable(false);
 		cliData.getIdSelector().setVisible(false);
 		conData.getSearchButton().setVisible(false);
-		
-		cliData.getNif().setText(c.getId().toString());
-		cliData.getClientName().setText(c.getName());
-		cliData.getTel().setText(c.getTlf_1());
-		cliData.getTelAux().setText(c.getTlf_2());
-		cliData.getMail().setText(c.getMail());
-		cliData.getAddress().setText(c.getAddress());
 		
 		serData.updateData(c.getId().toString());
 		serData.addServiceActivated(true);
@@ -231,6 +259,11 @@ public class AddContract extends JFrame {
 
 	public JButton getSearchButton() {
 		return conData.getSearchButton();
+	}
+	
+	public void setEditMode(boolean editMode) {
+		setTitle("Editar Cliente");
+		this.editMode = editMode;
 	}
 }
 

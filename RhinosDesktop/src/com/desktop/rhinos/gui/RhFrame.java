@@ -38,6 +38,8 @@ public class RhFrame extends JFrame {
 	
 	private Logger log;
 	private MySqlConnector mySql;
+	
+	private RhFrame _this = this;
 		
 	public RhFrame() {
 		init();
@@ -155,6 +157,16 @@ public class RhFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
+			}
+		});
+		
+		edClients.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				AddContract ac = new AddContract(_this);
+				ac.setEditMode(true);
+				ac.setVisible(true);
 			}
 		});
 		
