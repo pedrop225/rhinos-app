@@ -38,6 +38,7 @@ public class ServiceTable extends RhTable {
 
 		ids = new ArrayList<Integer>();
 		addService = new JButton("Nuevo");
+		
 		addService.setVisible(false);
 		lookUp.setVisible(false);
 		delete.setVisible(false);
@@ -81,10 +82,6 @@ public class ServiceTable extends RhTable {
 		}		
 	}
 	
-	public boolean checkData() {
-		return true;
-	}
-	
 	public void updateTableData(String id) {
 		clientId = id;
 		updateTableData();
@@ -107,6 +104,10 @@ public class ServiceTable extends RhTable {
 				MySqlConnector.getInstance().deleteService(s);
 			}
 		}
+	}
+	
+	public boolean checkData() {
+		return true;
 	}
 	
 	public void addServiceActivated(boolean b) {
