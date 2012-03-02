@@ -4,14 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.desktop.rhinos.connector.MySqlConnector.App;
+import com.desktop.rhinos.gui.table.ClientTable;
 
 public class RhPanel extends JPanel {
 	
@@ -19,12 +17,9 @@ public class RhPanel extends JPanel {
 	
 	private JPanel north;
 	private JPanel west;
-	private ClientsTable clients;
+	private ClientTable clients;
 	private JPanel south;
 	
-	private JButton lookUp;
-	private JButton delete;
-
 	public RhPanel() {
 		init();
 	}
@@ -32,36 +27,12 @@ public class RhPanel extends JPanel {
 	private void init() {
 		north = new JPanel(new BorderLayout());
 		west = new JPanel();
-		clients = new ClientsTable();
-		south = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		
-		lookUp = new JButton("Ver");
-		delete = new JButton("Eliminar");
-		
-		lookUp.setFont(App.DEFAULT_FONT);
-		delete.setFont(App.DEFAULT_FONT);
-		
-		lookUp.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				clients.lookUpSelected();
-			}
-		});
-		
-		delete.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				clients.removeSelected();
-			}
-		});
+		clients = new ClientTable();
+		south = new JPanel();
 		
 		setLayout(new BorderLayout());
 		
 		north.add(getUserBanner());
-		south.add(lookUp);
-		south.add(delete);
 		
 		add(north, BorderLayout.NORTH);
 		add(west, BorderLayout.WEST);
