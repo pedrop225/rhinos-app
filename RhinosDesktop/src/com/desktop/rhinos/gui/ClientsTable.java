@@ -2,6 +2,8 @@ package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -12,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -39,6 +42,13 @@ public class ClientsTable extends JPanel {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		
+		//removing ENTER behavior
+		table.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		
 		setLayout(new BorderLayout());
 		
 		add(new JScrollPane(table));
@@ -60,6 +70,7 @@ public class ClientsTable extends JPanel {
 				
 				switch (e.getKeyCode()) {
 					case KeyEvent.VK_DELETE: removeSelected(); break;
+					case KeyEvent.VK_ENTER: lookUpSelected(); break;
 					case KeyEvent.VK_F5: updateTableData(); break;
 					default:
 				}
