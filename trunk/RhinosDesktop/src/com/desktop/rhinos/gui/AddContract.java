@@ -121,7 +121,7 @@ public class AddContract extends JFrame {
 		switch (cliData.getIdSelector().getSelectedIndex()) {
 			case 1: id = new Dni(t); break;
 			case 2: id = new Nie(t); break;
-			case 3: id = new Cif(t);
+			case 3: id = new Cif(t); break;
 			default: id = new Dni("");
 		}
 		

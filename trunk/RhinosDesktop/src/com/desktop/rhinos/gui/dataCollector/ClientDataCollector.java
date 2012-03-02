@@ -142,7 +142,7 @@ public class ClientDataCollector extends JPanel {
 		switch (idSelector.getSelectedIndex()) {
 			case 1: c.setId(new Dni(t)); break;
 			case 2: c.setId(new Nie(t)); break;
-			case 3: c.setId(new Cif(t));
+			case 3: c.setId(new Cif(t)); break;
 			default: c.setId(new Dni(""));
 		}
 		
