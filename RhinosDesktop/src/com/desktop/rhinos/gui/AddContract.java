@@ -101,9 +101,8 @@ public class AddContract extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (checkData()) {
-					if (editMode){
-						System.out.println("Modificando ..");
-					}
+					if (editMode)
+						MySqlConnector.getInstance().editClient(cliData.getClient());
 					else
 						MySqlConnector.getInstance().addClient(cliData.getClient());
 					
