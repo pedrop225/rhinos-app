@@ -93,4 +93,10 @@ public class RhPanel extends JPanel {
 		AddContract ac = new AddContract(null);
 		ac.setVisible(true);
 	}
+	
+	public void clear() {
+		removeAll();
+		init();
+		validate();
+	}
 }

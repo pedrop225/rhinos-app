@@ -717,6 +717,11 @@ class ServiceEditor extends JDialog {
 		setLayout(new BorderLayout());
 		add(c);
 		
+		//adding free space
+		add(new JPanel(), BorderLayout.WEST);
+		add(new JPanel(), BorderLayout.EAST);
+		add(new JPanel(), BorderLayout.SOUTH);
+
 		pack();
 	}
 	

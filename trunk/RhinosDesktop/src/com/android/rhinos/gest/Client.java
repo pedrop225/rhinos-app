@@ -92,6 +92,15 @@ public class Client implements Serializable, Comparable<Client> {
 		return compareTo(u) == 0;
 	}
 	
+	public void clear() {
+		id = null;
+		name = null;
+		tlf_1 = null;
+		tlf_2 = null;
+		mail = null;
+		address = null;
+	}
+	
 	@Override
 	public String toString() {
 		return name;

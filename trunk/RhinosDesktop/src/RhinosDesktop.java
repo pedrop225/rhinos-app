@@ -1,10 +1,11 @@
+import com.desktop.rhinos.gui.RhFrame;
+
 
 public class RhinosDesktop {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		new DesktopWork();	
+		RhFrame f = new RhFrame();
+		f.setVisible(true);
+		f.getLogger().setVisible(true);
 	}
 }
