@@ -180,6 +180,27 @@ public class MySqlConnector implements Connector {
 	    
 		return false;
 	}
+	
+	@Override
+	public boolean editClient(Client c) {
+
+	    //the mail data to send
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("id", cipher.encode(c.getId().toString())));
+	    nameValuePairs.add(new BasicNameValuePair("name", cipher.encode(c.getName())));
+	    nameValuePairs.add(new BasicNameValuePair("tlf_1", cipher.encode(c.getTlf_1())));
+	    nameValuePairs.add(new BasicNameValuePair("tlf_2", cipher.encode(c.getTlf_2())));
+	    nameValuePairs.add(new BasicNameValuePair("mail", cipher.encode(c.getMail())));
+	    nameValuePairs.add(new BasicNameValuePair("address", cipher.encode(c.getAddress())));
+	    
+	    try {
+	        getDataFromDB(App.external_path+"/db_edit_client.php", nameValuePairs);
+	        return true;
+	    }
+	    catch (Exception e) {}
+	    
+		return false;
+	}
 
 	@Override
 	public ArrayList<Client> getClients(User u) {
