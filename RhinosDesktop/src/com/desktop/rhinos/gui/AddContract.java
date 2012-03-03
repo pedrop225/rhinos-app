@@ -68,6 +68,7 @@ public class AddContract extends JFrame {
 		buttons.add(accept);
 		
 		setFieldsEditable(false);
+		conData.setFieldsEditable(false);
 		
 		centerPanel = new JPanel(new BorderLayout());
 		southPanel = new JPanel(new BorderLayout());
@@ -185,7 +186,6 @@ public class AddContract extends JFrame {
 	
 	private void setFieldsEditable(boolean editable) {
 		cliData.setFieldsEditable(editable);
-		conData.setFieldsEditable(editable);
 		accept.setVisible(editable);
 	}
 	
@@ -216,24 +216,24 @@ public class AddContract extends JFrame {
 		return accept;
 	}
 	
-	public JTextField getConsultant() {
-		return conData.getConsultant();
+	public JTextField getConsultancyName() {
+		return conData.getConsultancyName();
 	}
 
-	public JTextField getConsultantPerson() {
-		return conData.getConsultantPerson();
+	public JTextField getConsultantName() {
+		return conData.getConsultantName();
 	}
 
-	public JTextField getConsultantTel() {
-		return conData.getConsultantTel();
+	public JTextField getConsultancyTel() {
+		return conData.getTel();
 	}
 
-	public JTextField getConsultantTelAux() {
-		return conData.getConsultantTelAux();
+	public JTextField getConsultancyTelAux() {
+		return conData.getTelAux();
 	}
 
-	public JTextField getConsultantMail() {
-		return conData.getConsultantMail();
+	public JTextField getConsultancyMail() {
+		return conData.getMail();
 	}
 
 	public JButton getSearchButton() {
