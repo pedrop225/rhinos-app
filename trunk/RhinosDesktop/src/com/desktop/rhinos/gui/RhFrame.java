@@ -12,6 +12,7 @@ import javax.swing.JSeparator;
 
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
+import com.desktop.rhinos.gui.table.ConsultancyTableDialog;
 
 public class RhFrame extends JFrame {
 
@@ -28,6 +29,9 @@ public class RhFrame extends JFrame {
 	private JMenuItem edClients;
 	private JMenu edContracts;
 	private JMenuItem addContract;
+	private JMenu edConsultancy;
+	private JMenuItem listConsultancy;
+	private JMenuItem editConsultancy;
 	private JMenu edCampaigns;
 	private JMenu edUsers;
 	
@@ -85,6 +89,9 @@ public class RhFrame extends JFrame {
 		edClients = new JMenuItem("Cliente .."); 
 		edContracts = new JMenu("Contratos");
 		addContract = new JMenuItem("Añadir Contrato");
+		edConsultancy = new JMenu("Asesorías");
+		listConsultancy = new JMenuItem("Ver Asesorías");
+		editConsultancy = new JMenuItem("Editar Asesorías");
 		edCampaigns = new JMenu("Campañas");
 		edUsers = new JMenu("Usuarios");
 		
@@ -92,12 +99,18 @@ public class RhFrame extends JFrame {
 		edClients.setFont(App.DEFAULT_FONT);
 		edContracts.setFont(App.DEFAULT_FONT);
 		addContract.setFont(App.DEFAULT_FONT);
+		edConsultancy.setFont(App.DEFAULT_FONT);
+		listConsultancy.setFont(App.DEFAULT_FONT);
+		editConsultancy.setFont(App.DEFAULT_FONT);
 		edCampaigns.setFont(App.DEFAULT_FONT);
 		edUsers.setFont(App.DEFAULT_FONT);
 	
 		mEdit.add(edClients);
 		mEdit.add(edContracts);
 		edContracts.add(addContract);
+		mEdit.add(edConsultancy);
+		edConsultancy.add(listConsultancy);
+		edConsultancy.add(editConsultancy);
 		mEdit.add(edCampaigns);
 		mEdit.add(edUsers);
 		//----------------------------------------
@@ -175,6 +188,14 @@ public class RhFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				rhPanel.addContract();
+			}
+		});
+		
+		listConsultancy.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new ConsultancyTableDialog(_this, null);
 			}
 		});
 	}
