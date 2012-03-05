@@ -95,7 +95,7 @@ public class ServiceTable extends RhTable {
 			String name = (String)table.getValueAt(r, c);
 			
 			if (JOptionPane.showConfirmDialog(null, "Desea eliminar el servicio \""+name+"\"? ", "Elimindo servicio ..", 
-											  JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
+											  JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
 				
 				Service s = new Service();
 				s.setExtId(ids.get(r));

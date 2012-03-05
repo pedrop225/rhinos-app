@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.android.rhinos.gest.Consultancy;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.AddContract;
 import com.desktop.rhinos.gui.Util;
@@ -38,6 +39,7 @@ public class ConsultancyDataCollector extends JPanel {
 	
 	private JButton search;
 	
+	private Consultancy consultancy;
 	private ConsultancyDataCollector _this = this;
 	
 	public ConsultancyDataCollector() {
@@ -46,6 +48,7 @@ public class ConsultancyDataCollector extends JPanel {
 	}
 	
 	private void init() {
+		consultancy = new Consultancy();
 		labName = new JLabel("Nombre:");
 		labConsultant = new JLabel("Asesor:");
 		labTel = new JLabel("Teléfono:");
@@ -84,7 +87,7 @@ public class ConsultancyDataCollector extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ConsultancyTableDialog(null, _this).setVisible(true);
+				new ConsultancyTableDialog(null, _this, false).setVisible(true);
 			}
 		});
 		
@@ -137,5 +140,32 @@ public class ConsultancyDataCollector extends JPanel {
 	
 	public boolean checkData() {
 		return true;
+	}
+	
+	public void setData(Consultancy c) {
+			consultancy = c;
+		if (c != null) {
+			name.setText(c.getName());
+			consultant.setText(c.getConsultant());
+			tel.setText(c.getTlf_1());
+			telAux.setText(c.getTlf_2());
+			mail.setText(c.getMail());
+		}
+		else {
+			name.setText("");
+			consultant.setText("");
+			tel.setText("");
+			telAux.setText("");
+			mail.setText("");	
+		}
+	}
+	
+	public Consultancy getConsultancy() {
+		consultancy.setName(name.getText().trim());
+		consultancy.setConsultant(consultant.getText().trim());
+		consultancy.setTlf_1(tel.getText().trim());
+		consultancy.setTlf_2(telAux.getText().trim());
+		consultancy.setMail(mail.getText().trim());
+		return consultancy;
 	}
 }
