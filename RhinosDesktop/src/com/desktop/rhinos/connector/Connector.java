@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.Client;
+import com.android.rhinos.gest.Consultancy;
 import com.android.rhinos.gest.Service;
 import com.android.rhinos.gest.User;
 
@@ -46,4 +47,8 @@ public interface Connector {
 	public void grantCampaignPermission(User user, Campaign campaign);
 
 	public void removeCampaingPermission(User user, Campaign campaign);
+	
+	public ArrayList<Consultancy> getConsultancy();
+	
+	public void deleteConsultancy(int id);
 }

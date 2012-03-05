@@ -30,6 +30,7 @@ public class RhFrame extends JFrame {
 	private JMenu edContracts;
 	private JMenuItem addContract;
 	private JMenu edConsultancy;
+	private JMenuItem addConsultancy;
 	private JMenuItem listConsultancy;
 	private JMenuItem editConsultancy;
 	private JMenu edCampaigns;
@@ -90,6 +91,7 @@ public class RhFrame extends JFrame {
 		edContracts = new JMenu("Contratos");
 		addContract = new JMenuItem("Añadir Contrato");
 		edConsultancy = new JMenu("Asesorías");
+		addConsultancy = new JMenuItem("Añadir Asesoría");
 		listConsultancy = new JMenuItem("Ver Asesorías");
 		editConsultancy = new JMenuItem("Editar Asesorías");
 		edCampaigns = new JMenu("Campañas");
@@ -100,6 +102,7 @@ public class RhFrame extends JFrame {
 		edContracts.setFont(App.DEFAULT_FONT);
 		addContract.setFont(App.DEFAULT_FONT);
 		edConsultancy.setFont(App.DEFAULT_FONT);
+		addConsultancy.setFont(App.DEFAULT_FONT);
 		listConsultancy.setFont(App.DEFAULT_FONT);
 		editConsultancy.setFont(App.DEFAULT_FONT);
 		edCampaigns.setFont(App.DEFAULT_FONT);
@@ -109,6 +112,7 @@ public class RhFrame extends JFrame {
 		mEdit.add(edContracts);
 		edContracts.add(addContract);
 		mEdit.add(edConsultancy);
+		edConsultancy.add(addConsultancy);
 		edConsultancy.add(listConsultancy);
 		edConsultancy.add(editConsultancy);
 		mEdit.add(edCampaigns);
@@ -191,11 +195,27 @@ public class RhFrame extends JFrame {
 			}
 		});
 		
+		addConsultancy.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new AddConsultancy(_this).setVisible(true);
+			}
+		});
+		
 		listConsultancy.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new ConsultancyTableDialog(_this, null);
+				new ConsultancyTableDialog(_this, null, false).setVisible(true);
+			}
+		});
+		
+		editConsultancy.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new ConsultancyTableDialog(_this, null, true).setVisible(true);
 			}
 		});
 	}

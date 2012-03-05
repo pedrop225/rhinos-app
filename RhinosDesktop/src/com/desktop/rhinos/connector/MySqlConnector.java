@@ -25,6 +25,7 @@ import com.android.rhinos.RCipher;
 import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.Cif;
 import com.android.rhinos.gest.Client;
+import com.android.rhinos.gest.Consultancy;
 import com.android.rhinos.gest.Dni;
 import com.android.rhinos.gest.Id;
 import com.android.rhinos.gest.Nie;
@@ -508,6 +509,61 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("campaign", cipher.encode(campaign.getName())));
 	    
 	    getDataFromDB(App.external_path+"/db_remove_campaign_permission.php", nameValuePairs);
+	}
+	
+	@Override
+	public ArrayList<Consultancy> getConsultancy() {
+		ArrayList<Consultancy> result = new ArrayList<Consultancy>();
+		
+		try {
+			JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_consultancy.php", new ArrayList<NameValuePair>());
+			
+			if (jsonArray != null) {
+				for (int i = 0; i < jsonArray.length(); i++) {
+					Consultancy u = new Consultancy();
+					JSONObject jsonObj = jsonArray.getJSONObject(i);
+	
+					u.setExtId(jsonObj.getInt("id"));
+					u.setName(cipher.decode(jsonObj.getString("name")));
+					u.setConsultant(cipher.decode(jsonObj.getString("consultant")));
+					u.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
+					u.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
+					u.setMail(cipher.decode(jsonObj.getString("mail")));
+					
+					result.add(u);
+				}
+			}
+		}
+		catch (Exception e) {e.printStackTrace();}
+		
+		return result;
+	}
+	
+	public boolean addConsultancy(Consultancy c) {
+
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("name", cipher.encode(c.getName())));
+	    nameValuePairs.add(new BasicNameValuePair("consultant", cipher.encode(c.getConsultant())));
+	    nameValuePairs.add(new BasicNameValuePair("tlf_1", cipher.encode(c.getTlf_1())));
+	    nameValuePairs.add(new BasicNameValuePair("tlf_2", cipher.encode(c.getTlf_2())));
+	    nameValuePairs.add(new BasicNameValuePair("mail", cipher.encode(c.getMail())));
+	    
+	    try {
+	        getDataFromDB(App.external_path+"/db_add_consultancy.php", nameValuePairs);
+	        return true;
+	    }
+	    catch (Exception e) {}
+	    
+		return false;
+	}
+	
+	@Override
+	public void deleteConsultancy(int id) {
+		
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("id", id+""));
+	    
+	    getDataFromDB(App.external_path+"/db_delete_consultancy.php", nameValuePairs);
 	}
 	
 	private JSONArray getDataFromDB(String url, ArrayList<NameValuePair> nameValuePairs) {

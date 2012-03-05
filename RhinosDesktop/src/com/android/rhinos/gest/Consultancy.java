@@ -4,9 +4,22 @@ public class Consultancy extends Client {
 	
 	private static final long serialVersionUID = 1L;
 
+	private int extId;
 	private String consultant;
 	
 	public Consultancy() {}
+	
+	public void setExtId(int extId) {
+		this.extId = extId;
+	}
+	
+	public int getExtId() {
+		return extId;
+	}
+	
+	public void setConsultant(String consultant) {
+		this.consultant = consultant;
+	}
 	
 	public String getConsultant() {
 		return consultant;
@@ -14,5 +27,9 @@ public class Consultancy extends Client {
 	
 	public void setString(String consultant) {
 		this.consultant = consultant;
+	}
+	
+	public String toString() {
+		return getName();
 	}
 }

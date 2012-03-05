@@ -44,7 +44,7 @@ public class ClientTable extends RhTable {
 			String name = (String)table.getValueAt(r, _c);
 			
 			if (JOptionPane.showConfirmDialog(null, "Desea eliminar el cliente \""+name+"\"? ", "Elimindo cliente ..", 
-											  JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
+											  JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
 				tm.removeRow(r);
 				MySqlConnector.getInstance().deleteClient(id);
 			}
