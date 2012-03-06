@@ -62,7 +62,8 @@ public class ConsultancyTable extends RhTable {
 		editButton.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("saving data ...");
+				MySqlConnector.getInstance().editConsultancy(display.getConsultancy());
+				updateTableData();
 			}
 		});
 		
