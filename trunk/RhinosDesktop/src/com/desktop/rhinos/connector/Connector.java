@@ -50,5 +50,7 @@ public interface Connector {
 	
 	public ArrayList<Consultancy> getConsultancy();
 	
+	public Consultancy getConsultancy(int id);
+	
 	public void deleteConsultancy(int id);
 }

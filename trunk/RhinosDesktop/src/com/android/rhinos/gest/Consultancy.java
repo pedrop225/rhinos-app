@@ -7,7 +7,9 @@ public class Consultancy extends Client {
 	private int extId;
 	private String consultant;
 	
-	public Consultancy() {}
+	public Consultancy() {
+		extId = -1;
+	}
 	
 	public void setExtId(int extId) {
 		this.extId = extId;
