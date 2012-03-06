@@ -48,11 +48,6 @@ public class ConsultancyDataCollector extends JPanel {
 		setBorder(BorderFactory.createTitledBorder(" Asesoría "));
 	}
 	
-	public ConsultancyDataCollector(int extId) {
-		consultancy.setExtId(extId);
-		setData(MySqlConnector.getInstance().getConsultancy(extId));
-	}
-	
 	private void init() {
 		consultancy = new Consultancy();
 		labName = new JLabel("Nombre:");
@@ -149,8 +144,8 @@ public class ConsultancyDataCollector extends JPanel {
 	}
 	
 	public void setData(Consultancy c) {
-			consultancy = c;
 		if (c != null) {
+			consultancy = c;
 			name.setText(c.getName());
 			consultant.setText(c.getConsultant());
 			tel.setText(c.getTlf_1());
@@ -164,6 +159,11 @@ public class ConsultancyDataCollector extends JPanel {
 			telAux.setText("");
 			mail.setText("");	
 		}
+	}
+	
+	public void setData(int id) {
+		Consultancy c = MySqlConnector.getInstance().getConsultancy(id);
+		setData(c);
 	}
 	
 	public Consultancy getConsultancy() {

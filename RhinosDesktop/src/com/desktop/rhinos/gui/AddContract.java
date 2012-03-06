@@ -86,10 +86,12 @@ public class AddContract extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (checkData()) {
+					Client c = cliData.getClient();
+					c.setConsultancy(conData.getConsultancy().getExtId());
 					if (editMode)
-						MySqlConnector.getInstance().editClient(cliData.getClient());
+						MySqlConnector.getInstance().editClient(c);
 					else
-						MySqlConnector.getInstance().addClient(cliData.getClient());
+						MySqlConnector.getInstance().addClient(c);
 					
 					dispose();
 				}
@@ -156,7 +158,7 @@ public class AddContract extends JFrame {
 	private void prepareContract(String id) {
 		MySqlConnector con =  MySqlConnector.getInstance();
 		Client c = con.clientExists(id);
-		
+		conData.setData(c.getConsultancy());
 		prepareContract(c);
 	}
 	

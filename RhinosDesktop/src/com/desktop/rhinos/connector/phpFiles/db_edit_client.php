@@ -9,7 +9,8 @@
 								tlf_1='".$_REQUEST['tlf_1']."',
 								tlf_2='".$_REQUEST['tlf_2']."',
 								mail='".$_REQUEST['mail']."',
-								address='".$_REQUEST['address']."'
+								address='".$_REQUEST['address']."',
+								consultancy='".$_REQUEST['consultancy']."'
 								WHERE (id='".$_REQUEST['id']."')");	
 	mysql_close();
 ?>

@@ -20,6 +20,7 @@ public class Client implements Serializable, Comparable<Client> {
 	
 	public Client() {
 		services = new ArrayList<Service>();
+		consultancy = -1;
 	}
 	
 	public Id getId() {
