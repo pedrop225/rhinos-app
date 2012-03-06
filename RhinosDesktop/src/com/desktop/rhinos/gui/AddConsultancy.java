@@ -25,6 +25,7 @@ public class AddConsultancy extends JFrame {
 	
 	private void init() {
 		setTitle("Añadir Asesoría");
+		setResizable(false);
 		
 		dc = new ConsultancyDataCollector();
 		dc.getSearchButton().setVisible(false);
