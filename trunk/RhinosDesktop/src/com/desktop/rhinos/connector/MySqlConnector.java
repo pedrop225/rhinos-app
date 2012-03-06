@@ -190,7 +190,7 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("tlf_2", cipher.encode(c.getTlf_2())));
 	    nameValuePairs.add(new BasicNameValuePair("mail", cipher.encode(c.getMail())));
 	    nameValuePairs.add(new BasicNameValuePair("address", cipher.encode(c.getAddress())));
-	    nameValuePairs.add(new BasicNameValuePair("consultancy", c.getId()+""));
+	    nameValuePairs.add(new BasicNameValuePair("consultancy", c.getConsultancy()+""));
 	    
 	    try {
 	        getDataFromDB(App.external_path+"/db_edit_client.php", nameValuePairs);
@@ -533,11 +533,15 @@ public class MySqlConnector implements Connector {
 	
 	@Override
 	public Consultancy getConsultancy(int id) {
+		Consultancy u = null;
 		try {
-			JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_consultancy_by_id.php", new ArrayList<NameValuePair>());
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		    nameValuePairs.add(new BasicNameValuePair("id", id+""));
 			
+			JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_consultancy_by_id.php", nameValuePairs);
+
 			if (jsonArray != null) {
-				Consultancy u = new Consultancy();
+				u = new Consultancy();
 				JSONObject jsonObj = jsonArray.getJSONObject(0);
 
 				u.setExtId(jsonObj.getInt("id"));
@@ -546,13 +550,11 @@ public class MySqlConnector implements Connector {
 				u.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
 				u.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
 				u.setMail(cipher.decode(jsonObj.getString("mail")));
-				
-				return u;
 			}
 		}
-		catch (Exception e) {e.printStackTrace();}
+		catch (Exception e) {}
 		
-		return null;
+		return u;
 	}
 	
 	public boolean addConsultancy(Consultancy c) {
