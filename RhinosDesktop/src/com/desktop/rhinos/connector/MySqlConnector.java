@@ -575,6 +575,25 @@ public class MySqlConnector implements Connector {
 		return false;
 	}
 	
+	public boolean editConsultancy(Consultancy c) {
+		
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("id", c.getExtId()+""));
+	    nameValuePairs.add(new BasicNameValuePair("name", cipher.encode(c.getName())));
+	    nameValuePairs.add(new BasicNameValuePair("consultant", cipher.encode(c.getConsultant())));
+	    nameValuePairs.add(new BasicNameValuePair("tlf_1", cipher.encode(c.getTlf_1())));
+	    nameValuePairs.add(new BasicNameValuePair("tlf_2", cipher.encode(c.getTlf_2())));
+	    nameValuePairs.add(new BasicNameValuePair("mail", cipher.encode(c.getMail())));
+	    
+	    try {
+	        getDataFromDB(App.external_path+"/db_edit_consultancy.php", nameValuePairs);
+	        return true;
+	    }
+	    catch (Exception e) {}
+	    
+		return false;
+	}
+	
 	@Override
 	public void deleteConsultancy(int id) {
 		

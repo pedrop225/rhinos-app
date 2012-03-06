@@ -52,5 +52,7 @@ public interface Connector {
 	
 	public Consultancy getConsultancy(int id);
 	
+	public boolean editConsultancy(Consultancy c);
+	
 	public void deleteConsultancy(int id);
 }
