@@ -4,9 +4,8 @@
 	mysql_connect($mysql_host, $mysql_user, $mysql_password);
 	mysql_select_db($mysql_database);
 	
-	$q = mysql_query("	SELECT DISTINCT Clients.id, name, Clients.tlf_1, Clients.tlf_2, mail, address, consultancy
-						FROM Clients, Services 
-						WHERE (Clients.id = Services.idClient) and (idUser = '".$_REQUEST['idUser']."')");
+	$q = mysql_query("SELECT * FROM Consultancy
+							WHERE id='".$_REQUEST['id']."'");
 	
 	while ($e = mysql_fetch_assoc($q))
 		$output[] = $e;

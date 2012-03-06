@@ -23,12 +23,9 @@ import org.json.JSONObject;
 
 import com.android.rhinos.RCipher;
 import com.android.rhinos.gest.Campaign;
-import com.android.rhinos.gest.Cif;
 import com.android.rhinos.gest.Client;
 import com.android.rhinos.gest.Consultancy;
 import com.android.rhinos.gest.Dni;
-import com.android.rhinos.gest.Id;
-import com.android.rhinos.gest.Nie;
 import com.android.rhinos.gest.Service;
 import com.android.rhinos.gest.User;
 
@@ -166,12 +163,12 @@ public class MySqlConnector implements Connector {
 	    //the mail data to send
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	    nameValuePairs.add(new BasicNameValuePair("id", cipher.encode(c.getId().toString())));
-	    nameValuePairs.add(new BasicNameValuePair("idType", c.getId().getType()+""));
 	    nameValuePairs.add(new BasicNameValuePair("name", cipher.encode(c.getName())));
 	    nameValuePairs.add(new BasicNameValuePair("tlf_1", cipher.encode(c.getTlf_1())));
 	    nameValuePairs.add(new BasicNameValuePair("tlf_2", cipher.encode(c.getTlf_2())));
 	    nameValuePairs.add(new BasicNameValuePair("mail", cipher.encode(c.getMail())));
 	    nameValuePairs.add(new BasicNameValuePair("address", cipher.encode(c.getAddress())));
+	    nameValuePairs.add(new BasicNameValuePair("consultancy", c.getConsultancy()+""));
 	    
 	    try {
 	        getDataFromDB(App.external_path+"/db_add_client.php", nameValuePairs);
@@ -193,6 +190,7 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("tlf_2", cipher.encode(c.getTlf_2())));
 	    nameValuePairs.add(new BasicNameValuePair("mail", cipher.encode(c.getMail())));
 	    nameValuePairs.add(new BasicNameValuePair("address", cipher.encode(c.getAddress())));
+	    nameValuePairs.add(new BasicNameValuePair("consultancy", c.getId()+""));
 	    
 	    try {
 	        getDataFromDB(App.external_path+"/db_edit_client.php", nameValuePairs);
@@ -230,6 +228,7 @@ public class MySqlConnector implements Connector {
 				cl.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
 				cl.setMail(cipher.decode(jsonObj.getString("mail")));
 				cl.setAddress(cipher.decode(jsonObj.getString("address")));
+				cl.setConsultancy(jsonObj.getInt("consultancy"));
 				
 				r.add(cl);
 			}
@@ -261,16 +260,13 @@ public class MySqlConnector implements Connector {
 				Client cl = new Client();
 				JSONObject jsonObj = jsonArray.getJSONObject(i);
 				
-				switch (jsonObj.getInt("idType")) {
-					case Id.DNI: cl.setId(new Dni(cipher.decode(jsonObj.getString("id")))); break;
-					case Id.NIE: cl.setId(new Nie(cipher.decode(jsonObj.getString("id")))); break;
-					case Id.CIF: cl.setId(new Cif(cipher.decode(jsonObj.getString("id")))); break;
-				}
+				cl.setId(new Dni(cipher.decode(jsonObj.getString("id"))));
 				cl.setName(cipher.decode(jsonObj.getString("name")));
 				cl.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
 				cl.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
 				cl.setMail(cipher.decode(jsonObj.getString("mail")));
 				cl.setAddress(cipher.decode(jsonObj.getString("address")));
+				cl.setConsultancy(jsonObj.getInt("consultancy"));
 				
 				tr.add(cl);
 			}
@@ -300,6 +296,7 @@ public class MySqlConnector implements Connector {
 				client.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
 				client.setMail(cipher.decode(jsonObj.getString("mail")));
 				client.setAddress(cipher.decode(jsonObj.getString("address")));
+				client.setConsultancy(jsonObj.getInt("consultancy"));
 			}
 	    }
 	    catch (Exception e) {}
@@ -456,10 +453,10 @@ public class MySqlConnector implements Connector {
 				JSONObject jsonObj = jsonArray.getJSONObject(i);
 				
 				u.setExtId(jsonObj.getInt("id"));
-				u.setType(jsonObj.getInt("type"));
 				u.setUser(cipher.decode(jsonObj.getString("user")));
 				u.setName(cipher.decode(jsonObj.getString("name")));
 				u.setMail(cipher.decode(jsonObj.getString("mail")));
+				u.setConsultancy(jsonObj.getInt("consultancy"));
 				
 				result.add(u);
 			}
@@ -532,6 +529,30 @@ public class MySqlConnector implements Connector {
 		catch (Exception e) {e.printStackTrace();}
 		
 		return result;
+	}
+	
+	@Override
+	public Consultancy getConsultancy(int id) {
+		try {
+			JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_consultancy_by_id.php", new ArrayList<NameValuePair>());
+			
+			if (jsonArray != null) {
+				Consultancy u = new Consultancy();
+				JSONObject jsonObj = jsonArray.getJSONObject(0);
+
+				u.setExtId(jsonObj.getInt("id"));
+				u.setName(cipher.decode(jsonObj.getString("name")));
+				u.setConsultant(cipher.decode(jsonObj.getString("consultant")));
+				u.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
+				u.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
+				u.setMail(cipher.decode(jsonObj.getString("mail")));
+				
+				return u;
+			}
+		}
+		catch (Exception e) {e.printStackTrace();}
+		
+		return null;
 	}
 	
 	public boolean addConsultancy(Consultancy c) {

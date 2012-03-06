@@ -14,6 +14,8 @@ public class Client implements Serializable, Comparable<Client> {
 	private String mail;
 	private String address;
 	
+	private int consultancy;
+	
 	private ArrayList<Service> services;
 	
 	public Client() {
@@ -76,6 +78,14 @@ public class Client implements Serializable, Comparable<Client> {
 		this.address = address;
 	}
 
+	public int getConsultancy() {
+		return consultancy;
+	}
+	
+	public void setConsultancy(int consultancy) {
+		this.consultancy = consultancy;
+	}
+	
 	@Override
 	public int compareTo(Client another) {
 		return id.compareTo(another.id);

@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.android.rhinos.gest.Consultancy;
+import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.AddContract;
 import com.desktop.rhinos.gui.Util;
@@ -45,6 +46,11 @@ public class ConsultancyDataCollector extends JPanel {
 	public ConsultancyDataCollector() {
 		init();
 		setBorder(BorderFactory.createTitledBorder(" Asesoría "));
+	}
+	
+	public ConsultancyDataCollector(int extId) {
+		consultancy.setExtId(extId);
+		setData(MySqlConnector.getInstance().getConsultancy(extId));
 	}
 	
 	private void init() {
