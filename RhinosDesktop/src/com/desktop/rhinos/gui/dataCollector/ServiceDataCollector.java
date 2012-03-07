@@ -14,7 +14,6 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.Client;
@@ -23,6 +22,7 @@ import com.android.rhinos.gest.Service;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.Util;
+import com.toedter.calendar.JDateChooser;
 
 public class ServiceDataCollector extends JDialog {
 
@@ -30,9 +30,7 @@ public class ServiceDataCollector extends JDialog {
 	
 	private JComboBox campaign;
 	private JComboBox service;
-	private JTextField yyyy;
-	private JTextField MM;
-	private JTextField dd;
+	private JDateChooser dch;
 	
 	private JLabel labCampaign;
 	private JLabel labService;
@@ -53,7 +51,6 @@ public class ServiceDataCollector extends JDialog {
 		setLocationRelativeTo(null);
 	}
 	
-	@SuppressWarnings("deprecation")
 	private void init() {
 		setModal(true);
 		setTitle("Nuevo Servicio");
@@ -64,7 +61,10 @@ public class ServiceDataCollector extends JDialog {
 		
 		campaign = new JComboBox(importUserCampaigns().toArray());
 		service = new JComboBox();
-		updateServices();
+		dch = new JDateChooser(new Date());
+		dch.setFont(App.DEFAULT_FONT);
+		dch.setDateFormatString("dd/MM/yyyy");
+		dch.getDateEditor().setEnabled(false);
 		
 		campaign.addActionListener(new ActionListener() {
 			
@@ -74,9 +74,6 @@ public class ServiceDataCollector extends JDialog {
 			}
 		});
 		
-		yyyy = new JTextField(""+(new Date().getYear() + 1900), 5);
-		MM = new JTextField(""+(new Date().getMonth() + 1), 3);
-		dd = new JTextField(""+new Date().getDate(), 3);
 		accept = new JButton("Aceptar");
 		
 		labCampaign = new JLabel("Campaña: ");
@@ -88,9 +85,6 @@ public class ServiceDataCollector extends JDialog {
 		
 		campaign.setFont(App.DEFAULT_FONT);
 		service.setFont(App.DEFAULT_FONT);
-		yyyy.setFont(App.DEFAULT_FONT);
-		MM.setFont(App.DEFAULT_FONT);
-		dd.setFont(App.DEFAULT_FONT);
 		
 		accept.addActionListener(new ActionListener() {
 			
@@ -101,13 +95,9 @@ public class ServiceDataCollector extends JDialog {
 								
 				if (checkData()) {
 					
-					int y = Integer.parseInt(yyyy.getText().trim());
-					int m = Integer.parseInt(MM.getText().trim());
-					int d = Integer.parseInt(dd.getText().trim());
-					
 					Service ms = (Service)service.getSelectedItem();
 					ms.setCampaign(((Campaign)campaign.getSelectedItem()).toString());
-					ms.setDate(new Date(y - 1900, m - 1, d));
+					ms.setDate(dch.getDate());
 					ms.setTlf_1("");
 					ms.setTlf_2("");
 					
@@ -123,13 +113,14 @@ public class ServiceDataCollector extends JDialog {
 		
 		dataPanel.add(campaign);
 		dataPanel.add(service);
-		dataPanel.add(Util.packInJP(new FlowLayout(), dd, new JLabel("/"), MM, new JLabel("/"), yyyy));
+		dataPanel.add(dch);
 		
 		c.setLayout(new BorderLayout(10, 5));
 		c.add(labPanel, BorderLayout.WEST);
 		c.add(dataPanel);
 		c.add(Util.packInJP(new FlowLayout(FlowLayout.LEFT), accept), BorderLayout.SOUTH);
 		
+		updateServices();
 		setLayout(new BorderLayout());
 		add(c);
 		
@@ -142,13 +133,6 @@ public class ServiceDataCollector extends JDialog {
 	}
 	
 	private boolean checkData() {
-		try {
-			Integer.parseInt(yyyy.getText().trim());
-			Integer.parseInt(MM.getText().trim());
-			Integer.parseInt(dd.getText().trim());
-		}
-		catch (NumberFormatException e) {return false;}
-		
 		return true;
 	}
 	private ArrayList<Campaign> importUserCampaigns() {
