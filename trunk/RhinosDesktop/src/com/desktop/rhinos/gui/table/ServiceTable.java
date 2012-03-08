@@ -35,6 +35,7 @@ public class ServiceTable extends RhTable {
         tm.addColumn("Campaña");
         tm.addColumn("Servicio");
         tm.addColumn("Fecha");
+        tm.addColumn("Vencimiento");
 
 		ids = new ArrayList<Integer>();
 		addService = new JButton("Nuevo");
@@ -77,7 +78,8 @@ public class ServiceTable extends RhTable {
 		
 		for (Service s : as) {
 			ids.add(s.getExtId());
-			Object [] o = {s.getCampaign(), s.getService(), new SimpleDateFormat("dd-MM-yyyy").format(s.getDate())};
+			Object [] o = {s.getCampaign(), s.getService(), new SimpleDateFormat("dd-MM-yyyy").format(s.getDate()),
+															new SimpleDateFormat("dd-MM-yyyy").format(s.getExpiryDate())};
 			tm.addRow(o);
 		}		
 	}

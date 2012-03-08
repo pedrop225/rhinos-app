@@ -31,10 +31,12 @@ public class ServiceDataCollector extends JDialog {
 	private JComboBox campaign;
 	private JComboBox service;
 	private JDateChooser dch;
+	private JDateChooser expiryDch;
 	
 	private JLabel labCampaign;
 	private JLabel labService;
 	private JLabel labDate;
+	private JLabel labExpiry;
 	
 	private JPanel labPanel;
 	private JPanel dataPanel;
@@ -61,10 +63,16 @@ public class ServiceDataCollector extends JDialog {
 		
 		campaign = new JComboBox(importUserCampaigns().toArray());
 		service = new JComboBox();
+
 		dch = new JDateChooser(new Date());
 		dch.setFont(App.DEFAULT_FONT);
 		dch.setDateFormatString("dd/MM/yyyy");
 		dch.getDateEditor().setEnabled(false);
+		
+		expiryDch = new JDateChooser(new Date());
+		expiryDch.setFont(App.DEFAULT_FONT);
+		expiryDch.setDateFormatString("dd/MM/yyyy");
+		expiryDch.getDateEditor().setEnabled(false);
 		
 		campaign.addActionListener(new ActionListener() {
 			
@@ -79,6 +87,7 @@ public class ServiceDataCollector extends JDialog {
 		labCampaign = new JLabel("Campaña: ");
 		labService = new JLabel("Servicio: ");
 		labDate = new JLabel("Fecha: ");
+		labExpiry = new JLabel("Vencimiento:");
 		
 		labPanel = new JPanel(new GridLayout(0, 1, 0, 3));
 		dataPanel = new JPanel(new GridLayout(0, 1, 0, 3));
@@ -98,6 +107,7 @@ public class ServiceDataCollector extends JDialog {
 					Service ms = (Service)service.getSelectedItem();
 					ms.setCampaign(((Campaign)campaign.getSelectedItem()).toString());
 					ms.setDate(dch.getDate());
+					ms.setExpiryDate(expiryDch.getDate());
 					ms.setTlf_1("");
 					ms.setTlf_2("");
 					
@@ -110,10 +120,12 @@ public class ServiceDataCollector extends JDialog {
 		labPanel.add(labCampaign);
 		labPanel.add(labService);
 		labPanel.add(labDate);
+		labPanel.add(labExpiry);
 		
 		dataPanel.add(campaign);
 		dataPanel.add(service);
 		dataPanel.add(dch);
+		dataPanel.add(expiryDch);
 		
 		c.setLayout(new BorderLayout(10, 5));
 		c.add(labPanel, BorderLayout.WEST);
