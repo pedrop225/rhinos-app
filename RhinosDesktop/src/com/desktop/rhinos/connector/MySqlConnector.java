@@ -319,6 +319,7 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("tlf_2", cipher.encode(s.getTlf_2())));
 	    nameValuePairs.add(new BasicNameValuePair("commission", s.getCommission()+""));
 	    nameValuePairs.add(new BasicNameValuePair("date", formatter.format(s.getDate())));
+	    nameValuePairs.add(new BasicNameValuePair("expiry", formatter.format(s.getExpiryDate())));
 		
 		try {
 			getDataFromDB(App.external_path+"/db_add_service.php", nameValuePairs);
@@ -345,9 +346,10 @@ public class MySqlConnector implements Connector {
 				
 				s.setExtId(jsonObj.getInt("id"));
 				s.setCampaign(cipher.decode(jsonObj.getString("campaign")));
-				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
 				s.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
 				s.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
+				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
+				s.setExpiryDate(new Date(jsonObj.getString("expiry").replace("-", "/")));
 				
 				tr.add(s);
 			}

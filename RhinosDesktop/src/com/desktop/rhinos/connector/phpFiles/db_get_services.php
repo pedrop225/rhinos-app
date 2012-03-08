@@ -5,7 +5,7 @@
 	mysql_select_db($mysql_database);
 	
 	$q = mysql_query("	SELECT *
-						FROM Services 
+						FROM Services
 						WHERE idClient ='".$_REQUEST['idClient']."' 
 						ORDER BY date");
 	

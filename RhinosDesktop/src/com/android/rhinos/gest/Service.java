@@ -15,6 +15,7 @@ public class Service implements Comparable<Service>, Serializable {
 	private String tlf_1;
 	private String tlf_2;
 	private Date date;
+	private Date expiryDate;
 	
 	public Service() {
 		commission = 0;
@@ -23,6 +24,7 @@ public class Service implements Comparable<Service>, Serializable {
 		tlf_1 = "";
 		tlf_2 = "";
 		date = new Date();
+		expiryDate = new Date();
 	}
 
 	public int getExtId() {
@@ -65,6 +67,14 @@ public class Service implements Comparable<Service>, Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	
+	public Date getExpiryDate() {
+		return expiryDate;
+	}
+	
+	public void setExpiryDate(Date expiry) {
+		this.expiryDate = expiry;
 	}
 
 	@Override
