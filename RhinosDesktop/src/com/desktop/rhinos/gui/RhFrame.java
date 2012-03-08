@@ -31,7 +31,6 @@ public class RhFrame extends JFrame {
 	private JMenuItem addContract;
 	private JMenu edConsultancy;
 	private JMenuItem addConsultancy;
-	private JMenuItem listConsultancy;
 	private JMenuItem editConsultancy;
 	private JMenu edCampaigns;
 	private JMenu edUsers;
@@ -92,7 +91,6 @@ public class RhFrame extends JFrame {
 		addContract = new JMenuItem("Añadir Contrato");
 		edConsultancy = new JMenu("Asesorías");
 		addConsultancy = new JMenuItem("Añadir Asesoría");
-		listConsultancy = new JMenuItem("Ver Asesorías");
 		editConsultancy = new JMenuItem("Editar Asesorías");
 		edCampaigns = new JMenu("Campañas");
 		edUsers = new JMenu("Usuarios");
@@ -103,7 +101,6 @@ public class RhFrame extends JFrame {
 		addContract.setFont(App.DEFAULT_FONT);
 		edConsultancy.setFont(App.DEFAULT_FONT);
 		addConsultancy.setFont(App.DEFAULT_FONT);
-		listConsultancy.setFont(App.DEFAULT_FONT);
 		editConsultancy.setFont(App.DEFAULT_FONT);
 		edCampaigns.setFont(App.DEFAULT_FONT);
 		edUsers.setFont(App.DEFAULT_FONT);
@@ -113,7 +110,6 @@ public class RhFrame extends JFrame {
 		edContracts.add(addContract);
 		mEdit.add(edConsultancy);
 		edConsultancy.add(addConsultancy);
-		edConsultancy.add(listConsultancy);
 		edConsultancy.add(editConsultancy);
 		mEdit.add(edCampaigns);
 		mEdit.add(edUsers);
@@ -146,6 +142,7 @@ public class RhFrame extends JFrame {
 					log.clear();
 					showUserBanner();
 					updateClientsTableData();
+					updateServicesTableData();
 					validate();				
 				}
 			}
@@ -203,14 +200,6 @@ public class RhFrame extends JFrame {
 			}
 		});
 		
-		listConsultancy.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				new ConsultancyTableDialog(_this, null, false).setVisible(true);
-			}
-		});
-		
 		editConsultancy.addActionListener(new ActionListener() {
 			
 			@Override
@@ -226,6 +215,10 @@ public class RhFrame extends JFrame {
 	
 	public void updateClientsTableData() {
 		rhPanel.updateClientsTableData();
+	}
+	
+	public void updateServicesTableData() {
+		rhPanel.updateServicesTableData();
 	}
 	
 	public void showUserBanner() {

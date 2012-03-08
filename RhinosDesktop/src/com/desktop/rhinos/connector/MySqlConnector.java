@@ -358,6 +358,38 @@ public class MySqlConnector implements Connector {
 		
 		return tr;	
 	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public ArrayList<Service> getUserServices(User u) {
+		ArrayList<Service> tr = new ArrayList<Service>();
+		
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("idUser", u.getExtId()+""));
+	    
+	    System.out.println(u.getExtId());
+	    
+	    JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_user_services.php", nameValuePairs);
+	    
+		try {
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObj = jsonArray.getJSONObject(i);
+				Service s = new Service(cipher.decode(jsonObj.getString("service")), jsonObj.getInt("commission"));
+				
+				s.setExtId(jsonObj.getInt("id"));
+				s.setCampaign(cipher.decode(jsonObj.getString("campaign")));
+				s.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
+				s.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
+				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
+				s.setExpiryDate(new Date(jsonObj.getString("expiry").replace("-", "/")));
+				
+				tr.add(s);
+			}
+		}
+		catch (Exception e) {}
+		
+		return tr;	
+	}
 
 	@Override
 	public int getSumCommissions(Client c) {

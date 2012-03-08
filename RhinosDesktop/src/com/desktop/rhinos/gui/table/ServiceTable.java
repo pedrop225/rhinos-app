@@ -70,11 +70,15 @@ public class ServiceTable extends RhTable {
 		add(Util.packInJP(new FlowLayout(FlowLayout.LEFT), addService), BorderLayout.EAST);
 	}
 	
+	protected ArrayList<Service> importMySqlData() {
+		return MySqlConnector.getInstance().getServices(clientId);
+	}
+	
 	public void updateTableData() {
 		tm.setRowCount(0);
 		ids.clear();
 		
-		ArrayList<Service> as = MySqlConnector.getInstance().getServices(clientId);
+		ArrayList<Service> as = importMySqlData();
 		
 		for (Service s : as) {
 			ids.add(s.getExtId());
@@ -114,5 +118,9 @@ public class ServiceTable extends RhTable {
 	
 	public void addServiceActivated(boolean b) {
 		addService.setVisible(b);
+	}
+	
+	public void addColumn(String col) {
+		tm.addColumn(col);
 	}
 }

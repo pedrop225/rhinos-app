@@ -16,7 +16,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
 
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.Util;
@@ -107,16 +106,4 @@ public abstract class RhTable extends JPanel {
 	protected void lookUpSelected() {}
 	
 	public void updateTableData() {}
-}
-
-class RhTableModel extends DefaultTableModel {
-
-	private static final long serialVersionUID = 1L;
-
-	public RhTableModel() {}
-	
-	@Override
-	public boolean isCellEditable(int row, int column) {
-		return false;
-	}
 }
