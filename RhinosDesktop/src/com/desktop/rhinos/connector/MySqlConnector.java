@@ -217,21 +217,23 @@ public class MySqlConnector implements Connector {
 	    		_path = "/db_get_clients.php";
 	    		
 	        JSONArray jsonArray = getDataFromDB(App.external_path+ _path, nameValuePairs);
-				
-			for (int i = 0; i < jsonArray.length(); i++) {
-				Client cl = new Client();
-				JSONObject jsonObj = jsonArray.getJSONObject(i);
-				
-				cl.setId(new Dni(cipher.decode(jsonObj.getString("id"))));
-				cl.setName(cipher.decode(jsonObj.getString("name")));
-				cl.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
-				cl.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
-				cl.setMail(cipher.decode(jsonObj.getString("mail")));
-				cl.setAddress(cipher.decode(jsonObj.getString("address")));
-				cl.setConsultancy(jsonObj.getInt("consultancy"));
-				
-				r.add(cl);
-			}
+			
+	        if (jsonArray != null) {
+				for (int i = 0; i < jsonArray.length(); i++) {
+					Client cl = new Client();
+					JSONObject jsonObj = jsonArray.getJSONObject(i);
+					
+					cl.setId(new Dni(cipher.decode(jsonObj.getString("id"))));
+					cl.setName(cipher.decode(jsonObj.getString("name")));
+					cl.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
+					cl.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
+					cl.setMail(cipher.decode(jsonObj.getString("mail")));
+					cl.setAddress(cipher.decode(jsonObj.getString("address")));
+					cl.setConsultancy(jsonObj.getInt("consultancy"));
+					
+					r.add(cl);
+				}
+	        }
 	    }
 	    catch (Exception e) {e.printStackTrace();}
 		
