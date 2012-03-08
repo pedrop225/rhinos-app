@@ -32,6 +32,8 @@ public interface Connector {
 
 	public void deleteService(Service service);
 	
+	public ArrayList<Service> getUserServices(User u);
+	
 	public void deleteClient(String id);
 
 	public void changePassword(String user, String newpass);
