@@ -17,6 +17,9 @@ public class Service implements Comparable<Service>, Serializable {
 	private Date date;
 	private Date expiryDate;
 	
+	private String titular;
+	private Id id;
+	
 	public Service() {
 		commission = 0;
 		service =  "";
@@ -110,4 +113,20 @@ public class Service implements Comparable<Service>, Serializable {
 	public String toString() {
 		return service;
 	}
+
+	public String getTitular() {
+		return titular;
+	}
+
+	public void setTitular(String titular) {
+		this.titular = titular;
+	}
+	
+	public Id getId() {
+		return id;
+	}
+	
+	public void setId(Id id) {
+		this.id = id;
+	}	
 }
