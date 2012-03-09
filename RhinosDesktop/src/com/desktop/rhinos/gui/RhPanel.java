@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -46,12 +47,25 @@ public class RhPanel extends JPanel {
 		consultancy = new JPanel(new BorderLayout());
 		consultancy.add(new ConsultancyTable(null, null, false));
 		
-		services = new ServiceTable() {
+		services = new ServiceTable("Nif", "Titular") {
 			private static final long serialVersionUID = 1L;
 			
-			@Override
-			protected ArrayList<Service> importMySqlData() {
-				return MySqlConnector.getInstance().getUserServices(App.user);
+			public void updateTableData() {
+				tm.setRowCount(0);
+				ids.clear();
+				
+				ArrayList<Service> as = MySqlConnector.getInstance().getUserServices(App.user);
+				
+				for (Service s : as) {
+					ids.add(s.getExtId());
+					Object [] o = {	s.getId().toString(), 
+									s.getTitular(), 
+									s.getCampaign(), 
+									s.getService(), 
+									new SimpleDateFormat("dd-MM-yyyy").format(s.getDate()),								 
+									new SimpleDateFormat("dd-MM-yyyy").format(s.getExpiryDate())};
+					tm.addRow(o);
+				}		
 			}
 		};
 		

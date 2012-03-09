@@ -23,10 +23,19 @@ public class ServiceTable extends RhTable {
 
 	private JButton addService;
 
-	private String clientId;
-	private ArrayList<Integer> ids;
+	protected String clientId;
+	protected ArrayList<Integer> ids;
 	
 	public ServiceTable() {
+		init();
+		setBorder(BorderFactory.createTitledBorder(" Servicios "));
+	}
+	
+	public ServiceTable(String...list) {
+		for (String s : list) {
+			tm.addColumn(s);
+		}
+		
 		init();
 		setBorder(BorderFactory.createTitledBorder(" Servicios "));
 	}
@@ -69,16 +78,12 @@ public class ServiceTable extends RhTable {
 		
 		add(Util.packInJP(new FlowLayout(FlowLayout.LEFT), addService), BorderLayout.EAST);
 	}
-	
-	protected ArrayList<Service> importMySqlData() {
-		return MySqlConnector.getInstance().getServices(clientId);
-	}
-	
+
 	public void updateTableData() {
 		tm.setRowCount(0);
 		ids.clear();
 		
-		ArrayList<Service> as = importMySqlData();
+		ArrayList<Service> as = MySqlConnector.getInstance().getServices(clientId);
 		
 		for (Service s : as) {
 			ids.add(s.getExtId());
