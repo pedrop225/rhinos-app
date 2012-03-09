@@ -4,7 +4,7 @@
 	mysql_connect($mysql_host, $mysql_user, $mysql_password);
 	mysql_select_db($mysql_database);
 	
-	$q = mysql_query("SELECT * FROM Consultancy ORDER BY name");
+	$q = mysql_query("SELECT * FROM Consultancy ORDER BY id");
 	
 	while ($e = mysql_fetch_assoc($q))
 		$output[] = $e;
