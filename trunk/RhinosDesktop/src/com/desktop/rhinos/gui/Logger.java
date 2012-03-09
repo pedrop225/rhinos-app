@@ -111,6 +111,7 @@ public class Logger extends JDialog {
 	public void clear() {
 		userField.setText("");
 		passField.setText("");
+		userField.requestFocus();
 	}
 	
 	public JButton getAcceptButton() {
