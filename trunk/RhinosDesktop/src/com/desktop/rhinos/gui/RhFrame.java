@@ -131,6 +131,13 @@ public class RhFrame extends JFrame {
 		initmBarListeners();
 	}
 	
+	private void chechUserType() {
+		boolean r = App.user.isRoot();
+		
+		edCampaigns.setVisible(r);
+		edUsers.setVisible(r);	
+	}
+	
 	private void initmBarListeners() {
 		//----------------------------------------
 		log.getAcceptButton().addActionListener(new ActionListener() {
@@ -141,6 +148,7 @@ public class RhFrame extends JFrame {
 					log.setVisible(false);
 					log.clear();
 					showUserBanner();
+					chechUserType();
 					updateClientsTableData();
 					updateServicesTableData();
 					validate();				
@@ -163,6 +171,7 @@ public class RhFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				updateClientsTableData();
+				updateServicesTableData();
 			}
 		});
 		
