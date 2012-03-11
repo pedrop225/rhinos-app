@@ -11,12 +11,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -25,7 +20,6 @@ import android.widget.TextView;
 
 import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.Client;
-import com.android.rhinos.gest.Service;
 
 public class FilteredContracts extends Activity {
 	
@@ -38,10 +32,6 @@ public class FilteredContracts extends Activity {
 	
 	public static Date dateIn;
 	public static Date dateOut;
-	
-	private SubMenu filter;
-	private SubMenu info;
-	private SubMenu updt;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +55,6 @@ public class FilteredContracts extends Activity {
 			clients.get(i).setServices(App.src.getServices(clients.get(i).getId().toString()));
 		}
 		
-		clients = ApplyDateFilter(clients);
-		
 		for (Client u : clients) {
 			ContractItemView item = new ContractItemView(FilteredContracts.this, u, profile);
 			base.addView(item);
@@ -76,44 +64,6 @@ public class FilteredContracts extends Activity {
 			v.setMinimumHeight(2);
 			base.addView(v);
 		}
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.filteredcontracts_option_menu, menu);
-	    return true;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		
-		switch (item.getItemId()) {
-			case R.id.filter_menu_item: Intent intent = new Intent().setClass(this, FilterEditor.class);
-										startActivity(intent);
-										break;
-			
-			case R.id.apply_menu_item: 	onCreate(_bundle);
-										break;
-			
-			case R.id.form_menu_item: 	break;
-		}
-		
-		return super.onOptionsItemSelected(item);
-	}
-	
-	private ArrayList<Client> ApplyDateFilter(ArrayList<Client> clients) {
-		ArrayList<Client> r = new ArrayList<Client>(clients);
-		
-		for (int i = 0; i < clients.size(); i++) {
-			Log.v("", clients.get(i).getName());
-			
-			for (int j = 0; j < clients.get(i).getServices().size(); j++) {
-				Log.v("", clients.get(i).getServices().get(i).getService());
-			}
-		}
-				
-		return clients;
 	}
 }
 
