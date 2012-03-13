@@ -20,20 +20,6 @@ public class ClientTable extends RhTable {
 		tm.addColumn("Mail");
 	}
 	
-	private Object [][] importMySqlClients() {
-		MySqlConnector con = MySqlConnector.getInstance();
-		ArrayList<Client> c = con.getClients(App.user);
-		Object [][] d = new Object[c.size()][4];
-		
-		for (int i = 0; i < c.size(); i++) {
-			d[i][0] = new String(c.get(i).getId().toString());
-			d[i][1] = new String(c.get(i).getName());
-			d[i][2] = new String(c.get(i).getTlf_1());
-			d[i][3] = new String(c.get(i).getMail());
-		}
-		return d;
-	}
-	
 	protected void removeSelected() {
 		if (table.getSelectedRowCount() > 0) {
 			
@@ -45,8 +31,9 @@ public class ClientTable extends RhTable {
 			
 			if (JOptionPane.showConfirmDialog(null, "Desea eliminar el cliente \""+name+"\"? ", "Elimindo cliente ..", 
 											  JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
-				tm.removeRow(r);
+				
 				MySqlConnector.getInstance().deleteClient(id);
+				updateTableData();
 			}
 		}
 	}
@@ -62,10 +49,28 @@ public class ClientTable extends RhTable {
 	
 	public void updateTableData() {
 		tm.setRowCount(0);
-		Object [][] c = importMySqlClients();
 		
-		for (Object [] d : c){
-			tm.addRow(d);
+		ArrayList<Client> ac = MySqlConnector.getInstance().getClients(App.user);
+		filterBackUp = new Object[ac.size()][];
+		
+		for (int i = 0; i < ac.size(); i++) {
+			Client c = ac.get(i);
+			Object [] o = {	c.getId().toString(),
+							c.getName(),
+							c.getTlf_1(),
+							c.getMail()};
+			
+			tm.addRow(filterBackUp[i] = o);
 		}
+	}
+	
+	protected float[] getWidthsPrintableView() {
+		float[] i={10f, 25f, 7f, 15f};
+		return i;
+	}
+	
+	@Override
+	protected String getPrintableTitle() {
+		return "Clientes";
 	}
 }

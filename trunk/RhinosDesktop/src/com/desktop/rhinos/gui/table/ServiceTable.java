@@ -128,4 +128,14 @@ public class ServiceTable extends RhTable {
 	public void addColumn(String col) {
 		tm.addColumn(col);
 	}
+	
+	protected float[] getWidthsPrintableView() {
+		float[] i={10f, 25f, 10f, 15f};
+		return i;
+	}
+	
+	@Override
+	protected String getPrintableTitle() {
+		return "Servicios";
+	}
 }

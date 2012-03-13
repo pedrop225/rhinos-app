@@ -72,7 +72,7 @@ public class MySqlConnector implements Connector {
 	        	App.user.setType(jsonObj.getInt("type"));
 	        	App.user.setUser(user);
 	        	App.user.setName(cipher.decode(jsonObj.getString("name")));
-	        	App.user.setMail(cipher.decode(jsonObj.getString("user")));
+	        	App.user.setMail(cipher.decode(jsonObj.getString("mail")));
 	        	return true;
 	        }
 	    }
