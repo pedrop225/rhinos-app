@@ -185,10 +185,11 @@ public abstract class RhTable extends JPanel {
 		
 		try {
 			//Creating document
-			String f = new GregorianCalendar().getTimeInMillis()+".pdf";
 			Document doc = new Document(PageSize.A4.rotate(), 20, 20, 20, 20);
-			PdfWriter.getInstance(doc, new FileOutputStream(new File(f)));
+			File temp = File.createTempFile(new GregorianCalendar().getTimeInMillis()+"", ".pdf");
+			temp.deleteOnExit();
 			
+			PdfWriter.getInstance(doc, new FileOutputStream(temp));
 			doc.open();
 			
 			Font nf = new Font(Font.FontFamily.UNDEFINED, 11, Font.NORMAL);
@@ -243,7 +244,7 @@ public abstract class RhTable extends JPanel {
 			
 			//Reading document
 			Viewer v = new Viewer();
-			v.setDocumentInputStream(new FileInputStream(new File(f)));
+			v.setDocumentInputStream(new FileInputStream(temp));
 			v.activate();
 			d.add(v);
 		} 
