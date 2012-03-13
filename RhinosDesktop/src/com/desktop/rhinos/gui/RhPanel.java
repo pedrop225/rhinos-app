@@ -55,8 +55,10 @@ public class RhPanel extends JPanel {
 				ids.clear();
 				
 				ArrayList<Service> as = MySqlConnector.getInstance().getUserServices(App.user);
-				
-				for (Service s : as) {
+				filterBackUp = new Object[as.size()][];
+
+				for (int i = 0; i < as.size(); i++) {
+					Service s = as.get(i);
 					ids.add(s.getExtId());
 					Object [] o = {	s.getId().toString(), 
 									s.getTitular(), 
@@ -64,8 +66,14 @@ public class RhPanel extends JPanel {
 									s.getService(), 
 									new SimpleDateFormat("dd-MM-yyyy").format(s.getDate()),								 
 									new SimpleDateFormat("dd-MM-yyyy").format(s.getExpiryDate())};
-					tm.addRow(o);
+					
+					tm.addRow(filterBackUp[i] = o);
 				}		
+			}
+			
+			protected float[] getWidthsPrintableView() {
+				float[] i={10f, 25f, 10f, 15f, 7f, 7f};
+				return i;
 			}
 		};
 		

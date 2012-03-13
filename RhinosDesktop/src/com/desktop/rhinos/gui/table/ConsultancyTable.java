@@ -87,11 +87,15 @@ public class ConsultancyTable extends RhTable {
 	public void updateTableData() {
 		tm.setRowCount(0);
 		delete.setVisible(tm.getRowCount() > 0);
-		c = MySqlConnector.getInstance().getConsultancy();
 		
-		for (Consultancy _c : c) {
-			Object [] i = {_c.getName(), _c.getConsultant()};
-			tm.addRow(i);
+		c = MySqlConnector.getInstance().getConsultancy();
+		filterBackUp = new Object[c.size()][];
+		
+		for (int j = 0; j < c.size(); j++) {
+			Consultancy _c = c.get(j);
+			Object [] o = {_c.getName(), _c.getConsultant()};
+			
+			tm.addRow(filterBackUp[j] = o);
 		}
 	}
 	
@@ -127,5 +131,9 @@ public class ConsultancyTable extends RhTable {
 			
 			updateTableData();
 		}
+	}
+	
+	protected String getPrintableTitle(){
+		return "Asesorías";
 	}
 }
