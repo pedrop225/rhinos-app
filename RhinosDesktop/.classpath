@@ -20,5 +20,6 @@
 	<classpathentry kind="lib" path="itextpdf-5.2.0.jar"/>
 	<classpathentry kind="lib" path="acrobat.jar"/>
 	<classpathentry kind="lib" path="MRJToolkitStubs"/>
+	<classpathentry kind="src" path="img"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

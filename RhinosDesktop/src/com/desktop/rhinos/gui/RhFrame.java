@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -52,6 +53,7 @@ public class RhFrame extends JFrame {
 
 	private void init() {
 		setTitle("Rhinos Desktop");
+		setIconImage(new ImageIcon(RhFrame.class.getResource("/icons/rhinos.png")).getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		log = new Logger(this);

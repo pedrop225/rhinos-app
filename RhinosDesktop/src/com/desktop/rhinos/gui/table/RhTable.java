@@ -158,8 +158,8 @@ public abstract class RhTable extends JPanel {
 		add(new JScrollPane(table));
 		add(Util.packInJP(new FlowLayout(FlowLayout.RIGHT), lookUp, delete), BorderLayout.SOUTH);
 		
-		filter.getParent().setVisible(false)
-;	}
+		filter.getParent().setVisible(false);	
+	}
 	
 	private void applyFilter() {
 		tm.setRowCount(0);
@@ -195,7 +195,7 @@ public abstract class RhTable extends JPanel {
 			Font nf = new Font(Font.FontFamily.UNDEFINED, 11, Font.NORMAL);
 			Font bf = new Font(Font.FontFamily.UNDEFINED, 12, Font.BOLD);
 			
-			Phrase p1 = new Phrase(getPrintableTitle(), new Font(Font.FontFamily.UNDEFINED, 20, Font.BOLD));
+			Phrase p1 = new Phrase(getPrintableTitle(), new Font(Font.FontFamily.UNDEFINED, 24, Font.BOLD));
 			Phrase p2   = new Phrase("Nombre:  ", bf);
 			Phrase p2_0 = new Phrase(App.user.getName(), nf);
 		

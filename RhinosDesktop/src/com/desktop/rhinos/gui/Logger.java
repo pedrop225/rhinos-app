@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -50,6 +51,8 @@ public class Logger extends JDialog {
 				parent.exit();
 			}
 		});
+		
+		setIconImage(new ImageIcon(Logger.class.getResource("/icons/rhinos.png")).getImage());
 	}
 	
 	private void init() {

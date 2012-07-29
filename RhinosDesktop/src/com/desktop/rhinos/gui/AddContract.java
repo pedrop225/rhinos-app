@@ -5,7 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.GregorianCalendar;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -13,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.adobe.acrobat.Viewer;
 import com.android.rhinos.gest.Cif;
 import com.android.rhinos.gest.Client;
 import com.android.rhinos.gest.Dni;
@@ -22,6 +28,14 @@ import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.gui.dataCollector.ClientDataCollector;
 import com.desktop.rhinos.gui.dataCollector.ConsultancyDataCollector;
 import com.desktop.rhinos.gui.table.ServiceTable;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 public class AddContract extends JFrame {
 	
@@ -39,6 +53,7 @@ public class AddContract extends JFrame {
 	private JPanel southPanel;
 	
 	private JButton accept;
+	private JButton print;
 	
 	private boolean editMode;
 	
@@ -49,12 +64,13 @@ public class AddContract extends JFrame {
 	
 	public AddContract(JFrame locIn, String id) {
 		init();
-		setLocationRelativeTo(locIn);		
+		setLocationRelativeTo(locIn);	
 		prepareContract(id);
 	}
 	
 	private void init() {
 		setTitle((editMode) ? "Editar Cliente" : "Añadir Contrato");
+		setIconImage(new ImageIcon(AddContract.class.getResource("/icons/rhinos.png")).getImage());
 		setResizable(false);
 		setLayout(new BorderLayout());
 		
@@ -63,9 +79,12 @@ public class AddContract extends JFrame {
 		serData = new ServiceTable();
 				
 		accept = new JButton("Aceptar");
+		print = new JButton("Version Imprimible");
+		print.setVisible(false);
 		
 		JPanel buttons = new JPanel();
 		buttons.add(accept);
+		buttons.add(print);
 		
 		setFieldsEditable(false);
 		conData.setFieldsEditable(false);
@@ -114,6 +133,14 @@ public class AddContract extends JFrame {
 			}
 		});
 		
+		print.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!editMode)
+					openPrintableView();
+			}
+		});
+		
 		pack();
 	}
 
@@ -152,6 +179,7 @@ public class AddContract extends JFrame {
 	
 	private void prepareEditableContract(Client c) {		
 		accept.setVisible(true);
+		print.setVisible(false);
 		cliData.setFieldsEditable(true);
 	}
 	
@@ -184,6 +212,7 @@ public class AddContract extends JFrame {
 	private void prepareNonEditableContract(Client c) {
 		conData.getSearchButton().setVisible(false);		
 		serData.addServiceActivated(true);
+		print.setVisible(true);
 	}
 	
 	private void setFieldsEditable(boolean editable) {
@@ -245,5 +274,101 @@ public class AddContract extends JFrame {
 	public void setEditMode(boolean editMode) {
 		setTitle("Editar Cliente");
 		this.editMode = editMode;
+		print.setVisible(!editMode);
+	}
+	
+	private void openPrintableView(){
+		JFrame d = new JFrame();
+		d.setSize(540, 480);
+		d.setTitle("Version Imprimible");
+		d.setLayout(new BorderLayout());
+		
+		try {
+			//Creating document
+			Document doc = new Document(PageSize.A4, 25, 25, 25, 25);
+			File temp = File.createTempFile(new GregorianCalendar().getTimeInMillis()+"", ".pdf");
+			temp.deleteOnExit();
+			
+			PdfWriter.getInstance(doc, new FileOutputStream(temp));
+			doc.open();
+			
+			Font nf = new Font(Font.FontFamily.UNDEFINED, 11, Font.NORMAL);
+			Font bf = new Font(Font.FontFamily.UNDEFINED, 12, Font.BOLD);
+			
+			Phrase p1 = new Phrase(getPrintableTitle(), new Font(Font.FontFamily.UNDEFINED, 24, Font.BOLD));			
+			
+			PdfPCell p2   = new PdfPCell(new Phrase("Id:  ", bf));
+			PdfPCell p2_0 = new PdfPCell(new Phrase(cliData.getNif().getText(), nf));
+			PdfPCell p3   = new PdfPCell(new Phrase("Nombre:  ", bf));
+			PdfPCell p3_0 = new PdfPCell(new Phrase(cliData.getClientName().getText(), nf));
+			PdfPCell p4   = new PdfPCell(new Phrase("Teléfono:  ", bf));
+			PdfPCell p4_0 = new PdfPCell(new Phrase(cliData.getTel().getText(), nf));
+			PdfPCell p5   = new PdfPCell(new Phrase("Teléfono Aux:  ", bf));
+			PdfPCell p5_0 = new PdfPCell(new Phrase(cliData.getTelAux().getText(), nf));
+			PdfPCell p6   = new PdfPCell(new Phrase("E-mail:  ", bf));
+			PdfPCell p6_0 = new PdfPCell(new Phrase(cliData.getMail().getText(), nf));
+			PdfPCell p7   = new PdfPCell(new Phrase("Dirección:  ", bf));
+			PdfPCell p7_0 = new PdfPCell(new Phrase(cliData.getAddress().getText(), nf));
+			
+			p2.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+			p2_0.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+			p3.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+			p3_0.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+			p4.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+			p4_0.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+			p5.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+			p5_0.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+			p6.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+			p6_0.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+			p7.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+			p7_0.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+			
+			PdfPTable hTable = new PdfPTable(2);
+			hTable.addCell(p2);
+			hTable.addCell(p2_0);
+			hTable.addCell(p3);
+			hTable.addCell(p3_0);
+			hTable.addCell(p4);
+			hTable.addCell(p4_0);
+			hTable.addCell(p5);
+			hTable.addCell(p5_0);
+			hTable.addCell(p6);
+			hTable.addCell(p6_0);
+			hTable.addCell(p7);
+			hTable.addCell(p7_0);
+			
+			hTable.setWidthPercentage(100f);
+			float [] w = {25f, 80f};
+			hTable.setWidths(w);
+		
+			Paragraph parag = new Paragraph();
+			parag.add(hTable);	
+            
+			doc.add(new Paragraph(p1));
+			doc.add(new Paragraph(new Phrase("\nCliente:\n\n", new Font(Font.FontFamily.UNDEFINED, 16, Font.BOLD))));
+			doc.add(parag);
+			doc.add(new Paragraph(new Phrase("Asesoría:\n", new Font(Font.FontFamily.UNDEFINED, 16, Font.BOLD))));
+			doc.add(parag);
+            
+			doc.close();
+			
+			//Reading document
+			Viewer v = new Viewer();
+			v.setDocumentInputStream(new FileInputStream(temp));
+			v.activate();
+			d.add(v);
+		} 
+		catch (Exception e) {e.printStackTrace();}
+		
+		d.setLocationRelativeTo(null);
+		d.setVisible(true);
+	}
+	
+	protected float[] getWidthsPrintableView() {
+		return null;
+	}
+	
+	protected String getPrintableTitle(){
+		return cliData.getClientName().getText();
 	}
 }
