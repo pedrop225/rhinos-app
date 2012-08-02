@@ -306,6 +306,7 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("tlf_2", cipher.encode(s.getTlf_2())));
 	    nameValuePairs.add(new BasicNameValuePair("commission", s.getCommission()+""));
 	    nameValuePairs.add(new BasicNameValuePair("date", formatter.format(s.getDate())));
+	    nameValuePairs.add(new BasicNameValuePair("expiry", formatter.format(s.getDate())));
 		
 		try {
 			getDataFromDB(App.external_path+"/db_add_service.php", nameValuePairs);
