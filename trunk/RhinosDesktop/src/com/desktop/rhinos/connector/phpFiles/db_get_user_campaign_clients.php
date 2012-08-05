@@ -4,12 +4,11 @@
 	mysql_connect($mysql_host, $mysql_user, $mysql_password);
 	mysql_select_db($mysql_database);
 	
-	$q = mysql_query("	SELECT DISTINCT Clients.id, idType, name, Clients.tlf_1, Clients.tlf_2, mail, address 
+	$q = mysql_query("	SELECT DISTINCT Clients.id, name, Clients.tlf_1, Clients.tlf_2, mail, address 
 						FROM Clients, Services 
 						WHERE 	(Clients.id = idClient) AND 
 								(idUser = '".$_REQUEST['idUser']."') AND
-								(campaign ='".$_REQUEST['campaign']."') 
-						ORDER BY name");
+								(campaign ='".$_REQUEST['campaign']."') ");
 	
 	while ($e = mysql_fetch_assoc($q))
 		$output[] = $e;
