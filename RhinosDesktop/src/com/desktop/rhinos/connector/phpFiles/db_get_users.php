@@ -5,8 +5,7 @@
 	mysql_select_db($mysql_database);
 	
 	$q = mysql_query("	SELECT id, type, user, name, mail 
-						FROM Login NATURAL JOIN Users 
-						ORDER BY name");
+						FROM Login NATURAL JOIN Users ");
 	
 	while ($e = mysql_fetch_assoc($q))
 		$output[] = $e;
