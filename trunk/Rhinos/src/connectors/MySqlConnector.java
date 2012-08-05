@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.database.SQLException;
+import android.util.Log;
 
 import com.android.rhinos.App;
 import com.android.rhinos.cipher.RCipher;
@@ -236,6 +237,7 @@ public class MySqlConnector implements Connector {
 		
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	    nameValuePairs.add(new BasicNameValuePair("campaign", cipher.encode(c.getName())));
+	    Log.v("", cipher.encode(c.getName()));
 	    
 	    String _path = null;
 	    if (!u.isRoot()) {

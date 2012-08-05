@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -51,9 +52,12 @@ public class FilteredContracts extends Activity {
 		
 		ArrayList<Client> clients = (campaign != null) ? App.src.getCampaignClients(campaign, App.user) : App.src.getClients(App.user);
 		
-		for (int i = 0; i < clients.size(); i++) {
-			clients.get(i).setServices(App.src.getServices(clients.get(i).getId().toString()));
-		}
+		if (clients != null)
+			Log.v("", clients.size()+"");
+		
+	//	for (int i = 0; i < clients.size(); i++) {
+	//		clients.get(i).setServices(App.src.getServices(clients.get(i).getId().toString()));
+	//	}
 		
 		for (Client u : clients) {
 			ContractItemView item = new ContractItemView(FilteredContracts.this, u, profile);
@@ -157,6 +161,8 @@ class ContractItemView extends LinearLayout implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		setBackgroundColor(Color.BLACK);
+		
+		client.setServices(App.src.getServices(client.getId().toString()));
 		
 		Intent intent = new Intent().setClass(getContext(), ClientProfile.class);
 		intent.putExtra("client", client);
