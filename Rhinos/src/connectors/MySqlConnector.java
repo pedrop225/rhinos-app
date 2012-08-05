@@ -237,7 +237,6 @@ public class MySqlConnector implements Connector {
 		
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	    nameValuePairs.add(new BasicNameValuePair("campaign", cipher.encode(c.getName())));
-	    Log.v("", cipher.encode(c.getName()));
 	    
 	    String _path = null;
 	    if (!u.isRoot()) {

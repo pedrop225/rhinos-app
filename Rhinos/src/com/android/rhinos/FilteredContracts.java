@@ -52,9 +52,6 @@ public class FilteredContracts extends Activity {
 		
 		ArrayList<Client> clients = (campaign != null) ? App.src.getCampaignClients(campaign, App.user) : App.src.getClients(App.user);
 		
-		if (clients != null)
-			Log.v("", clients.size()+"");
-		
 	//	for (int i = 0; i < clients.size(); i++) {
 	//		clients.get(i).setServices(App.src.getServices(clients.get(i).getId().toString()));
 	//	}
