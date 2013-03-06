@@ -22,7 +22,6 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.database.SQLException;
-import android.util.Log;
 
 import com.android.rhinos.App;
 import com.android.rhinos.cipher.RCipher;
