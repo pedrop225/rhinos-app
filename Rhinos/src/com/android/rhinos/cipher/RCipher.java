@@ -57,7 +57,9 @@ public class RCipher {
 		
 		try {
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(file)));
-			return ((SecretKey)ois.readObject());
+			Object a = ois.readObject();
+			ois.close();
+			return ((SecretKey)a);
 		} 
 		catch (Exception e) {e.printStackTrace();}
 		
@@ -65,12 +67,21 @@ public class RCipher {
 	}
 	
 	public static SecretKey importKeyFromUrl(String url) {
+		ObjectInputStream ois = null;
 		
 		try {
-			ObjectInputStream ois = new ObjectInputStream(new URL(url).openStream());
-			return ((SecretKey)ois.readObject());
+			ois = new ObjectInputStream(new URL(url).openStream());
+			SecretKey a = (SecretKey)ois.readObject();
+			return a;
 		} 
 		catch (Exception e) {e.printStackTrace();}
+		finally {
+			try {
+				if (ois != null)
+					ois.close();
+			}
+			catch (Exception e) {e.printStackTrace();}
+		}
 		
 		return null;
 	}

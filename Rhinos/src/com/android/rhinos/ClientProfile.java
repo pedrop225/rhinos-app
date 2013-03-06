@@ -64,7 +64,7 @@ public class ClientProfile extends Activity {
 		for (Service s : services) {
 			ServiceRowItem item = new ServiceRowItem(ClientProfile.this, s, _this);
 			
-			LayoutParams lp = new LayoutParams(	LayoutParams.FILL_PARENT,
+			LayoutParams lp = new LayoutParams(	LayoutParams.MATCH_PARENT,
 												LayoutParams.WRAP_CONTENT, 1f);
 			cp_services.addView(item, lp);
 		}

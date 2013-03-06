@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -70,7 +69,7 @@ public class FilteredContracts extends Activity {
 
 class ContractItemView extends LinearLayout implements View.OnClickListener {
 	
-	private static final int COMMISION_FONT_SIZE = 16;
+	private static final int COMMISION_FONT_SIZE = 17;
 	
 	private static final int ID_FONT_SIZE= 12;
 	private static final int NAME_FONT_SIZE = 14;
@@ -100,7 +99,8 @@ class ContractItemView extends LinearLayout implements View.OnClickListener {
 		id.setText(c.getId().toString());
 		id.setTextSize(ID_FONT_SIZE);
 		
-		comm.setText(""+App.src.getSumCommissions(c)+"€");
+//		comm.setText(""+App.src.getSumCommissions(c)+"€");
+		comm.setText("+  ");
 		comm.setTextColor(Color.GREEN);
 		comm.setTextSize(COMMISION_FONT_SIZE);
 		
@@ -109,8 +109,8 @@ class ContractItemView extends LinearLayout implements View.OnClickListener {
 		base.addView(name);
 		base.addView(id);
 		
-		LayoutParams lp = new LayoutParams( LayoutParams.FILL_PARENT,
-											LayoutParams.FILL_PARENT, .75f);
+		LayoutParams lp = new LayoutParams( LayoutParams.MATCH_PARENT,
+											LayoutParams.MATCH_PARENT, .75f);
 		info = new LinearLayout(context);
 		info.setOrientation(LinearLayout.VERTICAL);
 		info.addView(new TextView(context));
