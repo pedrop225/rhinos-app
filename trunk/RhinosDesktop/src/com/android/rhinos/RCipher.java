@@ -52,12 +52,20 @@ public class RCipher {
 	}
 	
 	public static SecretKey importKeyFromFile(String file) {
+		ObjectInputStream ois = null;
 		
 		try {
-			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(file)));
+			ois = new ObjectInputStream(new FileInputStream(new File(file)));
 			return ((SecretKey)ois.readObject());
 		} 
 		catch (Exception e) {e.printStackTrace();}
+		finally {
+			try {
+				if (ois != null)
+					ois.close();
+			}
+			catch (Exception e) {e.printStackTrace();}
+		}
 		
 		return null;
 	}
