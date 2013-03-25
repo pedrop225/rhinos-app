@@ -315,8 +315,6 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("idClient", cipher.encode(c.getId().toString())));
 	    nameValuePairs.add(new BasicNameValuePair("service", cipher.encode(s.getService())));
 	    nameValuePairs.add(new BasicNameValuePair("campaign", cipher.encode(s.getCampaign())));
-	    nameValuePairs.add(new BasicNameValuePair("tlf_1", cipher.encode(s.getTlf_1())));
-	    nameValuePairs.add(new BasicNameValuePair("tlf_2", cipher.encode(s.getTlf_2())));
 	    nameValuePairs.add(new BasicNameValuePair("commission", s.getCommission()+""));
 	    nameValuePairs.add(new BasicNameValuePair("date", formatter.format(s.getDate())));
 	    nameValuePairs.add(new BasicNameValuePair("expiry", formatter.format(s.getExpiryDate())));
@@ -346,8 +344,6 @@ public class MySqlConnector implements Connector {
 				
 				s.setExtId(jsonObj.getInt("id"));
 				s.setCampaign(cipher.decode(jsonObj.getString("campaign")));
-				s.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
-				s.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
 				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
 				s.setExpiryDate(new Date(jsonObj.getString("expiry").replace("-", "/")));
 				
@@ -368,6 +364,38 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("idUser", u.getExtId()+""));
 	    	    
 	    JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_user_services.php", nameValuePairs);
+	    
+		try {
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObj = jsonArray.getJSONObject(i);
+				Service s = new Service(cipher.decode(jsonObj.getString("service")), jsonObj.getInt("commission"));
+								
+				s.setExtId(jsonObj.getInt("id"));
+				s.setCampaign(cipher.decode(jsonObj.getString("campaign")));
+				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
+				s.setExpiryDate(new Date(jsonObj.getString("expiry").replace("-", "/")));
+				
+				s.setId(new Dni(cipher.decode(jsonObj.getString("idClient"))));
+				s.setTitular(cipher.decode(jsonObj.getString("name")));
+				
+				tr.add(s);
+			}
+		}
+		catch (Exception e) {}
+		
+		return tr;	
+	}
+
+	public ArrayList<Service> getUserServicesByDate(User u, Date date_in, Date date_out) {
+		ArrayList<Service> tr = new ArrayList<Service>();
+		
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("idUser", u.getExtId()+""));
+	    nameValuePairs.add(new BasicNameValuePair("date_in", formatter.format(date_in)));
+	    nameValuePairs.add(new BasicNameValuePair("date_out", formatter.format(date_out)));
+	    
+	    	    
+	    JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_user_services_by_date.php", nameValuePairs);
 	    
 		try {
 			for (int i = 0; i < jsonArray.length(); i++) {

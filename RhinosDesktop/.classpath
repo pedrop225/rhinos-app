@@ -11,12 +11,6 @@
 	<classpathentry kind="lib" path="jgoodies-looks-2.4.1.jar"/>
 	<classpathentry kind="lib" path="junit-4.6.jar"/>
 	<classpathentry kind="lib" path="jcalendar-1.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/pitt/Downloads/itext-5.2.0/itextpdf-5.2.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/pitt/Downloads/itext-5.2.0/itextpdf-5.2.0-javadoc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/pitt/Downloads/itext-5.2.0/itextpdf-5.2.0-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/pitt/Downloads/itext-5.2.0/itext-xtra-5.2.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/pitt/Downloads/itext-5.2.0/itext-xtra-5.2.0-javadoc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/pitt/Downloads/itext-5.2.0/itext-xtra-5.2.0-sources.jar"/>
 	<classpathentry kind="lib" path="itextpdf-5.2.0.jar"/>
 	<classpathentry kind="lib" path="acrobat.jar"/>
 	<classpathentry kind="lib" path="MRJToolkitStubs"/>

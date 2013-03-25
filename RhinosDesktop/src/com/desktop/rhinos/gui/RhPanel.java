@@ -14,6 +14,7 @@ import javax.swing.JTabbedPane;
 import com.android.rhinos.gest.Service;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
+import com.desktop.rhinos.gui.dataCollector.ReportDataCollector;
 import com.desktop.rhinos.gui.table.ClientTable;
 import com.desktop.rhinos.gui.table.ConsultancyTable;
 import com.desktop.rhinos.gui.table.ServiceTable;
@@ -28,9 +29,12 @@ public class RhPanel extends JPanel {
 
 	private JTabbedPane centerTab;
 	
+	private JPanel inicio;
 	private ClientTable clients;
-	private JPanel consultancy;
 	private ServiceTable services;
+	private ReportDataCollector reports;
+	private JPanel consultancy;
+
 
 	public RhPanel() {
 		init();
@@ -40,6 +44,8 @@ public class RhPanel extends JPanel {
 		north = new JPanel(new BorderLayout());
 		center = new JPanel(new BorderLayout());
 		south = new JPanel();
+		
+		inicio = new JPanel();
 		
 		clients = new ClientTable();
 		centerTab = new JTabbedPane();
@@ -77,8 +83,12 @@ public class RhPanel extends JPanel {
 			}
 		};
 		
+		reports = new ReportDataCollector();
+		
+		centerTab.addTab("Inicio", inicio);
 		centerTab.addTab("Clientes", clients);
 		centerTab.addTab("Servicios", services);
+		centerTab.addTab("Informes", reports);
 		centerTab.addTab("Asesorías", consultancy);
 
 		setLayout(new BorderLayout());

@@ -1,6 +1,7 @@
 package com.desktop.rhinos.connector;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.Client;
@@ -33,6 +34,8 @@ public interface Connector {
 	public void deleteService(Service service);
 	
 	public ArrayList<Service> getUserServices(User u);
+	
+	public ArrayList<Service> getUserServicesByDate(User u, Date date_in, Date date_out);
 	
 	public void deleteClient(String id);
 
