@@ -29,7 +29,6 @@ public class RhPanel extends JPanel {
 
 	private JTabbedPane centerTab;
 	
-	private JPanel inicio;
 	private ClientTable clients;
 	private ServiceTable services;
 	private ReportDataCollector reports;
@@ -44,8 +43,6 @@ public class RhPanel extends JPanel {
 		north = new JPanel(new BorderLayout());
 		center = new JPanel(new BorderLayout());
 		south = new JPanel();
-		
-		inicio = new JPanel();
 		
 		clients = new ClientTable();
 		centerTab = new JTabbedPane();
@@ -85,7 +82,6 @@ public class RhPanel extends JPanel {
 		
 		reports = new ReportDataCollector();
 		
-		centerTab.addTab("Inicio", inicio);
 		centerTab.addTab("Clientes", clients);
 		centerTab.addTab("Servicios", services);
 		centerTab.addTab("Informes", reports);
