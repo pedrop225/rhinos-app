@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -25,6 +26,9 @@ public class ReportDataCollector extends JPanel {
 	private DateFilter dateFilter;
 	private JLabel lblSum;
 	
+	float sum = 0;
+	private NumberFormat formatter = NumberFormat.getCurrencyInstance();
+	
 	/**
 	 * Create the panel.
 	 */
@@ -33,6 +37,7 @@ public class ReportDataCollector extends JPanel {
 				
 		dateFilter = new DateFilter();
 		services = new ServiceTable("Nif", "Titular", "Importe") {
+			
 			private static final long serialVersionUID = 1L;
 			
 			public void updateTableData() {
@@ -43,13 +48,13 @@ public class ReportDataCollector extends JPanel {
 																									 dateFilter.getFinalDate());
 				filterBackUp = new Object[as.size()][];
 
-				int sum = 0;
+				sum = 0;
 				for (int i = 0; i < as.size(); i++) {
 					Service s = as.get(i);
 					ids.add(s.getExtId());
 					Object [] o = {	s.getId().toString(), 
 									s.getTitular(),
-									s.getCommission(),
+									formatter.format(s.getCommission()),
 									s.getCampaign(),
 									s.getService(), 
 									new SimpleDateFormat("dd-MM-yyyy").format(s.getDate()),								 
@@ -85,7 +90,7 @@ public class ReportDataCollector extends JPanel {
 		lblNewLabel.setFont(App.DEFAULT_FONT.deriveFont(Font.BOLD));
 		panel_2.add(lblNewLabel);
 		
-		lblSum = new JLabel("0.00 €");
+		lblSum = new JLabel(formatter.format(sum));
 		lblSum.setForeground(Color.RED);
 		
 		panel_2.add(lblSum);

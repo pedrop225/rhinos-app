@@ -7,9 +7,12 @@ import java.awt.Font;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.android.rhinos.gest.Service;
 import com.desktop.rhinos.connector.MySqlConnector;
@@ -82,11 +85,23 @@ public class RhPanel extends JPanel {
 		
 		reports = new ReportDataCollector();
 		
-		centerTab.addTab("Clientes", clients);
-		centerTab.addTab("Servicios", services);
-		centerTab.addTab("Informes", reports);
-		centerTab.addTab("Asesorías", consultancy);
+		centerTab.addTab("Clientes", new ImageIcon(RhPanel.class.getResource("/icons/User/User_16x16.png")), clients);
+		centerTab.addTab("Servicios", new ImageIcon(RhPanel.class.getResource("/icons/Globe/Globe_16x16.png")), services);
+		centerTab.addTab("Informes", new ImageIcon(RhPanel.class.getResource("/icons/Properties/Properties_16x16.png")), reports);
+		centerTab.addTab("Asesorías", new ImageIcon(RhPanel.class.getResource("/icons/Archive/Archive_16x16.png")), consultancy);
 
+		//Actualizando al cambiar de pestañas ...
+		centerTab.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				if (centerTab.getSelectedComponent() == clients)
+					clients.updateTableData();
+				else if (centerTab.getSelectedComponent() == services)
+					services.updateTableData();
+			}
+		});
+		
 		setLayout(new BorderLayout());
 		
 		north.add(getUserBanner());
