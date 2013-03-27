@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.GregorianCalendar;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -60,7 +61,7 @@ public abstract class RhTable extends JPanel {
 		lookUp = new JButton("Ver");
 		delete = new JButton("Eliminar");
 		filter = new JTextField(35);
-		filterLab = new JLabel("Filtrar: ");
+		filterLab = new JLabel(new ImageIcon(RhTable.class.getResource("/icons/Search/Search_16x16.png")));
 		filterBackUp = null;
 		
 		table = new JTable(tm);
@@ -181,7 +182,7 @@ public abstract class RhTable extends JPanel {
 		JFrame d = new JFrame();
 		d.setSize(540, 480);
 		d.setTitle("Version Imprimible");
-		d.setLayout(new BorderLayout());
+		d.getContentPane().setLayout(new BorderLayout());
 		
 		try {
 			//Creating document
@@ -246,7 +247,7 @@ public abstract class RhTable extends JPanel {
 			Viewer v = new Viewer();
 			v.setDocumentInputStream(new FileInputStream(temp));
 			v.activate();
-			d.add(v);
+			d.getContentPane().add(v);
 		} 
 		catch (Exception e) {e.printStackTrace();}
 		

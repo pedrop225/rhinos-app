@@ -52,7 +52,7 @@ public class Logger extends JDialog {
 			}
 		});
 		
-		setIconImage(new ImageIcon(Logger.class.getResource("/icons/rhinos.png")).getImage());
+		setIconImage(new ImageIcon(Logger.class.getResource("/icons/Key/Key_16x16.png")).getImage());
 	}
 	
 	private void init() {

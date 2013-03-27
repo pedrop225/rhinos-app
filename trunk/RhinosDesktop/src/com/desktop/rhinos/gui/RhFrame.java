@@ -46,19 +46,28 @@ public class RhFrame extends JFrame {
 	
 	private RhFrame _this = this;
 		
+	/**
+	 * Constructor..
+	 * Configura la ventana de la aplicacion centrada en medio de la pantalla.
+	 * */
 	public RhFrame() {
 		init();
 		setLocationRelativeTo(null);
 	}
 
+	/*
+	 * Configura los elementos fundamentales, titulo, icono, y cierre
+	 * */
 	private void init() {
 		setTitle("Rhinos Desktop");
 		setIconImage(new ImageIcon(RhFrame.class.getResource("/icons/rhinos.png")).getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		//creando ventana de login para el usuario
 		log = new Logger(this);
 		mySql = MySqlConnector.getInstance();
 		
+		//inicializando barra de menu
 		initMenuBar();
 		
 		rhPanel = new RhPanel();
@@ -68,13 +77,19 @@ public class RhFrame extends JFrame {
 		pack();
 	}
 	
+	/*
+	 * Configura los elementos fundamentales de la barra de menu
+	 * */
 	private void initMenuBar() {
 		mBar = new JMenuBar();
 		
 		//----------------------------------------
 		mFile = new JMenu("Archivo");
+		mFile.setIcon(null);
 		logOut = new JMenuItem("Cerrar Sesión");
+		logOut.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/LogOut/Log Out_24x24.png")));
 		update = new JMenuItem("Actualizar");
+		update.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/Synchronize/Synchronize_24x24.png")));
 		exit = new JMenuItem("Salir");
 		
 		mFile.setFont(App.DEFAULT_FONT);
@@ -89,8 +104,11 @@ public class RhFrame extends JFrame {
 		//----------------------------------------
 		mEdit = new JMenu("Editar");
 		edClients = new JMenuItem("Cliente .."); 
+		edClients.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/User/User_24x24.png")));
 		edContracts = new JMenu("Contratos");
+		edContracts.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/Globe/Globe_24x24.png")));
 		addContract = new JMenuItem("Añadir Contrato");
+		addContract.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/Add/Add_16x16.png")));
 		edConsultancy = new JMenu("Asesorías");
 		addConsultancy = new JMenuItem("Añadir Asesoría");
 		editConsultancy = new JMenuItem("Editar Asesorías");
@@ -118,6 +136,7 @@ public class RhFrame extends JFrame {
 		//----------------------------------------
 		help = new JMenu("Ayuda");
 		about = new JMenuItem("Acerca de ..");
+		about.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/Help/Help_24x24.png")));
 		
 		help.setFont(App.DEFAULT_FONT);
 		about.setFont(App.DEFAULT_FONT);
@@ -130,18 +149,35 @@ public class RhFrame extends JFrame {
 		mBar.add(help);
 		
 		setJMenuBar(mBar);
+		
+		//Configurando listeners
 		initmBarListeners();
 	}
 	
+	/*
+	 * Comprueba los permisos para el usuario que accede al sistema.
+	 * */
 	private void chechUserType() {
 		boolean r = App.user.isRoot();
 		
+		//ocultando menus para usuarios NO root
+		edConsultancy.setVisible(r);
 		edCampaigns.setVisible(r);
 		edUsers.setVisible(r);	
 	}
 	
+	
+	/*
+	 * Lanzando listeners
+	 * */
 	private void initmBarListeners() {
 		//----------------------------------------
+		/*
+		 * Accion para el boton de aceptar.
+		 * En caso de un correcto logueo: 
+		 * Oculta la ventana de login, eliminando los datos introducidos en ella.
+		 * Lanza la actualizacion de los datos e informacion del usuario correspondiente.
+		 * */
 		log.getAcceptButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {	
@@ -152,12 +188,21 @@ public class RhFrame extends JFrame {
 					showUserBanner();
 					chechUserType();
 					updateClientsTableData();
-					updateServicesTableData();
+					
+					/*
+					 * Solo actualizar la tabla a la que se accede por defecto, las siguientes se actualizarán
+					 * automaticamente en el momento que se acceda a ellas.
+					 * */
+				//	updateServicesTableData();
 					validate();				
 				}
 			}
 		});
 		
+		/*
+		 * Se encarga del cierre de sesion desde la barra de menu.
+		 * Deja el sistema listo para un nuevo loggin
+		 * */
 		logOut.addActionListener(new ActionListener() {
 			
 			@Override
@@ -168,6 +213,9 @@ public class RhFrame extends JFrame {
 			}
 		});
 		
+		/*
+		 * Actualiza todas las tablas de la aplicacion desde la barra de menu.
+		 * */
 		update.addActionListener(new ActionListener() {
 			
 			@Override

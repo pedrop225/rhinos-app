@@ -1,6 +1,7 @@
 package com.desktop.rhinos.gui.dataCollector;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -34,12 +35,12 @@ public class DateFilter extends JPanel {
 		panel_2.setLayout(new BorderLayout());		
 		
 		JLabel lblDesde = new JLabel("Desde: ");
-		lblDesde.setFont(App.DEFAULT_FONT);
+		lblDesde.setFont(App.DEFAULT_FONT.deriveFont(Font.BOLD));
 		panel_1.add(lblDesde, BorderLayout.NORTH);
 		panel_1.add(Util.packInJP(calendar_1 = new JCalendar()));
 		
 		JLabel lblHasta = new JLabel("Hasta: ");
-		lblHasta.setFont(App.DEFAULT_FONT);
+		lblHasta.setFont(App.DEFAULT_FONT.deriveFont(Font.BOLD));
 		panel_2.add(lblHasta, BorderLayout.NORTH);
 		panel_2.add(Util.packInJP(calendar_2 = new JCalendar()));
 		
