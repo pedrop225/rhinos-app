@@ -3,6 +3,7 @@ package com.desktop.rhinos.gui.dataCollector;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -14,6 +15,10 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
 
 import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.Client;
@@ -23,11 +28,13 @@ import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.Util;
 import com.toedter.calendar.JDateChooser;
-import java.awt.Toolkit;
 
 public class ServiceDataCollector extends JDialog {
 
 	private static final long serialVersionUID = 1L;
+	
+	public static final int ACCEPTED = 0;
+	public static final int CANCELLED = -1;
 	
 	private JComboBox<Object> campaign;
 	private JComboBox<Service> service;
@@ -46,6 +53,9 @@ public class ServiceDataCollector extends JDialog {
 	
 	private JButton accept;
 	
+	//indica el modo en que se oculta la ventana (ACEPTAR/CANCELAR)
+	private int exitMode = CANCELLED;
+	
 	private JPanel c;
 	
 	private String clientId;
@@ -53,6 +63,9 @@ public class ServiceDataCollector extends JDialog {
 	//guarda el indice externo del servicio a modificar. En caso de ser -1, inserta
 	//un nuevo registro en la base de datos como normalmente
 	private int toModify = -1;
+	
+	//notas del servicio
+	private JTextArea notes;
 	
 	public ServiceDataCollector(String _c) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ServiceDataCollector.class.getResource("/icons/Globe/Globe_16x16.png")));
@@ -70,10 +83,10 @@ public class ServiceDataCollector extends JDialog {
 		c.setBorder(BorderFactory.createTitledBorder(" Servicio "));
 		
 		state = new JComboBox<String>();
-		state.addItem("Pendiente");
-		state.addItem("Verificado");
-		state.addItem("Anulado");
-		state.addItem("Devuelto");
+		state.addItem(Service.STATES[Service.PENDING]);
+		state.addItem(Service.STATES[Service.VERIFIED]);
+		state.addItem(Service.STATES[Service.CANCELLED]);
+		state.addItem(Service.STATES[Service.RETURNED]);
 		
 		campaign = new JComboBox<Object>(importUserCampaigns().toArray());
 		service = new JComboBox<Service>();
@@ -114,6 +127,7 @@ public class ServiceDataCollector extends JDialog {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				exitMode = ACCEPTED;
 				Client client = new Client();
 				client.setId(new Dni(clientId));
 								
@@ -124,11 +138,12 @@ public class ServiceDataCollector extends JDialog {
 					ms.setDate(dch.getDate());
 					ms.setExpiryDate(expiryDch.getDate());
 					ms.setState(state.getSelectedIndex());
-										
+					ms.setNotes(notes.getText().trim().toUpperCase());
+					
 					if (toModify < 0)
 						MySqlConnector.getInstance().addService(ms, client);
 					else
-						MySqlConnector.getInstance().editServiceState(toModify, ms.getState());
+						MySqlConnector.getInstance().editService(toModify, ms.getState(), ms.getNotes());
 					
 					dispose();
 				}
@@ -154,12 +169,24 @@ public class ServiceDataCollector extends JDialog {
 		
 		updateServices();
 		getContentPane().setLayout(new BorderLayout());
-		getContentPane().add(c);
+		getContentPane().add(c, BorderLayout.CENTER);
 		
 		//adding free space
 		getContentPane().add(new JPanel(), BorderLayout.NORTH);
 		getContentPane().add(new JPanel(), BorderLayout.WEST);
-		getContentPane().add(new JPanel(), BorderLayout.EAST);
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Notas del Servicio", TitledBorder.LEFT, TitledBorder.TOP, null, null));
+		getContentPane().add(panel, BorderLayout.EAST);
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		notes = new JTextArea(0, 40);
+		notes.setFont(App.DEFAULT_FONT);
+		notes.setBackground(UIManager.getColor("Button.background"));
+		notes.setEditable(false);
+		notes.setTabSize(3);
+		notes.setLineWrap(true);
+		notes.setWrapStyleWord(true);
+		panel.add(new JScrollPane(notes), BorderLayout.CENTER);
 		getContentPane().add(new JPanel(), BorderLayout.SOUTH);
 
 		pack();
@@ -174,7 +201,8 @@ public class ServiceDataCollector extends JDialog {
 	 */
 	public void setEditMode(Service s) {
 		toModify = s.getExtId();
-		state.setSelectedIndex(s.getState());
+		
+		state.setSelectedItem(Service.STATES[s.getState()]);
 		
 		int ind;
 		for (ind = 0; ind < campaign.getItemCount(); ind++)
@@ -189,12 +217,13 @@ public class ServiceDataCollector extends JDialog {
 				
 		dch.setDate(s.getDate());
 		expiryDch.setDate(s.getExpiryDate());
+		notes.setText(s.getNotes());
 		
-		state.removeItemAt(3); //devuelto
 		campaign.setEnabled(false);
 		service.setEnabled(false);
 		dch.setEnabled(false);
 		expiryDch.setEnabled(false);
+		notes.setEditable(true);
 		accept.setText("Modificar");
 	}
 	
@@ -212,5 +241,9 @@ public class ServiceDataCollector extends JDialog {
 		for (Service s : ((Campaign)campaign.getSelectedItem()).getServices().values()) {
 			service.addItem(s);
 		}
+	}
+	
+	public int getExitMode() {
+		return exitMode;
 	}
 }

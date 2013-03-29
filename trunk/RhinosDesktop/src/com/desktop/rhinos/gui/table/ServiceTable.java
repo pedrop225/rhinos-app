@@ -75,7 +75,9 @@ public class ServiceTable extends RhTable {
 							}
 							catch (InterruptedException e) {interrupt();}
 						}
-						updateTableData();
+						
+						if (se.getExitMode() == ServiceDataCollector.ACCEPTED)
+							updateTableData();
 					};
 				}.start();
 			}
@@ -143,7 +145,9 @@ public class ServiceTable extends RhTable {
 						}
 						catch (InterruptedException e) {interrupt();}
 					}
-					updateTableData();
+					
+					if (dc.getExitMode() == ServiceDataCollector.ACCEPTED)
+						updateTableData();
 				};
 			}.start();
 		}

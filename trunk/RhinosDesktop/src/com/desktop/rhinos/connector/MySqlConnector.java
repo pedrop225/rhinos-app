@@ -319,6 +319,7 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("date", formatter.format(s.getDate())));
 	    nameValuePairs.add(new BasicNameValuePair("expiry", formatter.format(s.getExpiryDate())));
 	    nameValuePairs.add(new BasicNameValuePair("state", s.getState()+""));
+	    nameValuePairs.add(new BasicNameValuePair("notes", cipher.encode(s.getNotes())));
 		
 		try {
 			getDataFromDB(App.external_path+"/db_add_service.php", nameValuePairs);
@@ -329,13 +330,14 @@ public class MySqlConnector implements Connector {
 	}
 
 	@Override
-	public void editServiceState(int extId, int state) {
+	public void editService(int extId, int state, String notes) {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	    nameValuePairs.add(new BasicNameValuePair("id", extId+""));
 	    nameValuePairs.add(new BasicNameValuePair("state", state+""));
+	    nameValuePairs.add(new BasicNameValuePair("notes", cipher.encode(notes)));
 		
 		try {
-			getDataFromDB(App.external_path+"/db_edit_service_state.php", nameValuePairs);
+			getDataFromDB(App.external_path+"/db_edit_service.php", nameValuePairs);
 		}
 		catch (Exception e) {}
 	}
@@ -360,6 +362,7 @@ public class MySqlConnector implements Connector {
 				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
 				s.setExpiryDate(new Date(jsonObj.getString("expiry").replace("-", "/")));
 				s.setState(jsonObj.getInt("state"));
+				s.setNotes(cipher.decode(jsonObj.getString("notes")));
 				
 				tr.add(s);
 			}
@@ -389,6 +392,7 @@ public class MySqlConnector implements Connector {
 				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
 				s.setExpiryDate(new Date(jsonObj.getString("expiry").replace("-", "/")));
 				s.setState(jsonObj.getInt("state"));
+				s.setNotes(cipher.decode(jsonObj.getString("notes")));
 				
 				s.setId(new Dni(cipher.decode(jsonObj.getString("idClient"))));
 				s.setTitular(cipher.decode(jsonObj.getString("name")));
@@ -423,6 +427,7 @@ public class MySqlConnector implements Connector {
 				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
 				s.setExpiryDate(new Date(jsonObj.getString("expiry").replace("-", "/")));
 				s.setState(jsonObj.getInt("state"));
+				s.setNotes(cipher.decode(jsonObj.getString("notes")));
 				
 				s.setId(new Dni(cipher.decode(jsonObj.getString("idClient"))));
 				s.setTitular(cipher.decode(jsonObj.getString("name")));

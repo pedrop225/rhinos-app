@@ -33,7 +33,7 @@ public interface Connector {
 
 	public void deleteService(Service service);
 	
-	public void editServiceState(int extId, int state);
+	public void editService(int extId, int state, String notes);
 	
 	public ArrayList<Service> getUserServices(User u);
 	
