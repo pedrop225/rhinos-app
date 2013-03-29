@@ -22,7 +22,8 @@ public class Service implements Comparable<Service>, Serializable {
 	private Date date;
 	private Date expiryDate;
 	private int state;
-	
+	private String notes;
+
 	private String titular;
 	private Id id;
 	
@@ -33,6 +34,7 @@ public class Service implements Comparable<Service>, Serializable {
 		date = new Date();
 		expiryDate = new Date();
 		state = PENDING;
+		notes = "";
 	}
 
 	public int getExtId() {
@@ -132,5 +134,17 @@ public class Service implements Comparable<Service>, Serializable {
 	public void setState(int state) {
 		this.state = state;
 	}	
+	/**
+	 * @return the notes
+	 */
+	public String getNotes() {
+		return notes;
+	}
 
+	/**
+	 * @param notes the notes to set
+	 */
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
 }
