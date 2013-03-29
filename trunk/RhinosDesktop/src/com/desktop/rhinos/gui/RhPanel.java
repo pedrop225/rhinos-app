@@ -58,27 +58,28 @@ public class RhPanel extends JPanel {
 			
 			public void updateTableData() {
 				tm.setRowCount(0);
-				ids.clear();
+				services.clear();
 				
 				ArrayList<Service> as = MySqlConnector.getInstance().getUserServices(App.user);
 				filterBackUp = new Object[as.size()][];
 
 				for (int i = 0; i < as.size(); i++) {
 					Service s = as.get(i);
-					ids.add(s.getExtId());
+					services.add(s);
 					Object [] o = {	s.getId().toString(), 
 									s.getTitular(), 
 									s.getCampaign(), 
 									s.getService(), 
 									new SimpleDateFormat("dd-MM-yyyy").format(s.getDate()),								 
-									new SimpleDateFormat("dd-MM-yyyy").format(s.getExpiryDate())};
+									new SimpleDateFormat("dd-MM-yyyy").format(s.getExpiryDate()),
+									Service.STATES[s.getState()]};
 					
 					tm.addRow(filterBackUp[i] = o);
 				}		
 			}
 			
 			protected float[] getWidthsPrintableView() {
-				float[] i={10f, 25f, 10f, 15f, 7f, 7f};
+				float[] i={9f, 25f, 10f, 15f, 10f, 10f, 7f};
 				return i;
 			}
 		};

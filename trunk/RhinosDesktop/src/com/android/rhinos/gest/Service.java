@@ -7,15 +7,21 @@ import java.util.Date;
 public class Service implements Comparable<Service>, Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public static final int PENDING = 0;
+	public static final int VERIFIED = 1;
+	public static final int CANCELLED = 2;
+	public static final int RETURNED = 3;
+	
+	public static final String[] STATES = {"Pendiente", "Verificado", "Anulado", "Devuelto"};
 	
 	private int extId;
 	private int commission;
 	private String service;
 	private String campaign;
-	private String tlf_1;
-	private String tlf_2;
 	private Date date;
 	private Date expiryDate;
+	private int state;
 	
 	private String titular;
 	private Id id;
@@ -24,10 +30,9 @@ public class Service implements Comparable<Service>, Serializable {
 		commission = 0;
 		service =  "";
 		campaign = "";
-		tlf_1 = "";
-		tlf_2 = "";
 		date = new Date();
 		expiryDate = new Date();
+		state = PENDING;
 	}
 
 	public int getExtId() {
@@ -93,22 +98,6 @@ public class Service implements Comparable<Service>, Serializable {
 		this.campaign = campaign;
 	}
 
-	public String getTlf_1() {
-		return tlf_1;
-	}
-
-	public void setTlf_1(String tlf_1) {
-		this.tlf_1 = tlf_1;
-	}
-
-	public String getTlf_2() {
-		return tlf_2;
-	}
-
-	public void setTlf_2(String tlf_2) {
-		this.tlf_2 = tlf_2;
-	}
-
 	@Override
 	public String toString() {
 		return service;
@@ -128,5 +117,20 @@ public class Service implements Comparable<Service>, Serializable {
 	
 	public void setId(Id id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the state
+	 */
+	public int getState() {
+		return state;
+	}
+
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(int state) {
+		this.state = state;
 	}	
+
 }

@@ -22,7 +22,6 @@ public class RhFrame extends JFrame {
 	private JMenuBar mBar;
 	
 	private JMenu mFile;
-	private JMenuItem update;
 	private JMenuItem logOut;
 	private JMenuItem exit;
 	
@@ -88,17 +87,13 @@ public class RhFrame extends JFrame {
 		mFile.setIcon(null);
 		logOut = new JMenuItem("Cerrar Sesión");
 		logOut.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/LogOut/Log Out_24x24.png")));
-		update = new JMenuItem("Actualizar");
-		update.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/Synchronize/Synchronize_24x24.png")));
 		exit = new JMenuItem("Salir");
 		
 		mFile.setFont(App.DEFAULT_FONT);
-		update.setFont(App.DEFAULT_FONT);
 		logOut.setFont(App.DEFAULT_FONT);
 		exit.setFont(App.DEFAULT_FONT);
 		
 		mFile.add(logOut);
-		mFile.add(update);
 		mFile.add(new JSeparator());
 		mFile.add(exit);
 		//----------------------------------------
@@ -110,6 +105,7 @@ public class RhFrame extends JFrame {
 		addContract = new JMenuItem("Añadir Contrato");
 		addContract.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/Add/Add_16x16.png")));
 		edConsultancy = new JMenu("Asesorías");
+		edConsultancy.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/Archive/Archive_24x24.png")));
 		addConsultancy = new JMenuItem("Añadir Asesoría");
 		editConsultancy = new JMenuItem("Editar Asesorías");
 		edCampaigns = new JMenu("Campañas");
@@ -213,18 +209,6 @@ public class RhFrame extends JFrame {
 			}
 		});
 		
-		/*
-		 * Actualiza todas las tablas de la aplicacion desde la barra de menu.
-		 * */
-		update.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				updateClientsTableData();
-				updateServicesTableData();
-			}
-		});
-		
 		exit.addActionListener(new ActionListener() {
 			
 			@Override
@@ -282,10 +266,6 @@ public class RhFrame extends JFrame {
 	
 	public void showUserBanner() {
 		rhPanel.showUserBanner();
-	}
-	
-	public void setUpdateAction(ActionListener e) {
-		update.addActionListener(e);
 	}
 	
 	public Logger getLogger() {

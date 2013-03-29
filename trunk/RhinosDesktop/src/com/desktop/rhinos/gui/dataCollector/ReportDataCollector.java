@@ -42,33 +42,47 @@ public class ReportDataCollector extends JPanel {
 			
 			public void updateTableData() {
 				tm.setRowCount(0);
-				ids.clear();
+				services.clear();
 				
+				sum = 0;
+				lblSum.setText(sum+" €");
+
 				ArrayList<Service> as = MySqlConnector.getInstance().getUserServicesByDate(App.user, dateFilter.getInitialDate(), 
 																									 dateFilter.getFinalDate());
 				filterBackUp = new Object[as.size()][];
-
-				sum = 0;
+				
 				for (int i = 0; i < as.size(); i++) {
+					
 					Service s = as.get(i);
-					ids.add(s.getExtId());
+					
+					//indice que modifica la comision en funcion del estado del servicio
+					int ind = 0;
+					switch (s.getState()) {
+					case 0 : ind = 0; break;
+					case 1 : ind = 1; break;
+					case 2 : ind = 0; break;
+					case 3 : ind = -1; 
+					}
+					
+					services.add(s);
 					Object [] o = {	s.getId().toString(), 
 									s.getTitular(),
-									formatter.format(s.getCommission()),
+									formatter.format(s.getCommission() * ind),
 									s.getCampaign(),
 									s.getService(), 
 									new SimpleDateFormat("dd-MM-yyyy").format(s.getDate()),								 
-									new SimpleDateFormat("dd-MM-yyyy").format(s.getExpiryDate())};
+									new SimpleDateFormat("dd-MM-yyyy").format(s.getExpiryDate()),
+									Service.STATES[s.getState()]};
 					
 					tm.addRow(filterBackUp[i] = o);
 					
-					sum += s.getCommission();
+					sum += s.getCommission() * ind;
 					lblSum.setText(sum+" €");
 				}		
 			}
 			
 			protected float[] getWidthsPrintableView() {
-				float[] i={10f, 20f, 5f, 10f, 15f, 7f, 7f};
+				float[] i={9f, 25f, 7f, 10f, 15f, 10f, 10f, 7f};
 				return i;
 			}
 		};

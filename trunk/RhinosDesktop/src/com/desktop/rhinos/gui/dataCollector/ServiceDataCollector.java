@@ -23,20 +23,23 @@ import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.Util;
 import com.toedter.calendar.JDateChooser;
+import java.awt.Toolkit;
 
 public class ServiceDataCollector extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	
-	private JComboBox campaign;
-	private JComboBox service;
+	private JComboBox<Object> campaign;
+	private JComboBox<Service> service;
 	private JDateChooser dch;
 	private JDateChooser expiryDch;
+	private JComboBox<String> state;
 	
 	private JLabel labCampaign;
 	private JLabel labService;
 	private JLabel labDate;
 	private JLabel labExpiry;
+	private JLabel labState;
 	
 	private JPanel labPanel;
 	private JPanel dataPanel;
@@ -46,8 +49,13 @@ public class ServiceDataCollector extends JDialog {
 	private JPanel c;
 	
 	private String clientId;
-
+	
+	//guarda el indice externo del servicio a modificar. En caso de ser -1, inserta
+	//un nuevo registro en la base de datos como normalmente
+	private int toModify = -1;
+	
 	public ServiceDataCollector(String _c) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ServiceDataCollector.class.getResource("/icons/Globe/Globe_16x16.png")));
 		clientId = _c;
 		init();
 		setLocationRelativeTo(null);
@@ -55,14 +63,20 @@ public class ServiceDataCollector extends JDialog {
 	
 	private void init() {
 		setModal(true);
-		setTitle("Nuevo Servicio");
+		setTitle("Configurar Servicio");
 		setResizable(false);
 		
 		c = new JPanel(new BorderLayout());
 		c.setBorder(BorderFactory.createTitledBorder(" Servicio "));
 		
-		campaign = new JComboBox(importUserCampaigns().toArray());
-		service = new JComboBox();
+		state = new JComboBox<String>();
+		state.addItem("Pendiente");
+		state.addItem("Verificado");
+		state.addItem("Anulado");
+		state.addItem("Devuelto");
+		
+		campaign = new JComboBox<Object>(importUserCampaigns().toArray());
+		service = new JComboBox<Service>();
 
 		dch = new JDateChooser(new Date());
 		dch.setFont(App.DEFAULT_FONT);
@@ -82,12 +96,13 @@ public class ServiceDataCollector extends JDialog {
 			}
 		});
 		
-		accept = new JButton("Aceptar");
+		accept = new JButton("Guardar");
 		
+		labState = new JLabel("Estado: ");
 		labCampaign = new JLabel("Campaña: ");
 		labService = new JLabel("Servicio: ");
 		labDate = new JLabel("Fecha: ");
-		labExpiry = new JLabel("Vencimiento:");
+		labExpiry = new JLabel("Vencimiento: ");
 		
 		labPanel = new JPanel(new GridLayout(0, 1, 0, 3));
 		dataPanel = new JPanel(new GridLayout(0, 1, 0, 3));
@@ -108,20 +123,25 @@ public class ServiceDataCollector extends JDialog {
 					ms.setCampaign(((Campaign)campaign.getSelectedItem()).toString());
 					ms.setDate(dch.getDate());
 					ms.setExpiryDate(expiryDch.getDate());
-					ms.setTlf_1("");
-					ms.setTlf_2("");
+					ms.setState(state.getSelectedIndex());
+										
+					if (toModify < 0)
+						MySqlConnector.getInstance().addService(ms, client);
+					else
+						MySqlConnector.getInstance().editServiceState(toModify, ms.getState());
 					
-					MySqlConnector.getInstance().addService(ms, client);
 					dispose();
 				}
 			}
 		});
 		
+		labPanel.add(labState);
 		labPanel.add(labCampaign);
 		labPanel.add(labService);
 		labPanel.add(labDate);
 		labPanel.add(labExpiry);
 		
+		dataPanel.add(state);
 		dataPanel.add(campaign);
 		dataPanel.add(service);
 		dataPanel.add(dch);
@@ -133,20 +153,55 @@ public class ServiceDataCollector extends JDialog {
 		c.add(Util.packInJP(new FlowLayout(FlowLayout.LEFT), accept), BorderLayout.SOUTH);
 		
 		updateServices();
-		setLayout(new BorderLayout());
-		add(c);
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(c);
 		
 		//adding free space
-		add(new JPanel(), BorderLayout.WEST);
-		add(new JPanel(), BorderLayout.EAST);
-		add(new JPanel(), BorderLayout.SOUTH);
+		getContentPane().add(new JPanel(), BorderLayout.NORTH);
+		getContentPane().add(new JPanel(), BorderLayout.WEST);
+		getContentPane().add(new JPanel(), BorderLayout.EAST);
+		getContentPane().add(new JPanel(), BorderLayout.SOUTH);
 
 		pack();
+	}
+	
+	/**
+	 * Configura el ServiceDataCollector para editar servicios ya existentes
+	 * Retira la posibilidad de determinar servicios como DEVUELTOS, el usuario debe
+	 * dar de alta uno nuevo y devolverlo para que queden reflejados todos los movimientos.
+	 * Boton de Guardar, cambiado a Modificar
+	 * Se invalidan los dateChooser para evitar cambios en las fechas.
+	 */
+	public void setEditMode(Service s) {
+		toModify = s.getExtId();
+		state.setSelectedIndex(s.getState());
+		
+		int ind;
+		for (ind = 0; ind < campaign.getItemCount(); ind++)
+			if (((Campaign)campaign.getItemAt(ind)).getName().equals(s.getCampaign()))
+				break;
+		campaign.setSelectedIndex(ind);
+		
+		for (ind = 0; ind < service.getItemCount(); ind++)
+			if (((Service)service.getItemAt(ind)).getService().equals(s.getService()))
+				break;
+		service.setSelectedIndex(ind);
+				
+		dch.setDate(s.getDate());
+		expiryDch.setDate(s.getExpiryDate());
+		
+		state.removeItemAt(3); //devuelto
+		campaign.setEnabled(false);
+		service.setEnabled(false);
+		dch.setEnabled(false);
+		expiryDch.setEnabled(false);
+		accept.setText("Modificar");
 	}
 	
 	private boolean checkData() {
 		return true;
 	}
+	
 	private ArrayList<Campaign> importUserCampaigns() {
 		return MySqlConnector.getInstance().getCampaigns(App.user);
 	}

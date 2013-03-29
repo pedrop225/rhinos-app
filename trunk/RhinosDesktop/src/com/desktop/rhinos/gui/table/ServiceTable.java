@@ -24,7 +24,7 @@ public class ServiceTable extends RhTable {
 	private JButton addService;
 
 	protected String clientId;
-	protected ArrayList<Integer> ids;
+	protected ArrayList<Service> services;
 	
 	public ServiceTable() {
 		init();
@@ -45,8 +45,9 @@ public class ServiceTable extends RhTable {
         tm.addColumn("Servicio");
         tm.addColumn("Fecha");
         tm.addColumn("Vencimiento");
+        tm.addColumn("Estado");
 
-		ids = new ArrayList<Integer>();
+		services = new ArrayList<Service>();
 		addService = new JButton("Nuevo");
 		
 		addService.setVisible(false);
@@ -62,6 +63,10 @@ public class ServiceTable extends RhTable {
 				final ServiceDataCollector se = new ServiceDataCollector(clientId);
 				se.setVisible(true);
 				
+				/*
+				 * Espera a la finalizacion de la configuracion del servicio.
+				 * Cuando esta es finalizada, actualiza la tabla.
+				 * */
 				new Thread() {
 					public void run() {
 						while (se.isVisible()) {
@@ -81,14 +86,14 @@ public class ServiceTable extends RhTable {
 
 	public void updateTableData() {
 		tm.setRowCount(0);
-		ids.clear();
+		services.clear();
 		
-		ArrayList<Service> as = MySqlConnector.getInstance().getServices(clientId);
+		services = MySqlConnector.getInstance().getServices(clientId);
 		
-		for (Service s : as) {
-			ids.add(s.getExtId());
+		for (Service s : services) {
 			Object [] o = {s.getCampaign(), s.getService(), new SimpleDateFormat("dd-MM-yyyy").format(s.getDate()),
-															new SimpleDateFormat("dd-MM-yyyy").format(s.getExpiryDate())};
+															new SimpleDateFormat("dd-MM-yyyy").format(s.getExpiryDate()),
+															Service.STATES[s.getState()]};
 			tm.addRow(o);
 		}		
 	}
@@ -109,7 +114,7 @@ public class ServiceTable extends RhTable {
 											  JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
 				
 				Service s = new Service();
-				s.setExtId(ids.get(r));
+				s.setExtId(services.get(r).getExtId());
 				
 				tm.removeRow(r);
 				MySqlConnector.getInstance().deleteService(s);
@@ -117,10 +122,41 @@ public class ServiceTable extends RhTable {
 		}
 	}
 	
+	@Override
+	protected void lookUpSelected() {
+		if (table.getSelectedRowCount() > 0) {
+			int r = table.convertRowIndexToModel(table.getSelectedRow());
+			
+			final ServiceDataCollector dc = new ServiceDataCollector(clientId);
+			dc.setEditMode(services.get(r));
+			dc.setVisible(true);
+			
+			/*
+			 * Espera a la finalizacion de la configuracion del servicio.
+			 * Cuando esta es finalizada, actualiza la tabla.
+			 * */
+			new Thread() {
+				public void run() {
+					while (dc.isVisible()) {
+						try {
+							sleep(500);
+						}
+						catch (InterruptedException e) {interrupt();}
+					}
+					updateTableData();
+				};
+			}.start();
+		}
+	}
+	
 	public boolean checkData() {
 		return true;
 	}
 	
+	/**
+	 * @param b Determina si se muestra o no, un boton que permite añadir
+	 * mas Servicios a la lista.
+	 */
 	public void addServiceActivated(boolean b) {
 		addService.setVisible(b);
 	}
@@ -130,7 +166,7 @@ public class ServiceTable extends RhTable {
 	}
 	
 	protected float[] getWidthsPrintableView() {
-		float[] i={10f, 25f, 10f, 15f};
+		float[] i= {25f, 25f, 10f, 10f, 10f};
 		return i;
 	}
 	
