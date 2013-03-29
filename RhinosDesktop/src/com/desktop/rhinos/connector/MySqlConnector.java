@@ -318,6 +318,7 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("commission", s.getCommission()+""));
 	    nameValuePairs.add(new BasicNameValuePair("date", formatter.format(s.getDate())));
 	    nameValuePairs.add(new BasicNameValuePair("expiry", formatter.format(s.getExpiryDate())));
+	    nameValuePairs.add(new BasicNameValuePair("state", s.getState()+""));
 		
 		try {
 			getDataFromDB(App.external_path+"/db_add_service.php", nameValuePairs);
@@ -327,6 +328,18 @@ public class MySqlConnector implements Connector {
 		return tr;
 	}
 
+	@Override
+	public void editServiceState(int extId, int state) {
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("id", extId+""));
+	    nameValuePairs.add(new BasicNameValuePair("state", state+""));
+		
+		try {
+			getDataFromDB(App.external_path+"/db_edit_service_state.php", nameValuePairs);
+		}
+		catch (Exception e) {}
+	}
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public ArrayList<Service> getServices(String id) {
@@ -346,6 +359,7 @@ public class MySqlConnector implements Connector {
 				s.setCampaign(cipher.decode(jsonObj.getString("campaign")));
 				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
 				s.setExpiryDate(new Date(jsonObj.getString("expiry").replace("-", "/")));
+				s.setState(jsonObj.getInt("state"));
 				
 				tr.add(s);
 			}
@@ -374,6 +388,7 @@ public class MySqlConnector implements Connector {
 				s.setCampaign(cipher.decode(jsonObj.getString("campaign")));
 				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
 				s.setExpiryDate(new Date(jsonObj.getString("expiry").replace("-", "/")));
+				s.setState(jsonObj.getInt("state"));
 				
 				s.setId(new Dni(cipher.decode(jsonObj.getString("idClient"))));
 				s.setTitular(cipher.decode(jsonObj.getString("name")));
@@ -386,6 +401,7 @@ public class MySqlConnector implements Connector {
 		return tr;	
 	}
 
+	@SuppressWarnings("deprecation")
 	public ArrayList<Service> getUserServicesByDate(User u, Date date_in, Date date_out) {
 		ArrayList<Service> tr = new ArrayList<Service>();
 		
@@ -406,6 +422,7 @@ public class MySqlConnector implements Connector {
 				s.setCampaign(cipher.decode(jsonObj.getString("campaign")));
 				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
 				s.setExpiryDate(new Date(jsonObj.getString("expiry").replace("-", "/")));
+				s.setState(jsonObj.getInt("state"));
 				
 				s.setId(new Dni(cipher.decode(jsonObj.getString("idClient"))));
 				s.setTitular(cipher.decode(jsonObj.getString("name")));

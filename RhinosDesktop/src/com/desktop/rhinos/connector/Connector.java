@@ -33,6 +33,8 @@ public interface Connector {
 
 	public void deleteService(Service service);
 	
+	public void editServiceState(int extId, int state);
+	
 	public ArrayList<Service> getUserServices(User u);
 	
 	public ArrayList<Service> getUserServicesByDate(User u, Date date_in, Date date_out);

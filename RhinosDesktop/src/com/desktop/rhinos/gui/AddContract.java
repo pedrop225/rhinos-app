@@ -1,12 +1,12 @@
 package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.GregorianCalendar;
 
@@ -18,7 +18,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.adobe.acrobat.Viewer;
 import com.android.rhinos.gest.Cif;
 import com.android.rhinos.gest.Client;
 import com.android.rhinos.gest.Dni;
@@ -186,7 +185,9 @@ public class AddContract extends JFrame {
 	private void prepareContract(String id) {
 		MySqlConnector con =  MySqlConnector.getInstance();
 		Client c = con.clientExists(id);
-		conData.setData(c.getConsultancy());
+		
+		if (c.getConsultancy() != -1)
+			conData.setData(c.getConsultancy());
 		prepareContract(c);
 	}
 	
@@ -220,7 +221,7 @@ public class AddContract extends JFrame {
 		accept.setVisible(editable);
 	}
 	
-	public JComboBox getIdSelector() {
+	public JComboBox<String> getIdSelector() {
 		return cliData.getIdSelector();
 	}
 	public JTextField getNif() {
@@ -278,10 +279,15 @@ public class AddContract extends JFrame {
 	}
 	
 	private void openPrintableView(){
+		
+		/*
+		 * Pasamos a usar el lector de pdf definido por el sistema en uso. 
+		 * 
 		JFrame d = new JFrame();
 		d.setSize(540, 480);
 		d.setTitle("Version Imprimible");
 		d.setLayout(new BorderLayout());
+		*/
 		
 		try {
 			//Creating document
@@ -351,17 +357,22 @@ public class AddContract extends JFrame {
 			doc.add(parag);
             
 			doc.close();
+			Desktop.getDesktop().open(temp);
 			
+			/*
+			 * Pasamos a usar el lector pdf definido por el sistema en uso.
+			 * 
 			//Reading document
 			Viewer v = new Viewer();
 			v.setDocumentInputStream(new FileInputStream(temp));
 			v.activate();
-			d.add(v);
+			d.add(v);*/
 		} 
 		catch (Exception e) {e.printStackTrace();}
 		
+		/*
 		d.setLocationRelativeTo(null);
-		d.setVisible(true);
+		d.setVisible(true);*/
 	}
 	
 	protected float[] getWidthsPrintableView() {

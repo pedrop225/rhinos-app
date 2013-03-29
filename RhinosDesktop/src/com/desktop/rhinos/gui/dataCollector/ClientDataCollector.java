@@ -23,7 +23,7 @@ public class ClientDataCollector extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JComboBox idSelector;
+	private JComboBox<String> idSelector;
 	private JLabel labName;
 	private JLabel labTel;
 	private JLabel labTelAux;
@@ -50,7 +50,7 @@ public class ClientDataCollector extends JPanel {
 		setLayout(new BorderLayout());
 		
 		String [] ids = {"", "Dni", "Nie", "Cif"};
-		idSelector = new JComboBox(ids);
+		idSelector = new JComboBox<String>(ids);
 		labName = new JLabel("Nombre:");
 		labTel = new JLabel("Teléfono:");
 		labTelAux = new JLabel("Teléfono Aux:");
@@ -103,7 +103,7 @@ public class ClientDataCollector extends JPanel {
 		address.setEditable(editable);
 	}
 	
-	public JComboBox getIdSelector() {
+	public JComboBox<String> getIdSelector() {
 		return idSelector;
 	}
 	
