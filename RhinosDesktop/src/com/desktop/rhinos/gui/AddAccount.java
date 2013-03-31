@@ -1,10 +1,10 @@
 package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,35 +12,36 @@ import javax.swing.JPanel;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.dataCollector.ConsultancyDataCollector;
+import com.desktop.rhinos.gui.dataCollector.UserDataCollector;
 
-public class AddConsultancy extends JFrame {
+public class AddAccount extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	private ConsultancyDataCollector dc;
+	private UserDataCollector dc;
 	private JButton add;
 	
-	public AddConsultancy(JFrame loc) {
+	public AddAccount(JFrame loc) {
 		setAlwaysOnTop(true);
 		init();
 		setLocationRelativeTo(loc);
 	}
 	
 	private void init() {
-		setTitle("Añadir Asesoría");
-		setIconImage(new ImageIcon(AddConsultancy.class.getResource("/icons/rhinos.png")).getImage());
+		setTitle("Añadir Usuario");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AddAccount.class.getResource("/icons/rhinos.png")));
 		setResizable(false);
 		
-		dc = new ConsultancyDataCollector();
+		dc = new UserDataCollector();
 		dc.getSearchButton().setVisible(false);
 		
-		add = new JButton("Añadir Asesoría");
+		add = new JButton("Añadir Usuario");
 		add.setFont(App.DEFAULT_FONT);
 		add.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				MySqlConnector.getInstance().addConsultancy(dc.getConsultancy());
+	//			MySqlConnector.getInstance().createAccount(u, password);
 				dispose();
 			}
 		});

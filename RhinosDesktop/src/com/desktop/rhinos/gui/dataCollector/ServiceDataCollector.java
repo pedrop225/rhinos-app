@@ -214,6 +214,12 @@ public class ServiceDataCollector extends JDialog {
 			if (((Service)service.getItemAt(ind)).getService().equals(s.getService()))
 				break;
 		service.setSelectedIndex(ind);
+		
+		/*
+		 * En caso de que el servicio seleccionado, pertenezca a una campaña
+		 * actualmente no disponible para el usuario se lanzara una excepcion en
+		 * este punto del programa.
+		 * */
 				
 		dch.setDate(s.getDate());
 		expiryDch.setDate(s.getExpiryDate());

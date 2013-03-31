@@ -14,6 +14,7 @@ import javax.swing.JSeparator;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.table.ConsultancyTableDialog;
+import com.desktop.rhinos.gui.table.UserTableDialog;
 
 public class RhFrame extends JFrame {
 
@@ -34,6 +35,8 @@ public class RhFrame extends JFrame {
 	private JMenuItem editConsultancy;
 	private JMenu edCampaigns;
 	private JMenu edUsers;
+	private JMenuItem addUser;
+	private JMenuItem editUser;
 	
 	private JMenu help;
 	private JMenuItem about;
@@ -110,6 +113,8 @@ public class RhFrame extends JFrame {
 		editConsultancy = new JMenuItem("Editar Asesorías");
 		edCampaigns = new JMenu("Campañas");
 		edUsers = new JMenu("Usuarios");
+		addUser = new JMenuItem("Añadir Usuario");
+		editUser = new JMenuItem("Editar Usuarios");
 		
 		mEdit.setFont(App.DEFAULT_FONT);
 		edClients.setFont(App.DEFAULT_FONT);
@@ -120,6 +125,8 @@ public class RhFrame extends JFrame {
 		editConsultancy.setFont(App.DEFAULT_FONT);
 		edCampaigns.setFont(App.DEFAULT_FONT);
 		edUsers.setFont(App.DEFAULT_FONT);
+		addUser.setFont(App.DEFAULT_FONT);
+		editUser.setFont(App.DEFAULT_FONT);
 	
 		mEdit.add(edClients);
 		mEdit.add(edContracts);
@@ -129,6 +136,8 @@ public class RhFrame extends JFrame {
 		edConsultancy.add(editConsultancy);
 		mEdit.add(edCampaigns);
 		mEdit.add(edUsers);
+		edUsers.add(addUser);
+		edUsers.add(editUser);
 		//----------------------------------------
 		help = new JMenu("Ayuda");
 		about = new JMenuItem("Acerca de ..");
@@ -248,6 +257,22 @@ public class RhFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new ConsultancyTableDialog(_this, null, true).setVisible(true);
+			}
+		});
+		
+		addUser.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new AddAccount(_this).setVisible(true);
+			}
+		});
+		
+		editUser.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new UserTableDialog(_this, null, true).setVisible(true);
 			}
 		});
 	}

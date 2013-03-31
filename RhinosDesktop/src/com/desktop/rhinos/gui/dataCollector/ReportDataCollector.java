@@ -40,12 +40,13 @@ public class ReportDataCollector extends JPanel {
 			
 			private static final long serialVersionUID = 1L;
 			
+			
 			public void updateTableData() {
 				tm.setRowCount(0);
 				services.clear();
 				
 				sum = 0;
-				lblSum.setText(sum+" €");
+				lblSum.setText(formatter.format(sum));
 
 				ArrayList<Service> as = MySqlConnector.getInstance().getUserServicesByDate(App.user, dateFilter.getInitialDate(), 
 																									 dateFilter.getFinalDate());
@@ -77,7 +78,7 @@ public class ReportDataCollector extends JPanel {
 					tm.addRow(filterBackUp[i] = o);
 					
 					sum += s.getCommission() * ind;
-					lblSum.setText(sum+" €");
+					lblSum.setText(formatter.format(sum));
 				}		
 			}
 			
@@ -105,6 +106,7 @@ public class ReportDataCollector extends JPanel {
 		panel_2.add(lblNewLabel);
 		
 		lblSum = new JLabel(formatter.format(sum));
+		lblSum.setFont(App.DEFAULT_FONT.deriveFont(Font.BOLD, 13));
 		lblSum.setForeground(Color.RED);
 		
 		panel_2.add(lblSum);

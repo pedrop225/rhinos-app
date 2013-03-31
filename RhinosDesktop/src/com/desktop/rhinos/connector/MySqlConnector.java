@@ -538,13 +538,36 @@ public class MySqlConnector implements Connector {
 				JSONObject jsonObj = jsonArray.getJSONObject(i);
 				
 				u.setExtId(jsonObj.getInt("id"));
+				u.setType(jsonObj.getInt("type"));
 				u.setUser(cipher.decode(jsonObj.getString("user")));
 				u.setName(cipher.decode(jsonObj.getString("name")));
 				u.setMail(cipher.decode(jsonObj.getString("mail")));
-				u.setConsultancy(jsonObj.getInt("consultancy"));
 				
 				result.add(u);
 			}
+		}
+		catch (Exception e) {e.printStackTrace();}
+		
+		return result;
+	}
+	
+	@Override
+	public User getUserById(int id) {
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("id", id+""));
+	    
+		User result = new User();
+		
+		try {
+			JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_user_by_id.php", nameValuePairs);
+			
+			User u = new User();
+			JSONObject jsonObj = jsonArray.getJSONObject(0);
+			
+			u.setExtId(id);
+			u.setUser(cipher.decode(jsonObj.getString("user")));
+			u.setName(cipher.decode(jsonObj.getString("name")));
+			u.setMail(cipher.decode(jsonObj.getString("mail")));
 		}
 		catch (Exception e) {e.printStackTrace();}
 		
@@ -712,5 +735,14 @@ public class MySqlConnector implements Connector {
 	    catch (Exception e) {}
 	    
 		return null;
+	}
+	
+	@Override
+	public void deleteAccount(int id) {
+		
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("id", id+""));
+	    
+	    getDataFromDB(App.external_path+"/db_delete_account.php", nameValuePairs);
 	}
 }

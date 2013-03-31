@@ -11,33 +11,33 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.android.rhinos.gest.Consultancy;
+import com.android.rhinos.gest.User;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.Util;
-import com.desktop.rhinos.gui.dataCollector.ConsultancyDataCollector;
+import com.desktop.rhinos.gui.dataCollector.UserDataCollector;
 
-public class ConsultancyTable extends RhTable {
+public class UserTable extends RhTable {
 	
 	private static final long serialVersionUID = 1L;
 
-	private ConsultancyDataCollector display;
-	private ConsultancyDataCollector extDisplay;
+	private UserDataCollector display;
+	private UserDataCollector extDisplay;
 	
 	private JDialog parent;
 	
-	private ArrayList<Consultancy> c;
+	private ArrayList<User> c;
 	
 	private boolean editMode;
 	private JButton editButton;
 	
-	public ConsultancyTable(ConsultancyDataCollector extDisplay) {
+	public UserTable(UserDataCollector extDisplay) {
 		this.extDisplay = extDisplay;
 		init();
 		updateTableData();
 	}
 	
-	public ConsultancyTable(ConsultancyDataCollector extDisplay, JDialog p, boolean editMode) {
+	public UserTable(UserDataCollector extDisplay, JDialog p, boolean editMode) {
 		parent = p;
 		this.editMode = editMode;
 		this.extDisplay = extDisplay;
@@ -46,25 +46,25 @@ public class ConsultancyTable extends RhTable {
 	}
 	
 	private void init() {
-		c = new ArrayList<Consultancy>();
+		c = new ArrayList<User>();
 		
-		tm.addColumn("Asesoría");
-		tm.addColumn("Asesor");
+		tm.addColumn("Nombre");
+		tm.addColumn("Usuario");
 		
 		delete.setVisible(editMode);
 		lookUp.setVisible(false);
 		
-		display = new ConsultancyDataCollector();
+		display = new UserDataCollector();
 		display.setFieldsEditable(false);
-		display.getSearchButton().setVisible(false);
 		
 		editButton = new JButton("Guardar");
 		editButton.setFont(App.DEFAULT_FONT);
 		editButton.setVisible(false);
+		
 		editButton.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				MySqlConnector.getInstance().editConsultancy(display.getConsultancy());
+				//MySqlConnector.getInstance().editAccount(display.getUser());
 				updateTableData();
 			}
 		});
@@ -90,12 +90,12 @@ public class ConsultancyTable extends RhTable {
 		tm.setRowCount(0);
 		delete.setVisible(tm.getRowCount() > 0);
 		
-		c = MySqlConnector.getInstance().getConsultancy();
+		c = MySqlConnector.getInstance().getUsers();
 		filterBackUp = new Object[c.size()][];
 		
 		for (int j = 0; j < c.size(); j++) {
-			Consultancy _c = c.get(j);
-			Object [] o = {_c.getName(), _c.getConsultant()};
+			User _c = c.get(j);
+			Object [] o = {_c.getName(), _c.getUser()};
 			
 			tm.addRow(filterBackUp[j] = o);
 		}
@@ -109,7 +109,7 @@ public class ConsultancyTable extends RhTable {
 		}
 		else {
 			if (extDisplay != null) {
-				extDisplay.setData(display.getConsultancy());
+				extDisplay.setData(display.getUser());
 				if (parent != null)
 					parent.dispose();
 			}
@@ -119,16 +119,20 @@ public class ConsultancyTable extends RhTable {
 	@Override
 	protected void removeSelected() {
 		if ((editMode) && (table.getSelectedRowCount() > 0)) {
-			Consultancy cons = display.getConsultancy();
-			if (JOptionPane.showConfirmDialog(null, "Eliminar asesoría "+cons.getName()+" - "+cons.getConsultant()+"?", 
-												"Eliminar asesoría", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)
+			User cons = display.getUser();
+			if (JOptionPane.showConfirmDialog(null, "Eliminar usuario "+cons.getName()+" - "+cons.getUser()+"?", 
+												"Eliminar usuario", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)
 												== JOptionPane.YES_OPTION) {
 				
 				int r = table.convertRowIndexToModel(table.getSelectedRow());
 				
+				/*
+				 * no necesario, la actualizacion de la tabla ya lo hace.
+				 * 
 				c.remove(r);
-				tm.removeRow(r);
-				MySqlConnector.getInstance().deleteConsultancy(cons.getExtId());
+				tm.removeRow(r);*/
+				
+				MySqlConnector.getInstance().deleteAccount(c.get(r).getExtId());
 			}
 			
 			updateTableData();
@@ -136,6 +140,6 @@ public class ConsultancyTable extends RhTable {
 	}
 	
 	protected String getPrintableTitle(){
-		return "Asesorías";
+		return "Usuarios";
 	}
 }
