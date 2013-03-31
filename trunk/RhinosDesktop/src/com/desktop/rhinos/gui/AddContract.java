@@ -40,9 +40,9 @@ public class AddContract extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
-	public static final int SSFIELD = 4;
-	public static final int SFIELD = 10;
-	public static final int LFIELD = 37;
+	public static final int SSFIELD = 4; //super short field
+	public static final int SFIELD = 10; //short field
+	public static final int LFIELD = 37; //large field
 	
 	private ClientDataCollector cliData;
 	private ConsultancyDataCollector conData;

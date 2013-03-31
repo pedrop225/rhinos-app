@@ -90,6 +90,11 @@ public class RhPanel extends JPanel {
 		centerTab.addTab("Servicios", new ImageIcon(RhPanel.class.getResource("/icons/Globe/Globe_16x16.png")), services);
 		centerTab.addTab("Informes", new ImageIcon(RhPanel.class.getResource("/icons/Properties/Properties_16x16.png")), reports);
 		centerTab.addTab("Asesorías", new ImageIcon(RhPanel.class.getResource("/icons/Archive/Archive_16x16.png")), consultancy);
+		
+		//for (int i = 0; i < centerTab.getTabCount(); i++)
+			//centerTab.getTabComponentAt(i).setFocusable(false);
+		
+		centerTab.setFocusable(false);
 
 		//Actualizando al cambiar de pestañas ...
 		centerTab.addChangeListener(new ChangeListener() {

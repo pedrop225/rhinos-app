@@ -48,6 +48,8 @@ public interface Connector {
 	public String getCurrentVersion();
 
 	public ArrayList<User> getUsers();
+	
+	public User getUserById(int id);
 
 	public ArrayList<String> getAuthorizedCampaigns(User user);
 
@@ -62,4 +64,6 @@ public interface Connector {
 	public boolean editConsultancy(Consultancy c);
 	
 	public void deleteConsultancy(int id);
+	
+	public void deleteAccount(int id);
 }
