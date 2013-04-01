@@ -6,15 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
-import com.desktop.rhinos.gui.dataCollector.ConsultancyDataCollector;
 import com.desktop.rhinos.gui.dataCollector.UserDataCollector;
 
-public class AddAccount extends JFrame {
+public class AddAccount extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
@@ -22,7 +21,6 @@ public class AddAccount extends JFrame {
 	private JButton add;
 	
 	public AddAccount(JFrame loc) {
-		setAlwaysOnTop(true);
 		init();
 		setLocationRelativeTo(loc);
 	}
@@ -31,6 +29,7 @@ public class AddAccount extends JFrame {
 		setTitle("Añadir Usuario");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AddAccount.class.getResource("/icons/rhinos.png")));
 		setResizable(false);
+		setModal(true);
 		
 		dc = new UserDataCollector();
 		dc.getSearchButton().setVisible(false);
