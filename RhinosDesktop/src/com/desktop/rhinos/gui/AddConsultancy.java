@@ -1,11 +1,13 @@
 package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog.ModalExclusionType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -13,7 +15,7 @@ import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.dataCollector.ConsultancyDataCollector;
 
-public class AddConsultancy extends JFrame {
+public class AddConsultancy extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
@@ -21,7 +23,6 @@ public class AddConsultancy extends JFrame {
 	private JButton add;
 	
 	public AddConsultancy(JFrame loc) {
-		setAlwaysOnTop(true);
 		init();
 		setLocationRelativeTo(loc);
 	}
@@ -30,6 +31,7 @@ public class AddConsultancy extends JFrame {
 		setTitle("Añadir Asesoría");
 		setIconImage(new ImageIcon(AddConsultancy.class.getResource("/icons/rhinos.png")).getImage());
 		setResizable(false);
+		setModal(true);
 		
 		dc = new ConsultancyDataCollector();
 		dc.getSearchButton().setVisible(false);
