@@ -1,7 +1,6 @@
 package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dialog.ModalExclusionType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

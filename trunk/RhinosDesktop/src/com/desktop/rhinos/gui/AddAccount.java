@@ -10,6 +10,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.android.rhinos.gest.User;
+import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.dataCollector.UserDataCollector;
 
@@ -19,6 +21,8 @@ public class AddAccount extends JDialog {
 
 	private UserDataCollector dc;
 	private JButton add;
+	
+	User u;
 	
 	public AddAccount(JFrame loc) {
 		init();
@@ -31,6 +35,7 @@ public class AddAccount extends JDialog {
 		setResizable(false);
 		setModal(true);
 		
+		u = null;
 		dc = new UserDataCollector();
 		dc.getSearchButton().setVisible(false);
 		
@@ -40,7 +45,8 @@ public class AddAccount extends JDialog {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-	//			MySqlConnector.getInstance().createAccount(u, password);
+				u = dc.getUser();
+				MySqlConnector.getInstance().createAccount(u, "_0x"+u.getUser().toLowerCase()+"_");
 				dispose();
 			}
 		});

@@ -11,7 +11,7 @@ public class RhinosDesktop {
 			UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 		} 
 		catch (Exception e) {}
-		    
+			    
 		RhFrame f = new RhFrame();
 		f.setVisible(true);
 		f.getLogger().setVisible(true);

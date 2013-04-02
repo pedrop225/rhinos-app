@@ -69,7 +69,8 @@ public class AddContract extends JFrame {
 	
 	private void init() {
 		setTitle((editMode) ? "Editar Cliente" : "Añadir Contrato");
-		setIconImage(new ImageIcon(AddContract.class.getResource("/icons/rhinos.png")).getImage());
+		setIconImage(new ImageIcon(AddContract.class.getResource((editMode) ? 	"/icons/User/User_24x24.png" : 
+																				"/icons/Add/Add_24x24.png")).getImage());
 		setResizable(false);
 		setLayout(new BorderLayout());
 		
@@ -274,6 +275,7 @@ public class AddContract extends JFrame {
 	
 	public void setEditMode(boolean editMode) {
 		setTitle("Editar Cliente");
+		setIconImage(new ImageIcon(AddContract.class.getResource("/icons/User/User_24x24.png")).getImage()); 
 		this.editMode = editMode;
 		print.setVisible(!editMode);
 	}
