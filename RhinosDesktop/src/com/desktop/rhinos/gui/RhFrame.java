@@ -5,22 +5,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
+import javax.swing.JToolBar;
 
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.table.ConsultancyTableDialog;
 import com.desktop.rhinos.gui.table.UserTableDialog;
+import javax.swing.SwingConstants;
+import java.awt.Color;
 
 public class RhFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
 	private JMenuBar mBar;
+	private JToolBar tBar;
 	
 	private JMenu mFile;
 	private JMenuItem logOut;
@@ -40,6 +45,12 @@ public class RhFrame extends JFrame {
 	
 	private JMenu help;
 	private JMenuItem about;
+	
+	private JButton bLogOut;
+	private JButton bClients;
+	private JButton bAddContract;
+	private JButton bSettings;
+	private JButton bHelp;
 	
 	private RhPanel rhPanel;
 	
@@ -69,14 +80,62 @@ public class RhFrame extends JFrame {
 		log = new Logger(this);
 		mySql = MySqlConnector.getInstance();
 		
-		//inicializando barra de menu
-		initMenuBar();
-		
 		rhPanel = new RhPanel();
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(rhPanel);
 		
+		//inicializando barra de menu
+		initMenuBar();
+		initToolBar();
+		
 		pack();
+	}
+	
+	private void initToolBar() {
+		tBar = new JToolBar();
+		tBar.setBackground(Color.LIGHT_GRAY);
+		tBar.setOrientation(SwingConstants.VERTICAL);
+		tBar.setFloatable(false);
+		tBar.setRollover(true);
+		
+		bLogOut = new JButton();
+		bLogOut.setBackground(Color.LIGHT_GRAY);
+		bLogOut.setFocusable(false);
+		bLogOut.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/LogOut/Log Out_24x24.png")));
+		bLogOut.addActionListener(logOut.getActionListeners()[0]);
+		
+		bClients = new JButton();
+		bClients.setBackground(Color.LIGHT_GRAY);
+		bClients.setFocusable(false);
+		bClients.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/User/User_24x24.png")));
+		bClients.addActionListener(edClients.getActionListeners()[0]);
+		
+		bAddContract = new JButton();
+		bAddContract.setBackground(Color.LIGHT_GRAY);
+		bAddContract.setFocusable(false);
+		bAddContract.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/Add/Add_24x24.png")));
+		bAddContract.addActionListener(addContract.getActionListeners()[0]);
+
+		
+		bSettings = new JButton();
+		bSettings.setBackground(Color.LIGHT_GRAY);
+		bSettings.setFocusable(false);
+		bSettings.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/Settings/Settings_24x24.png")));
+//		bSettings.addActionListener(logOut.getActionListeners()[0]);
+		
+		bHelp = new JButton();
+		bHelp.setBackground(Color.LIGHT_GRAY);
+		bHelp.setFocusable(false);
+		bHelp.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/Help/Help_24x24.png")));
+//		bHelp.addActionListener(logOut.getActionListeners()[0]);
+		
+		tBar.add(bLogOut);
+		tBar.add(bClients);
+		tBar.add(bAddContract);
+		tBar.add(bSettings);
+		tBar.add(bHelp);
+
+		getContentPane().add(tBar, BorderLayout.WEST);
 	}
 	
 	/*
