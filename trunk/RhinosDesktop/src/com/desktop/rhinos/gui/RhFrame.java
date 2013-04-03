@@ -118,10 +118,20 @@ public class RhFrame extends JFrame {
 
 		
 		bSettings = new JButton();
+		bSettings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		bSettings.setBackground(Color.LIGHT_GRAY);
 		bSettings.setFocusable(false);
-		bSettings.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/Settings/Settings_24x24.png")));
-//		bSettings.addActionListener(logOut.getActionListeners()[0]);
+		bSettings.setIcon(new ImageIcon(RhFrame.class.getResource("/icons/Key/Key_24x24.png")));
+		bSettings.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ChangePassword(_this).setVisible(true);
+			}
+		});
 		
 		bHelp = new JButton();
 		bHelp.setBackground(Color.LIGHT_GRAY);
