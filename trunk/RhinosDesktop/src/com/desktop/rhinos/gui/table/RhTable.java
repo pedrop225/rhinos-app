@@ -2,6 +2,7 @@ package com.desktop.rhinos.gui.table;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.Util;
@@ -116,6 +118,25 @@ public abstract class RhTable extends JPanel {
 						
 					default:
 				}
+			}
+		});
+		
+		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table,
+					Object value, boolean isSelected, boolean hasFocus,
+					int row, int column) {
+				// TODO Auto-generated method stub
+				
+				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				
+				if (value.toString().matches("-.*€"))
+					c.setForeground(Color.RED);
+				else
+					c.setForeground(Color.BLACK);
+				
+				return c;
 			}
 		});
 		
