@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,9 +16,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
@@ -67,6 +71,9 @@ public class ServiceDataCollector extends JDialog {
 	//notas del servicio
 	private JTextArea notes;
 	
+	private JLabel labCommission;
+	private JTextField commission;
+	
 	public ServiceDataCollector(String _c) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ServiceDataCollector.class.getResource("/icons/Globe/Globe_16x16.png")));
 		clientId = _c;
@@ -90,6 +97,8 @@ public class ServiceDataCollector extends JDialog {
 		
 		campaign = new JComboBox<Object>(importUserCampaigns().toArray());
 		service = new JComboBox<Service>();
+		commission = new JTextField();
+		commission.setEnabled(false);
 
 		dch = new JDateChooser(new Date());
 		dch.setFont(App.DEFAULT_FONT);
@@ -101,11 +110,19 @@ public class ServiceDataCollector extends JDialog {
 		expiryDch.setDateFormatString("dd/MM/yyyy");
 		expiryDch.getDateEditor().setEnabled(false);
 		
-		campaign.addActionListener(new ActionListener() {
+		campaign.addItemListener(new ItemListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void itemStateChanged(ItemEvent e) {
 				updateServices();
+			}
+		});
+		
+		service.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				updateCommission();
 			}
 		});
 		
@@ -140,6 +157,9 @@ public class ServiceDataCollector extends JDialog {
 					ms.setState(state.getSelectedIndex());
 					ms.setNotes(notes.getText().trim().toUpperCase());
 					
+					if (ms.getCommission() == -1)
+						ms.setCommission(Integer.parseInt(commission.getText()));
+					
 					if (toModify < 0)
 						MySqlConnector.getInstance().addService(ms, client);
 					else
@@ -147,18 +167,26 @@ public class ServiceDataCollector extends JDialog {
 					
 					dispose();
 				}
+				else
+					JOptionPane.showMessageDialog(null, "Error: \""+commission.getText()+"\" no es una cifra válida..", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		
 		labPanel.add(labState);
 		labPanel.add(labCampaign);
 		labPanel.add(labService);
+		
+		labCommission = new JLabel("Comisi\u00F3n:");
+		labPanel.add(labCommission);
 		labPanel.add(labDate);
 		labPanel.add(labExpiry);
 		
 		dataPanel.add(state);
 		dataPanel.add(campaign);
 		dataPanel.add(service);
+		
+		dataPanel.add(commission);
+		commission.setColumns(10);
 		dataPanel.add(dch);
 		dataPanel.add(expiryDch);
 		
@@ -227,6 +255,7 @@ public class ServiceDataCollector extends JDialog {
 		
 		campaign.setEnabled(false);
 		service.setEnabled(false);
+		commission.setEnabled(false);
 		dch.setEnabled(false);
 		expiryDch.setEnabled(false);
 		notes.setEditable(true);
@@ -234,6 +263,13 @@ public class ServiceDataCollector extends JDialog {
 	}
 	
 	private boolean checkData() {
+		try {
+			Integer.parseInt(commission.getText());
+		}
+		catch (NumberFormatException e) {
+			return false;
+		}
+		
 		return true;
 	}
 	
@@ -247,6 +283,16 @@ public class ServiceDataCollector extends JDialog {
 		for (Service s : ((Campaign)campaign.getSelectedItem()).getServices().values()) {
 			service.addItem(s);
 		}
+	}
+	
+	private void updateCommission() {
+		if ((Service)service.getSelectedItem() != null)
+			if (((Service)service.getSelectedItem()).getCommission() != -1) {
+				commission.setEnabled(false);
+				commission.setText(((Service)service.getSelectedItem()).getCommission()+"");
+			}
+			else
+				commission.setEnabled(true);
 	}
 	
 	public int getExitMode() {
