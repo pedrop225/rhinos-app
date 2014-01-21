@@ -56,6 +56,7 @@ public abstract class RhTable extends JPanel {
 		init();
 	}
 	
+	@SuppressWarnings("serial")
 	private void init() {
 		tm = new RhTableModel();
 		lookUp = new JButton("Ver");
@@ -127,7 +128,6 @@ public abstract class RhTable extends JPanel {
 			public Component getTableCellRendererComponent(JTable table,
 					Object value, boolean isSelected, boolean hasFocus,
 					int row, int column) {
-				// TODO Auto-generated method stub
 				
 				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 				
