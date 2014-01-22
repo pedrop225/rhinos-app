@@ -28,7 +28,7 @@ public class RhLoader extends JFrame {
 		c.setLayout(new BorderLayout());
 		
 		LoaderImage iPanel = new LoaderImage(new ImageIcon(RhLoader.class.getResource("/icons/rhinos.png")).getImage());
-		iPanel.setBorder(BorderFactory.createLineBorder(new Color(0x008000), 2));
+		iPanel.setBorder(BorderFactory.createLineBorder(new Color(57, 134, 90), 5));
 		
 		c.add(iPanel);
 	}
@@ -49,6 +49,7 @@ class LoaderImage extends JPanel {
 		super.paintComponent(g);
 		
 		Graphics2D g2 = (Graphics2D)g;
+		setBackground(new Color(57, 134, 90, 40));
 		g2.drawImage(img, 0, 0, RhLoader.WIDTH, RhLoader.HEIGHT, null);
 	}
 }
