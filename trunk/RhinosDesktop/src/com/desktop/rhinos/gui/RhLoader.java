@@ -23,9 +23,7 @@ public class RhLoader extends JFrame {
 		setSize(WIDTH, HEIGHT);
 		setUndecorated(true);
 		setLocationRelativeTo(null);
-		
-		setOpacity(.9f);
-	
+			
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout());
 		
