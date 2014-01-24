@@ -1,6 +1,7 @@
 package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -156,6 +157,7 @@ public class AddContract extends JFrame {
 		}
 		
 		boolean v = id.isValid();
+		cliData.getNif().setForeground((v) ? Color.GREEN.darker().darker() : Color.RED);
 		
 		if (v) {
 			Client c = MySqlConnector.getInstance().clientExists(id.toString());
@@ -169,7 +171,7 @@ public class AddContract extends JFrame {
 			else
 				setFieldsEditable(v);
 		}
-		else	
+		else
 			setFieldsEditable(false);
 	}
 	
