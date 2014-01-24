@@ -42,12 +42,14 @@ public class ServiceDataCollector extends JDialog {
 	
 	private JComboBox<Object> campaign;
 	private JComboBox<Service> service;
+	private JTextField commission;
 	private JDateChooser dch;
 	private JDateChooser expiryDch;
 	private JComboBox<String> state;
 	
 	private JLabel labCampaign;
 	private JLabel labService;
+	private JLabel labCommission;
 	private JLabel labDate;
 	private JLabel labExpiry;
 	private JLabel labState;
@@ -70,10 +72,7 @@ public class ServiceDataCollector extends JDialog {
 	
 	//notas del servicio
 	private JTextArea notes;
-	
-	private JLabel labCommission;
-	private JTextField commission;
-	
+		
 	public ServiceDataCollector(String _c) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ServiceDataCollector.class.getResource("/icons/Globe/Globe_16x16.png")));
 		clientId = _c;
@@ -137,8 +136,10 @@ public class ServiceDataCollector extends JDialog {
 		labPanel = new JPanel(new GridLayout(0, 1, 0, 3));
 		dataPanel = new JPanel(new GridLayout(0, 1, 0, 3));
 		
+		state.setFont(App.DEFAULT_FONT);
 		campaign.setFont(App.DEFAULT_FONT);
 		service.setFont(App.DEFAULT_FONT);
+		commission.setFont(App.DEFAULT_FONT);
 		
 		accept.addActionListener(new ActionListener() {
 			
