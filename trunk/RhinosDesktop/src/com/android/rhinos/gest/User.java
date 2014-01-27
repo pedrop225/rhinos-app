@@ -2,16 +2,17 @@ package com.android.rhinos.gest;
 
 public class User extends Client {
 
-	public static final String[] USER_TYPES = {"Usuario", "Admin"};
+	private static final long serialVersionUID = 1L;
+	
+	public static final String[] USER_TYPES = {"Usuario", "Super", "Admin"};
 	
 	private static final int DEFAULT = 0;
-	private static final int ROOT = 1;
+	private static final int SUPER = 1;
+	private static final int ROOT = 2;
 	
 	public static final int ONLINE = 0;
 	public static final int OFFLINE = 1;
-	
-	private static final long serialVersionUID = 1L;
-	
+		
 	private String user;
 	private int extId;
 	private int type;
@@ -53,6 +54,10 @@ public class User extends Client {
 	
 	public boolean isRoot() {
 		return (type == ROOT);
+	}
+	
+	public boolean isSuper() {
+		return (type == SUPER);
 	}
 
 	public int getConnectionMode() {

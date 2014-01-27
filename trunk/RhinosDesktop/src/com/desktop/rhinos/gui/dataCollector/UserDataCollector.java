@@ -52,8 +52,9 @@ public class UserDataCollector extends JPanel {
 		labMail = new JLabel("Mail:");
 		
 		type = new JComboBox<String>();
-		type.addItem(User.USER_TYPES[0]);
-		type.addItem(User.USER_TYPES[1]);
+	
+		for (int i = 0; i < User.USER_TYPES.length; i++)
+			type.addItem(User.USER_TYPES[i]);
 		
 		user = new JTextField(AddContract.SFIELD);
 		name = new JTextField(AddContract.LFIELD);
