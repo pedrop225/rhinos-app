@@ -12,6 +12,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.desktop.rhinos.connector.MySqlConnector.App;
+
 public class RhLoader extends JFrame {
 	
 	public static final int WIDTH = 450;
@@ -28,7 +30,7 @@ public class RhLoader extends JFrame {
 		c.setLayout(new BorderLayout());
 		
 		LoaderImage iPanel = new LoaderImage(new ImageIcon(RhLoader.class.getResource("/icons/rhinos.png")).getImage());
-		iPanel.setBorder(BorderFactory.createLineBorder(new Color(57, 134, 90), 5));
+		iPanel.setBorder(BorderFactory.createLineBorder(App.APP_GREEN, 5));
 		
 		c.add(iPanel);
 	}
