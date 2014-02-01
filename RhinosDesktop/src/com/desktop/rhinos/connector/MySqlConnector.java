@@ -1,5 +1,6 @@
 package com.desktop.rhinos.connector;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -36,6 +37,7 @@ public class MySqlConnector implements Connector {
 		public static final User user = new User();
 		
 		public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 11);
+		public static final Color APP_GREEN = new Color(57, 134, 90);
 	}
 	
 	private RCipher cipher;

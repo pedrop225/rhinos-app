@@ -4,9 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -110,7 +113,7 @@ public class RhPanel extends JPanel {
 		
 		setLayout(new BorderLayout());
 		
-		north.add(getUserBanner());
+	//	north.add(getUserBanner());
 		center.add(centerTab);
 		
 		add(north, BorderLayout.NORTH);
@@ -121,13 +124,28 @@ public class RhPanel extends JPanel {
 	}
 	
 	private JPanel getUserBanner() {
-		JPanel b = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		final JPanel b = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JLabel l = new JLabel((App.user.getName() != null) ? App.user.getName()+"  " : "", JLabel.RIGHT);
 		
 		Font f = new Font(Font.MONOSPACED, Font.BOLD, 16);
 		l.setFont(f);
+		b.setBorder(BorderFactory.createLineBorder(App.APP_GREEN, 2));
 		b.setBackground(Color.LIGHT_GRAY);
 		b.add(l);
+		
+		b.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				super.mousePressed(e);
+				b.setBackground(Color.GRAY.brighter());
+			}
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				super.mouseReleased(e);
+				b.setBackground(Color.LIGHT_GRAY);
+			}
+		});
 		
 		return b;
 	}
