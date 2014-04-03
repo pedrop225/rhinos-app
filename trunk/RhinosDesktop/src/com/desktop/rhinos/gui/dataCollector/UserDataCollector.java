@@ -37,6 +37,8 @@ public class UserDataCollector extends JPanel {
 		
 	private JButton search;
 
+	private UserCampaingsCollector campCollector;
+	
 	private User _user;
 	
 	public UserDataCollector() {
@@ -83,6 +85,8 @@ public class UserDataCollector extends JPanel {
 		dataPanel.add(Util.packInJP(mail));
 		dataPanel.add(Util.packInJP(password));
 		
+		campCollector = new UserCampaingsCollector();
+		
 		search = new JButton("Buscar");
 		search.setVisible(false);
 		
@@ -90,7 +94,10 @@ public class UserDataCollector extends JPanel {
 		
 		add(labsPanel, BorderLayout.WEST);
 		add(dataPanel);
-		add(Util.packInJP(new FlowLayout(FlowLayout.RIGHT), search), BorderLayout.SOUTH);
+		JPanel bot = new JPanel(new BorderLayout());
+		bot.add(campCollector);
+		bot.add(Util.packInJP(new FlowLayout(FlowLayout.RIGHT), search), BorderLayout.SOUTH);
+		add(bot, BorderLayout.SOUTH);
 	}
 	
 	public void setFieldsEditable(boolean editable) {
@@ -143,11 +150,14 @@ public class UserDataCollector extends JPanel {
 			name.setText("");
 			mail.setText("");
 		}
+		
+		campCollector.setData(c);
 	}
 	
 	public void setData(int id) {
 		User u = MySqlConnector.getInstance().getUserById(id);
 		setData(u);
+		campCollector.setData(u);
 	}
 	
 	public User getUser() {
