@@ -11,16 +11,21 @@ import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.User;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
+import javax.swing.JButton;
 
 @SuppressWarnings("serial")
 public class UserCampaingsCollector extends JPanel {
 
+	JButton btnCampaigns;
 	/**
 	 * Create the panel.
 	 */
 	public UserCampaingsCollector() {
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		setLayout(new GridLayout(0, 1));
+		
+		btnCampaigns = new JButton("Ver Campa\u00F1as");
+		add(btnCampaigns);
 	}
 	
 	public void setData(User u) {
