@@ -2,7 +2,6 @@ package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -11,6 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 import com.desktop.rhinos.connector.MySqlConnector.App;
 
@@ -26,13 +26,19 @@ public class RhLoader extends JFrame {
 		setUndecorated(true);
 		setLocationRelativeTo(null);
 			
-		Container c = getContentPane();
+		JPanel c = (JPanel)getContentPane();
 		c.setLayout(new BorderLayout());
 		
 		LoaderImage iPanel = new LoaderImage(new ImageIcon(RhLoader.class.getResource("/icons/rhinos.png")).getImage());
 		iPanel.setBorder(BorderFactory.createLineBorder(App.APP_GREEN, 5));
 		
+		JProgressBar pb = new JProgressBar(JProgressBar.HORIZONTAL);
+		pb.setForeground(App.APP_GREEN);
+		
+		pb.setIndeterminate(true);
+		
 		c.add(iPanel);
+		c.add(pb, BorderLayout.SOUTH);
 	}
 }
 

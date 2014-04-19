@@ -1,6 +1,8 @@
 package com.desktop.rhinos.gui.dataCollector;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
@@ -11,33 +13,49 @@ import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.User;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
-import javax.swing.JButton;
 
 @SuppressWarnings("serial")
 public class UserCampaingsCollector extends JPanel {
-
-	JButton btnCampaigns;
+	
+	private ArrayList<JCheckBox> checkCamps;
+	private User user;
+	
 	/**
 	 * Create the panel.
 	 */
 	public UserCampaingsCollector() {
+		setLayout(new GridLayout(0, 1, 0, 0));
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		setLayout(new GridLayout(0, 1));
 		
-		btnCampaigns = new JButton("Ver Campa\u00F1as");
-		add(btnCampaigns);
+		checkCamps = new ArrayList<JCheckBox>();
+				
+		ArrayList<Campaign> allCamps = MySqlConnector.getInstance().getCampaigns(App.user);
+		for (Campaign i : allCamps) {
+			JCheckBox cb = new JCheckBox(i.getName());
+			
+			cb.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Campaign c = new Campaign(((JCheckBox)e.getSource()).getText());
+					
+					if (((JCheckBox)e.getSource()).isSelected())
+						MySqlConnector.getInstance().grantCampaignPermission(user, c);
+					
+					else
+						MySqlConnector.getInstance().removeCampaingPermission(user, c);
+				}
+			});
+			
+			add(cb);
+			checkCamps.add(cb);
+		}
 	}
 	
 	public void setData(User u) {
-		removeAll();
-		
-		ArrayList<Campaign> allCamps = MySqlConnector.getInstance().getCampaigns(App.user);
-		ArrayList<String> authCamps = MySqlConnector.getInstance().getAuthorizedCampaigns(u);
-		
-		for (Campaign i : allCamps) {
-			add(new JCheckBox(i.getName(), authCamps.contains(i.getName())));
-		}
-		
-		validate();
+		user = u;
+		ArrayList<String> authCamps = MySqlConnector.getInstance().getAuthorizedCampaigns(user);
+		for (JCheckBox i : checkCamps)
+			i.setSelected(authCamps.contains(i.getText()));
 	}
 }
