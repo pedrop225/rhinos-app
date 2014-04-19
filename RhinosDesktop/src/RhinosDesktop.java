@@ -19,6 +19,7 @@ public class RhinosDesktop {
 		RhFrame f = new RhFrame();
 		load.setVisible(false);
 		f.setVisible(true);
+		
 		f.getLogger().setVisible(true);
 	}
 }

@@ -244,6 +244,8 @@ public class ServiceDataCollector extends JDialog {
 				break;
 		service.setSelectedIndex(ind);
 		
+		commission.setText(s.getCommission()+"");
+		
 		/*
 		 * En caso de que el servicio seleccionado, pertenezca a una campaña
 		 * actualmente no disponible para el usuario se lanzara una excepcion en
@@ -287,13 +289,16 @@ public class ServiceDataCollector extends JDialog {
 	}
 	
 	private void updateCommission() {
-		if ((Service)service.getSelectedItem() != null)
-			if (((Service)service.getSelectedItem()).getCommission() != -1) {
-				commission.setEnabled(false);
-				commission.setText(((Service)service.getSelectedItem()).getCommission()+"");
-			}
-			else
-				commission.setEnabled(true);
+		Service s = (Service)service.getSelectedItem();
+		
+		if ((s != null) && (s.getCommission() != -1)) {
+			commission.setEnabled(false);
+			commission.setText(s.getCommission()+"");
+		}
+		else {
+			commission.setEnabled(true);
+			commission.setText("");
+		}
 	}
 	
 	public int getExitMode() {

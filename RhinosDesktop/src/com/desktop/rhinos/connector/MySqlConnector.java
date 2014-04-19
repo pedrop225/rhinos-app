@@ -363,6 +363,7 @@ public class MySqlConnector implements Connector {
 				s.setCampaign(cipher.decode(jsonObj.getString("campaign")));
 				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
 				s.setExpiryDate(new Date(jsonObj.getString("expiry").replace("-", "/")));
+				s.setCommission(jsonObj.getInt("commission"));
 				s.setState(jsonObj.getInt("state"));
 				s.setNotes(cipher.decode(jsonObj.getString("notes")));
 				

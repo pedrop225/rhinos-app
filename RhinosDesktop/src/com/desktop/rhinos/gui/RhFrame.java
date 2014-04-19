@@ -1,6 +1,7 @@
 package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,13 +13,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.table.ConsultancyTableDialog;
 import com.desktop.rhinos.gui.table.UserTableDialog;
-import javax.swing.SwingConstants;
-import java.awt.Color;
 
 public class RhFrame extends JFrame {
 
@@ -341,7 +341,7 @@ public class RhFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new UserTableDialog(_this, null, true).setVisible(true);
+				new UserTableDialog(_this, true).setVisible(true);
 			}
 		});
 	}

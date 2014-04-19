@@ -49,7 +49,7 @@ public class ClientDataCollector extends JPanel {
 		
 		setLayout(new BorderLayout());
 		
-		String [] ids = {"", "Dni", "Nie", "Cif"};
+		String [] ids = {"", "DNI", "NIE", "CIF"};
 		idSelector = new JComboBox<String>(ids);
 		labName = new JLabel("Nombre:");
 		labTel = new JLabel("Teléfono:");

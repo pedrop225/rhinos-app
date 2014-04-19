@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -22,25 +21,19 @@ public class UserTable extends RhTable {
 	private static final long serialVersionUID = 1L;
 
 	private UserDataCollector display;
-	private UserDataCollector extDisplay;
-	
-	private JDialog parent;
 	
 	private ArrayList<User> c;
 	
 	private boolean editMode;
 	private JButton editButton;
 	
-	public UserTable(UserDataCollector extDisplay) {
-		this.extDisplay = extDisplay;
+	public UserTable() {
 		init();
 		updateTableData();
 	}
 	
-	public UserTable(UserDataCollector extDisplay, JDialog p, boolean editMode) {
-		parent = p;
+	public UserTable(boolean editMode) {
 		this.editMode = editMode;
-		this.extDisplay = extDisplay;
 		init();
 		updateTableData();
 	}
@@ -106,13 +99,6 @@ public class UserTable extends RhTable {
 		if (editMode) {
 			display.setFieldsEditable(true);
 			editButton.setVisible(true);
-		}
-		else {
-			if (extDisplay != null) {
-				extDisplay.setData(display.getUser());
-				if (parent != null)
-					parent.dispose();
-			}
 		}
 	}
 	
