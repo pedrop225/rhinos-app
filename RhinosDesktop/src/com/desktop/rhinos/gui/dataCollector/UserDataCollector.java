@@ -16,8 +16,9 @@ import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.AddContract;
 import com.desktop.rhinos.gui.Util;
+import com.desktop.rhinos.gui.dataCollector.interfaces.UserDisplay;
 
-public class UserDataCollector extends JPanel {
+public class UserDataCollector extends JPanel implements UserDisplay {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -36,8 +37,6 @@ public class UserDataCollector extends JPanel {
 	private JPanel dataPanel;
 		
 	private JButton search;
-
-	private UserCampaingsCollector campCollector;
 	
 	private User _user;
 	
@@ -85,8 +84,6 @@ public class UserDataCollector extends JPanel {
 		dataPanel.add(Util.packInJP(mail));
 		dataPanel.add(Util.packInJP(password));
 		
-		campCollector = new UserCampaingsCollector();
-		
 		search = new JButton("Buscar");
 		search.setVisible(false);
 		
@@ -95,7 +92,6 @@ public class UserDataCollector extends JPanel {
 		add(labsPanel, BorderLayout.WEST);
 		add(dataPanel);
 		JPanel bot = new JPanel(new BorderLayout());
-		bot.add(campCollector);
 		bot.add(Util.packInJP(new FlowLayout(FlowLayout.RIGHT), search), BorderLayout.SOUTH);
 		add(bot, BorderLayout.SOUTH);
 	}
@@ -136,6 +132,7 @@ public class UserDataCollector extends JPanel {
 		return true;
 	}
 	
+	@Override
 	public void setData(User c) {
 		if (c != null) {
 			_user = c;
@@ -150,14 +147,11 @@ public class UserDataCollector extends JPanel {
 			name.setText("");
 			mail.setText("");
 		}
-		
-		campCollector.setData(c);
 	}
 	
 	public void setData(int id) {
 		User u = MySqlConnector.getInstance().getUserById(id);
 		setData(u);
-		campCollector.setData(u);
 	}
 	
 	public User getUser() {

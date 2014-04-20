@@ -1,10 +1,8 @@
-package com.desktop.rhinos.gui.dataCollector;
+package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -14,37 +12,25 @@ import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.structures.tree.RhTree;
 
-public class UserChooser extends JDialog {
-	
-	private static final int WIDTH = 480;
-	private static final int HEIGHT = 360;
-	private static final String TITLE = "Users Hierarchy";
+public class UserHierarchy extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel treePanel;
 	private JTree userTree;
-
-	public UserChooser() {
+	
+	public UserHierarchy() {
+		super(new BorderLayout());
 		init();
 	}
 	
 	private void init() {
-		setModalityType(ModalityType.APPLICATION_MODAL);
-		setTitle(TITLE);
-		setSize(WIDTH, HEIGHT);
-		setIconImage(new ImageIcon(UserChooser.class.getResource("/icons/User/User_16x16.png")).getImage());
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		userTree = new JTree();
+		userTree.setFont(App.DEFAULT_FONT);
 		
-		treePanel = new JPanel(new BorderLayout());
-		add(new JScrollPane(treePanel));
-		
-		setUser(App.user);
-
-		setLocationRelativeTo(null);
+		add(new JScrollPane(userTree));		
 	}
 	
-	private void setUser(User user) {
+	public void setUser(User user) {
 		ArrayList<ArrayList<User>> st = MySqlConnector.getInstance().getUserStructure(user);
 		
 		RhTree<User> t = new RhTree<User>(user);
@@ -54,7 +40,7 @@ public class UserChooser extends JDialog {
 		
 		userTree = new JTree(t.getRoot());
 		userTree.setFont(App.DEFAULT_FONT);
-		
-		treePanel.add(userTree);
+
+		add(new JScrollPane(userTree));
 	}
 }

@@ -7,6 +7,9 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -14,13 +17,21 @@ import com.android.rhinos.gest.User;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.Util;
+import com.desktop.rhinos.gui.dataCollector.UserCampaingsCollector;
 import com.desktop.rhinos.gui.dataCollector.UserDataCollector;
+import com.desktop.rhinos.gui.dataCollector.UserHierarchyCollector;
+import com.desktop.rhinos.gui.dataCollector.interfaces.UserDisplay;
 
 public class UserTable extends RhTable {
 	
 	private static final long serialVersionUID = 1L;
 
+	private JTabbedPane tabs;
 	private UserDataCollector display;
+	private UserCampaingsCollector campaigns;
+	private UserHierarchyCollector hierarchy;
+	
+	private ArrayList<UserDisplay> to_update;
 	
 	private ArrayList<User> c;
 	
@@ -46,9 +57,17 @@ public class UserTable extends RhTable {
 		
 		delete.setVisible(editMode);
 		lookUp.setVisible(false);
+
+		tabs = new JTabbedPane(JTabbedPane.TOP);
 		
 		display = new UserDataCollector();
 		display.setFieldsEditable(false);
+		
+		campaigns = new UserCampaingsCollector();
+		campaigns.setFieldsEditable(false);
+		
+		hierarchy = new UserHierarchyCollector();
+		hierarchy.setFieldsEditable(false);
 		
 		editButton = new JButton("Guardar");
 		editButton.setFont(App.DEFAULT_FONT);
@@ -66,16 +85,43 @@ public class UserTable extends RhTable {
 			
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
-				if (table.getSelectedRowCount() > 0)
-					display.setData(c.get(table.convertRowIndexToModel(table.getSelectedRow())));
-				
-				display.setFieldsEditable(false);
-				editButton.setVisible(false);
+				updateDisplay();
 			}
 		});
 		
-		add(Util.packInJP(display), BorderLayout.EAST);
+		tabs.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				updateDisplay();
+			}
+		});
+		
+		to_update = new ArrayList<UserDisplay>();
+		to_update.add(display);
+		to_update.add(campaigns);
+		to_update.add(hierarchy); 
+		
 		display.getSearchButton().getParent().add(editButton);
+		tabs.addTab("Contacto", Util.packInJP(display));
+		tabs.addTab("Campañas", Util.packInJP(campaigns));
+		tabs.addTab("Jerarquía", hierarchy);
+		
+		add(tabs, BorderLayout.EAST);
+	}
+	
+	/**
+	 * Actualiza el display correspondiente a la pestaña visible.
+	 * */
+	private void updateDisplay() {
+		if (table.getSelectedRowCount() > 0) {
+			int tab_ind = tabs.getSelectedIndex();
+			User u = c.get(table.convertRowIndexToModel(table.getSelectedRow()));
+			
+			to_update.get(tab_ind).setData(u);
+			to_update.get(tab_ind).setFieldsEditable(false);
+		}
+		editButton.setVisible(false);
 	}
 	
 	@Override
@@ -97,7 +143,7 @@ public class UserTable extends RhTable {
 	@Override
 	protected void lookUpSelected() {
 		if (editMode) {
-			display.setFieldsEditable(true);
+			to_update.get(tabs.getSelectedIndex()).setFieldsEditable(true);
 			editButton.setVisible(true);
 		}
 	}
@@ -111,13 +157,6 @@ public class UserTable extends RhTable {
 												== JOptionPane.YES_OPTION) {
 				
 				int r = table.convertRowIndexToModel(table.getSelectedRow());
-				
-				/*
-				 * no necesario, la actualizacion de la tabla ya lo hace.
-				 * 
-				c.remove(r);
-				tm.removeRow(r);*/
-				
 				MySqlConnector.getInstance().deleteAccount(c.get(r).getExtId());
 			}
 			
