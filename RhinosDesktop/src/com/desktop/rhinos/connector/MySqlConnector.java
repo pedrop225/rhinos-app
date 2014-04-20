@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import javax.crypto.SecretKey;
 
@@ -715,6 +717,67 @@ public class MySqlConnector implements Connector {
 	    getDataFromDB(App.external_path+"/db_delete_consultancy.php", nameValuePairs);
 	}
 	
+	@Override
+	public void deleteAccount(int id) {
+		
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("id", id+""));
+	    
+	    getDataFromDB(App.external_path+"/db_delete_account.php", nameValuePairs);
+	}
+	
+	@Override
+	public ArrayList<ArrayList<User>> getUserStructure(User user) {
+		
+		ArrayList<ArrayList<User>> st = new ArrayList<ArrayList<User>>();
+		HashSet<User> set = new HashSet<User>();
+	
+		set.add(user);
+		while (!set.isEmpty()) {
+			Iterator<User> it = set.iterator();
+			User rem = it.next();
+			ArrayList<User> list = getUserChildren(rem);
+			
+			if (list != null) {
+				st.add(list);
+			
+				for (User u : st.get(st.size() -1)){
+					set.add(u);
+				}
+			}
+			set.remove(rem);
+		}
+		return st;
+	}
+	
+	private ArrayList<User> getUserChildren(User user) {
+		ArrayList<User> t = new ArrayList<User>();
+		t.add(user);
+		
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("parent", user.getExtId()+""));
+	    
+	    try {
+	        JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_user_children.php", nameValuePairs);
+	        
+	        for (int i = 0; i < jsonArray.length(); i++) {
+	        	JSONObject jsonObj = jsonArray.getJSONObject(i);
+	        	
+	        	User u = new User();
+	        	u.setExtId(jsonObj.getInt("id"));
+	        	u.setType(jsonObj.getInt("type"));
+	        	u.setUser(cipher.decode(jsonObj.getString("user")));
+	        	u.setName(cipher.decode(jsonObj.getString("name")));
+	        	u.setMail(cipher.decode(jsonObj.getString("mail")));
+	        	
+	        	t.add(u);
+	        }
+
+	        return t;
+	    }
+	    catch (Exception e) {return null;}
+	}
+	
 	private JSONArray getDataFromDB(String url, ArrayList<NameValuePair> nameValuePairs) {
 	    
 		String result = "";
@@ -739,14 +802,5 @@ public class MySqlConnector implements Connector {
 	    catch (Exception e) {}
 	    
 		return null;
-	}
-	
-	@Override
-	public void deleteAccount(int id) {
-		
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-	    nameValuePairs.add(new BasicNameValuePair("id", id+""));
-	    
-	    getDataFromDB(App.external_path+"/db_delete_account.php", nameValuePairs);
 	}
 }
