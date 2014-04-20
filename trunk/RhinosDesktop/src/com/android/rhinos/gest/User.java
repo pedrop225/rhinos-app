@@ -79,4 +79,21 @@ public class User extends Client {
 		type = DEFAULT;
 		connectionMode = -1;
 	}
+	
+	@Override
+	public int compareTo(Client another) {
+		User u;
+		try {
+			u = (User)another;
+		}
+		catch (ClassCastException e){
+			return -1;
+		}
+		return user.compareTo(u.user);
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString()+" (@"+user+")";
+	}
 }

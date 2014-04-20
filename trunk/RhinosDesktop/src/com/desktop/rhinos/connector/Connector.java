@@ -66,4 +66,6 @@ public interface Connector {
 	public void deleteConsultancy(int id);
 	
 	public void deleteAccount(int id);
+	
+	public ArrayList<ArrayList<User>> getUserStructure(User user);
 }
