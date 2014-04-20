@@ -26,16 +26,13 @@ public class UserHierarchyCollector extends JPanel implements UserDisplay {
 
 	@Override
 	public void setData(User u) {
-		/*
-		hierarchy.setUser(u);
-		add(hierarchy);
-		*/
 		user = u;
 	}
 
 	@Override
 	public void setFieldsEditable(boolean e) {
 		if (e) {
+			hierarchy = new UserHierarchy();
 			hierarchy.setUser(user);
 			add(hierarchy);
 		}
