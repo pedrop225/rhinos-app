@@ -55,7 +55,7 @@ class LoaderImage extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
+		 
 		Graphics2D g2 = (Graphics2D)g;
 		setBackground(new Color(57, 134, 90, 40));
 		g2.drawImage(img, 0, 0, RhLoader.WIDTH, RhLoader.HEIGHT, null);

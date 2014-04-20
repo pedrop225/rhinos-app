@@ -56,7 +56,7 @@ public class Logger extends JDialog {
 	}
 	
 	private void init() {
-		setModal(true);
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle("Login");
 		
 		user = new JLabel("Usuario: ");

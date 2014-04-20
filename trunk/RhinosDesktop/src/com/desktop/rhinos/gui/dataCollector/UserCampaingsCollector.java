@@ -7,15 +7,15 @@ import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
-import javax.swing.border.EtchedBorder;
 
 import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.User;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
+import com.desktop.rhinos.gui.dataCollector.interfaces.UserDisplay;
 
 @SuppressWarnings("serial")
-public class UserCampaingsCollector extends JPanel {
+public class UserCampaingsCollector extends JPanel implements UserDisplay {
 	
 	private ArrayList<JCheckBox> checkCamps;
 	private User user;
@@ -25,7 +25,6 @@ public class UserCampaingsCollector extends JPanel {
 	 */
 	public UserCampaingsCollector() {
 		setLayout(new GridLayout(0, 1, 0, 0));
-		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		
 		checkCamps = new ArrayList<JCheckBox>();
 				
@@ -52,10 +51,17 @@ public class UserCampaingsCollector extends JPanel {
 		}
 	}
 	
+	@Override
 	public void setData(User u) {
 		user = u;
 		ArrayList<String> authCamps = MySqlConnector.getInstance().getAuthorizedCampaigns(user);
 		for (JCheckBox i : checkCamps)
 			i.setSelected(authCamps.contains(i.getText()));
+	}
+	
+	@Override
+	public void setFieldsEditable(boolean e) {
+		for (JCheckBox i : checkCamps)
+			i.setEnabled(e);
 	}
 }

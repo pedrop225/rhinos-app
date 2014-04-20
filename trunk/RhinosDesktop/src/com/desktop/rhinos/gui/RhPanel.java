@@ -21,7 +21,6 @@ import com.android.rhinos.gest.Service;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.dataCollector.ReportDataCollector;
-import com.desktop.rhinos.gui.dataCollector.UserChooser;
 import com.desktop.rhinos.gui.table.ClientTable;
 import com.desktop.rhinos.gui.table.ConsultancyTable;
 import com.desktop.rhinos.gui.table.ServiceTable;
@@ -141,7 +140,8 @@ public class RhPanel extends JPanel {
 				b.setBackground(Color.GRAY.brighter());
 				
 				if (e.getClickCount() == 2) {
-					UserChooser uch = new UserChooser();
+					final UserHierarchyDialog uch = new UserHierarchyDialog();
+					uch.setUser(App.user);
 					uch.setVisible(true);
 				}
 			}
