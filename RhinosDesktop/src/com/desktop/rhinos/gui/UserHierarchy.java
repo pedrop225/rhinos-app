@@ -48,7 +48,7 @@ public class UserHierarchy extends JPanel {
 	
 	@SuppressWarnings("unchecked")
 	public User getSelectedNode() {
-		RhNode<User> u = (RhNode<User>)userTree.getSelectionPath().getLastPathComponent();
-		return u.getData();
+		TreePath path = userTree.getSelectionPath();
+		return (path != null) ? ((RhNode<User>)path.getLastPathComponent()).getData() : null;
 	}
 }

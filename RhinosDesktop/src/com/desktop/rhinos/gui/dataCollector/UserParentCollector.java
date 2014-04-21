@@ -138,7 +138,9 @@ class UChooserLauncher extends JPanel {
 						}
 						
 						if (uhd.getExitMode() == JOptionPane.OK_OPTION) {
-							t_field.setText(uhd.getSelectedUser().getName().toUpperCase());
+							User u = uhd.getSelectedUser();
+							if (u != null)
+								t_field.setText(u.getName().toUpperCase());
 						}
 					};
 				}.start();
