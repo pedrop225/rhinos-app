@@ -19,6 +19,10 @@ public class RhNode<T> implements TreeNode {
 		this();
 		this.data = data;
 	}
+	
+	public T getData() {
+		return data;
+	}
 
 	@Override
 	public Enumeration<RhNode<T>> children() {

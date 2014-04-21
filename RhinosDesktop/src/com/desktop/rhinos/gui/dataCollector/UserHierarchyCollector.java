@@ -12,6 +12,8 @@ import com.desktop.rhinos.gui.dataCollector.interfaces.UserDisplay;
 public class UserHierarchyCollector extends JPanel implements UserDisplay {
 
 	private UserHierarchy hierarchy;
+	private UserParentCollector parent_coll;
+	
 	private User user;
 	
 	public UserHierarchyCollector() {
@@ -21,12 +23,16 @@ public class UserHierarchyCollector extends JPanel implements UserDisplay {
 	
 	private void init() {
 		hierarchy = new UserHierarchy();
+		parent_coll = new UserParentCollector();
+		
+		add(parent_coll, BorderLayout.NORTH);
 		add(hierarchy);
 	}
 
 	@Override
 	public void setData(User u) {
 		user = u;
+		parent_coll.setData(u);
 	}
 
 	@Override
@@ -37,5 +43,6 @@ public class UserHierarchyCollector extends JPanel implements UserDisplay {
 			add(hierarchy);
 		}
 		hierarchy.setVisible(e);
+		parent_coll.setFieldsEditable(e);
 	}
 }
