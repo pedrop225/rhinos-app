@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.tree.TreePath;
 
 import com.android.rhinos.gest.User;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
+import com.desktop.rhinos.structures.tree.RhNode;
 import com.desktop.rhinos.structures.tree.RhTree;
 
 public class UserHierarchy extends JPanel {
@@ -27,7 +29,7 @@ public class UserHierarchy extends JPanel {
 		userTree = new JTree();
 		userTree.setFont(App.DEFAULT_FONT);
 		
-		add(new JScrollPane(userTree));		
+		add(new JScrollPane(userTree));
 	}
 	
 	public void setUser(User user) {
@@ -42,5 +44,11 @@ public class UserHierarchy extends JPanel {
 		userTree.setFont(App.DEFAULT_FONT);
 
 		add(new JScrollPane(userTree));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public User getSelectedNode() {
+		RhNode<User> u = (RhNode<User>)userTree.getSelectionPath().getLastPathComponent();
+		return u.getData();
 	}
 }
