@@ -35,7 +35,7 @@ import com.android.rhinos.gest.User;
 public class MySqlConnector implements Connector {
 
 	public static class App {
-		private static final String external_path = "http://pedrop225.comuf.com/rhinos";
+		private static final String external_path = "http://www.pedroapv.com/rhinos";
 		public static final User user = new User();
 		
 		public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 11);
