@@ -28,6 +28,7 @@ public class UserHierarchy extends JPanel {
 	private void init() {
 		userTree = new JTree();
 		userTree.setFont(App.DEFAULT_FONT);
+		userTree.setSelectionRow(0);
 		
 		add(new JScrollPane(userTree));
 	}
@@ -41,6 +42,7 @@ public class UserHierarchy extends JPanel {
 				t.add(st.get(i).get(0), st.get(i).get(j));
 		
 		userTree = new JTree(t.getRoot());
+		userTree.setSelectionRow(0);
 		userTree.setFont(App.DEFAULT_FONT);
 
 		add(new JScrollPane(userTree));

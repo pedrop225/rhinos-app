@@ -26,14 +26,14 @@ public interface Connector {
 	
 	public Client clientExists(String _id);
 	
-	public boolean addService(Service s, Client c);
+	public boolean addService(int userId, Service s, Client c);
 	public ArrayList<Service> getServices(String _id);
 	
 	public int getSumCommissions(Client c);
 
 	public void deleteService(Service service);
 	
-	public void editService(int extId, int state, String notes);
+	public void editService(int serviceId, int state, String notes);
 	
 	public ArrayList<Service> getUserServices(User u);
 	

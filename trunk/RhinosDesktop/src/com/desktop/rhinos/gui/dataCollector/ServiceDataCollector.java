@@ -28,6 +28,7 @@ import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.Client;
 import com.android.rhinos.gest.Dni;
 import com.android.rhinos.gest.Service;
+import com.android.rhinos.gest.User;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.Util;
@@ -56,6 +57,8 @@ public class ServiceDataCollector extends JDialog {
 	
 	private JPanel labPanel;
 	private JPanel dataPanel;
+	
+	private UChooserLauncher uchooser;
 	
 	private JButton accept;
 	
@@ -161,8 +164,16 @@ public class ServiceDataCollector extends JDialog {
 					if (ms.getCommission() == -1)
 						ms.setCommission(Integer.parseInt(commission.getText()));
 					
-					if (toModify < 0)
-						MySqlConnector.getInstance().addService(ms, client);
+					//toModify < 0 siempre que se inserte un servicio por primera vez
+					if (toModify < 0) {
+						User user = uchooser.getSelectedUser();
+						/* si no hay usuario seleccionado se toma el usuario actual*/
+						if (user == null)
+							user = App.user;
+						
+						MySqlConnector.getInstance().addService(user.getExtId(), ms, client);
+					}
+					//modificacion del servicio.. toModify almacenara la id del servicio a modificar
 					else
 						MySqlConnector.getInstance().editService(toModify, ms.getState(), ms.getNotes());
 					
@@ -200,8 +211,10 @@ public class ServiceDataCollector extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(c, BorderLayout.CENTER);
 		
+		uchooser = new UChooserLauncher();
+		getContentPane().add(Util.packInJP(new FlowLayout(FlowLayout.RIGHT), uchooser), BorderLayout.NORTH);
+		
 		//adding free space
-		getContentPane().add(new JPanel(), BorderLayout.NORTH);
 		getContentPane().add(new JPanel(), BorderLayout.WEST);
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Notas del Servicio", TitledBorder.LEFT, TitledBorder.TOP, null, null));
@@ -262,6 +275,9 @@ public class ServiceDataCollector extends JDialog {
 		dch.setEnabled(false);
 		expiryDch.setEnabled(false);
 		notes.setEditable(true);
+		
+		uchooser.setFieldsEditable(false);
+		
 		accept.setText("Modificar");
 	}
 	

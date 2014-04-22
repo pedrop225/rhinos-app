@@ -109,6 +109,7 @@ class UChooserLauncher extends JPanel {
 	private JButton btn;
 	
 	private UserHierarchyDialog uhd;
+	private User user;
 	
 	public UChooserLauncher() {
 		super(new BorderLayout());
@@ -138,9 +139,9 @@ class UChooserLauncher extends JPanel {
 						}
 						
 						if (uhd.getExitMode() == JOptionPane.OK_OPTION) {
-							User u = uhd.getSelectedUser();
-							if (u != null)
-								t_field.setText(u.getName().toUpperCase());
+							user = uhd.getSelectedUser();
+							if (user != null)
+								t_field.setText(user.getName().toUpperCase());
 						}
 					};
 				}.start();
@@ -153,5 +154,13 @@ class UChooserLauncher extends JPanel {
 	
 	public void setFieldsEditable(boolean e) {
 		btn.setEnabled(e);
+	}
+	
+	public void setTextFieldColumns(int columns) {
+		t_field.setColumns(columns);
+	}
+	
+	public User getSelectedUser() {
+		return user;
 	}
 }

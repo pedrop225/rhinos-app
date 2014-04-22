@@ -311,11 +311,11 @@ public class MySqlConnector implements Connector {
 	}
 
 	@Override
-	public boolean addService(Service s, Client c) {
+	public boolean addService(int userId, Service s, Client c) {
 		boolean tr = true;
 		
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-	    nameValuePairs.add(new BasicNameValuePair("idUser", App.user.getExtId()+""));
+	    nameValuePairs.add(new BasicNameValuePair("idUser", userId+""));
 	    nameValuePairs.add(new BasicNameValuePair("idClient", cipher.encode(c.getId().toString())));
 	    nameValuePairs.add(new BasicNameValuePair("service", cipher.encode(s.getService())));
 	    nameValuePairs.add(new BasicNameValuePair("campaign", cipher.encode(s.getCampaign())));
@@ -334,9 +334,9 @@ public class MySqlConnector implements Connector {
 	}
 
 	@Override
-	public void editService(int extId, int state, String notes) {
+	public void editService(int serviceId, int state, String notes) {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-	    nameValuePairs.add(new BasicNameValuePair("id", extId+""));
+	    nameValuePairs.add(new BasicNameValuePair("id", serviceId+""));
 	    nameValuePairs.add(new BasicNameValuePair("state", state+""));
 	    nameValuePairs.add(new BasicNameValuePair("notes", cipher.encode(notes)));
 		
