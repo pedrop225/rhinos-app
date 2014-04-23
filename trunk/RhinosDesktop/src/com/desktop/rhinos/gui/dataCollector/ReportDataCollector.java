@@ -3,16 +3,20 @@ package com.desktop.rhinos.gui.dataCollector;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 import com.android.rhinos.gest.Service;
+import com.android.rhinos.gest.User;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.table.ServiceTable;
@@ -24,22 +28,26 @@ public class ReportDataCollector extends JPanel {
 	
 	private ServiceTable services;
 	private DateFilter dateFilter;
+	private UChooserLauncher userChooser;
+	
+	private JRadioButton f_personal;
+	private JRadioButton f_equipo;
+	
 	private JLabel lblSum;
 	
+	private User user;
 	float sum = 0;
 	private NumberFormat formatter = NumberFormat.getCurrencyInstance();
 	
 	/**
 	 * Create the panel.
 	 */
+	@SuppressWarnings("serial")
 	public ReportDataCollector() {
 		setLayout(new BorderLayout(0, 0));
 				
 		dateFilter = new DateFilter();
 		services = new ServiceTable("Nif", "Titular", "Importe") {
-			
-			private static final long serialVersionUID = 1L;
-			
 			
 			public void updateTableData() {
 				tm.setRowCount(0);
@@ -48,7 +56,11 @@ public class ReportDataCollector extends JPanel {
 				sum = 0;
 				lblSum.setText(formatter.format(sum));
 
-				ArrayList<Service> as = MySqlConnector.getInstance().getUserServicesByDate(App.user, dateFilter.getInitialDate(), 
+				user = userChooser.getSelectedUser();
+				if (user == null)
+					user = App.user;
+				
+				ArrayList<Service> as = MySqlConnector.getInstance().getUserServicesByDate(user, dateFilter.getInitialDate(), 
 																									 dateFilter.getFinalDate());
 				filterBackUp = new Object[as.size()][];
 				
@@ -88,10 +100,24 @@ public class ReportDataCollector extends JPanel {
 			}
 		};
 		
+		userChooser = new UChooserLauncher();
+		f_personal = new JRadioButton("Personal");
+		f_equipo = new JRadioButton("Equipo");
+		
+		ButtonGroup b_group = new ButtonGroup();
+		b_group.add(f_personal);
+		b_group.add(f_equipo);
+		
+		JPanel panel_0 = new JPanel(new GridLayout(0, 1, 0, 2));
+		panel_0.add(userChooser);
+		panel_0.add(f_personal);
+		panel_0.add(f_equipo);
+		
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel panel_1 = new JPanel();
 		
 		panel.add(dateFilter);
+		panel.add(panel_0);
 		panel_1.setLayout(new BorderLayout());
 		panel_1.add(services);
 		
@@ -123,5 +149,4 @@ public class ReportDataCollector extends JPanel {
 	public void updateServicesTableData() {
 		services.updateTableData();
 	}
-
 }
