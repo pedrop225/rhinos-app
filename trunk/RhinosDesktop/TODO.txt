@@ -1,12 +1,5 @@
 
 * 	Completar edición de usuarios
-
-* 	Añadir selector de usuarios a la vista de informes para poder seleccionar el destinatario del informe
-	de entre los hijos del usuario actual.
-	
-*	Añadir a la vista de informes un panel de pestañas --> (Informe personal, Informe General).
-		- Informe persona: facturación del usuario seleccionado
-		- Informe general: facturacion del usuario y de los hijos directos.
 		
 * 	Cambiar tipo de datos de las comisiones... 
 		- int to float en (bd y app)

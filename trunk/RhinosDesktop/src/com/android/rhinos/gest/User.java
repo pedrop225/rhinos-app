@@ -18,6 +18,9 @@ public class User extends Client {
 	private int type;
 	private int connectionMode;
 	
+	//beneficio para el supervisor (%)
+	private int p_profit;
+	
 	public User() {
 		super();
 		type = DEFAULT;
@@ -46,6 +49,14 @@ public class User extends Client {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+	
+	public void setParentProfit(int p_profit) {
+		this.p_profit = p_profit;
+	}
+	
+	public int getParentProfit() {
+		return p_profit;
 	}
 	
 	public void doRoot() {
