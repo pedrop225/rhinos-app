@@ -16,14 +16,14 @@ public class Service implements Comparable<Service>, Serializable {
 	public static final String[] STATES = {"Pendiente", "Verificado", "Anulado", "Devuelto"};
 	
 	private int extId;
-	private int commission;
+	private double commission;
 	private String service;
 	private String campaign;
 	private Date date;
 	private Date expiryDate;
 	private int state;
 	private String notes;
-
+	
 	private String titular;
 	private Id id;
 	
@@ -37,6 +37,12 @@ public class Service implements Comparable<Service>, Serializable {
 		notes = "";
 	}
 
+	public Service(String service, double commission) {
+		this();
+		this.service = service;
+		this.commission = commission;
+	}
+	
 	public int getExtId() {
 		return extId;
 	}
@@ -44,22 +50,17 @@ public class Service implements Comparable<Service>, Serializable {
 	public void setExtId(int extId) {
 		this.extId = extId;
 	}
-
-	public Service(String service, int commission) {
-		this.service = service;
-		this.commission = commission;
-	}
 	
 	public Service(String service, String commission) {
 		this.service = service;
 		this.commission = Integer.parseInt(commission.trim());
 	}
 
-	public int getCommission() {
+	public double getCommission() {
 		return commission;
 	}
 	
-	public void setCommission(int commission) {
+	public void setCommission(double commission) {
 		this.commission = commission;
 	}
 
@@ -89,7 +90,7 @@ public class Service implements Comparable<Service>, Serializable {
 
 	@Override
 	public int compareTo(Service arg0) {
-		return (new Integer(commission).compareTo(arg0.commission)) * -1;
+		return (new Double(commission).compareTo(arg0.commission)) * -1;
 	}
 	
 	public String getCampaign() {

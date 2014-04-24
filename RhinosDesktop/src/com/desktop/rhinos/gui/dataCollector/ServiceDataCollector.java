@@ -161,8 +161,8 @@ public class ServiceDataCollector extends JDialog {
 					ms.setState(state.getSelectedIndex());
 					ms.setNotes(notes.getText().trim().toUpperCase());
 					
-					if (ms.getCommission() == -1)
-						ms.setCommission(Integer.parseInt(commission.getText()));
+					if ((ms.getCommission() == -1) || (App.user.isRoot()))
+						ms.setCommission(Double.parseDouble(commission.getText()));
 					
 					//toModify < 0 siempre que se inserte un servicio por primera vez
 					if (toModify < 0) {
@@ -174,7 +174,7 @@ public class ServiceDataCollector extends JDialog {
 						MySqlConnector.getInstance().addService(user.getExtId(), ms, client);
 					}
 					//modificacion del servicio.. toModify almacenara la id del servicio a modificar
-					else
+					else 
 						MySqlConnector.getInstance().editService(toModify, ms.getState(), ms.getNotes());
 					
 					dispose();
@@ -269,9 +269,10 @@ public class ServiceDataCollector extends JDialog {
 		expiryDch.setDate(s.getExpiryDate());
 		notes.setText(s.getNotes());
 		
+		commission.setEnabled(false); 
+		
 		campaign.setEnabled(false);
 		service.setEnabled(false);
-		commission.setEnabled(false);
 		dch.setEnabled(false);
 		expiryDch.setEnabled(false);
 		notes.setEditable(true);
@@ -283,7 +284,7 @@ public class ServiceDataCollector extends JDialog {
 	
 	private boolean checkData() {
 		try {
-			Integer.parseInt(commission.getText());
+			Double.parseDouble(commission.getText());
 		}
 		catch (NumberFormatException e) {
 			return false;

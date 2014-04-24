@@ -130,6 +130,7 @@ public class ServiceTable extends RhTable {
 			int r = table.convertRowIndexToModel(table.getSelectedRow());
 			
 			final ServiceDataCollector dc = new ServiceDataCollector(clientId);
+			
 			dc.setEditMode(services.get(r));
 			dc.setVisible(true);
 			

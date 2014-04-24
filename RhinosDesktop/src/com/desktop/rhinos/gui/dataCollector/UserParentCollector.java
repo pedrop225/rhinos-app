@@ -116,7 +116,7 @@ class UChooserLauncher extends JPanel {
 		t_field = new JTextField(25);
 		t_field.setEditable(false);
 		t_field.setFont(App.DEFAULT_FONT);
-		
+
 		btn = new JButton(new ImageIcon(UChooserLauncher.class.getResource("/icons/hierarchy.png")));
 		btn.setFocusable(false);
 		btn.addActionListener(new ActionListener() {

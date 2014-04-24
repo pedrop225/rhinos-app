@@ -77,6 +77,7 @@ public class MySqlConnector implements Connector {
 	        	App.user.setUser(user);
 	        	App.user.setName(cipher.decode(jsonObj.getString("name")));
 	        	App.user.setMail(cipher.decode(jsonObj.getString("mail")));
+	        	App.user.setParentProfit(jsonObj.getInt("p_profit"));
 	        	return true;
 	        }
 	    }
@@ -365,7 +366,7 @@ public class MySqlConnector implements Connector {
 				s.setCampaign(cipher.decode(jsonObj.getString("campaign")));
 				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
 				s.setExpiryDate(new Date(jsonObj.getString("expiry").replace("-", "/")));
-				s.setCommission(jsonObj.getInt("commission"));
+				s.setCommission(jsonObj.getDouble("commission"));
 				s.setState(jsonObj.getInt("state"));
 				s.setNotes(cipher.decode(jsonObj.getString("notes")));
 				
@@ -390,7 +391,7 @@ public class MySqlConnector implements Connector {
 		try {
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObj = jsonArray.getJSONObject(i);
-				Service s = new Service(cipher.decode(jsonObj.getString("service")), jsonObj.getInt("commission"));
+				Service s = new Service(cipher.decode(jsonObj.getString("service")), jsonObj.getDouble("commission"));
 								
 				s.setExtId(jsonObj.getInt("id"));
 				s.setCampaign(cipher.decode(jsonObj.getString("campaign")));
@@ -425,7 +426,7 @@ public class MySqlConnector implements Connector {
 		try {
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObj = jsonArray.getJSONObject(i);
-				Service s = new Service(cipher.decode(jsonObj.getString("service")), jsonObj.getInt("commission"));
+				Service s = new Service(cipher.decode(jsonObj.getString("service")), jsonObj.getDouble("commission"));
 								
 				s.setExtId(jsonObj.getInt("id"));
 				s.setCampaign(cipher.decode(jsonObj.getString("campaign")));
@@ -443,26 +444,6 @@ public class MySqlConnector implements Connector {
 		catch (Exception e) {}
 		
 		return tr;	
-	}
-
-	@Override
-	public int getSumCommissions(Client c) {
-
-	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-	    nameValuePairs.add(new BasicNameValuePair("idUser", App.user.getExtId()+""));
-	    nameValuePairs.add(new BasicNameValuePair("idClient", cipher.encode(c.getId().toString())));
-	    
-		int res = 0;
-	    JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_sum_commissions.php", nameValuePairs);
-		 
-	    try {
-			if (jsonArray.length() > 0) {
-				res = jsonArray.getJSONObject(0).getInt("SUM(commission)");
-			}
-	    } 
-	    catch (Exception e) {}
-		
-		return res;
 	}
 
 	@Override
@@ -548,6 +529,7 @@ public class MySqlConnector implements Connector {
 				u.setUser(cipher.decode(jsonObj.getString("user")));
 				u.setName(cipher.decode(jsonObj.getString("name")));
 				u.setMail(cipher.decode(jsonObj.getString("mail")));
+	        	u.setParentProfit(jsonObj.getInt("p_profit"));
 				
 				result.add(u);
 			}
@@ -574,6 +556,7 @@ public class MySqlConnector implements Connector {
 			u.setUser(cipher.decode(jsonObj.getString("user")));
 			u.setName(cipher.decode(jsonObj.getString("name")));
 			u.setMail(cipher.decode(jsonObj.getString("mail")));
+        	u.setParentProfit(jsonObj.getInt("p_profit"));
 		}
 		catch (Exception e) {e.printStackTrace();}
 		
@@ -750,7 +733,7 @@ public class MySqlConnector implements Connector {
 		return st;
 	}
 	
-	private ArrayList<User> getUserChildren(User user) {
+	public ArrayList<User> getUserChildren(User user) {
 		ArrayList<User> t = new ArrayList<User>();
 		t.add(user);
 		
@@ -769,6 +752,7 @@ public class MySqlConnector implements Connector {
 	        	u.setUser(cipher.decode(jsonObj.getString("user")));
 	        	u.setName(cipher.decode(jsonObj.getString("name")));
 	        	u.setMail(cipher.decode(jsonObj.getString("mail")));
+	        	u.setParentProfit(jsonObj.getInt("p_profit"));
 	        	
 	        	t.add(u);
 	        }

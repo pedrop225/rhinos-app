@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -31,7 +32,7 @@ public class ReportDataCollector extends JPanel {
 	private UChooserLauncher userChooser;
 	
 	private JRadioButton f_personal;
-	private JRadioButton f_equipo;
+	private JRadioButton f_total;
 	
 	private JLabel lblSum;
 	
@@ -67,51 +68,83 @@ public class ReportDataCollector extends JPanel {
 				for (int i = 0; i < as.size(); i++) {
 					
 					Service s = as.get(i);
+					addServiceToReport(s, i);
+				}
+				
+				//Obteniendo produccion de los nodos directos
+				if (f_total.isSelected()) {
+					ArrayList<User> arr_u = MySqlConnector.getInstance().getUserChildren(user);
 					
-					//indice que modifica la comision en funcion del estado del servicio
-					int ind = 0;
-					switch (s.getState()) {
-					case 0 : ind = 0; break;
-					case 1 : ind = 1; break;
-					case 2 : ind = 0; break;
-					case 3 : ind = -1; 
+					/*removing the first element (selected user)*/
+					if (arr_u != null) {
+						arr_u.remove(0);
+					
+						for (User u : arr_u) {
+							ArrayList<Service> ser = MySqlConnector.getInstance().getUserServicesByDate(u, dateFilter.getInitialDate(),
+																											dateFilter.getFinalDate());
+							/*
+							 * Aumentamos el tamaño del backup de filtros para almacenar los nuevos servicios.
+							 * */
+							Object [][] __filterBackUp = Arrays.copyOf(filterBackUp, filterBackUp.length + ser.size());
+							filterBackUp = __filterBackUp;
+							
+							for (int i = 0; i < ser.size(); i++) {
+								Service s = ser.get(i);
+								
+								//obteniendo comisiones para el supervisor
+								s.setCommission(s.getCommission() * u.getParentProfit() /100);
+								
+								addServiceToReport(s, i);
+							}
+						}
 					}
-					
-					services.add(s);
-					Object [] o = {	s.getId().toString(), 
-									s.getTitular(),
-									formatter.format(s.getCommission() * ind),
-									s.getCampaign(),
-									s.getService(), 
-									new SimpleDateFormat("dd-MM-yyyy").format(s.getDate()),								 
-									new SimpleDateFormat("dd-MM-yyyy").format(s.getExpiryDate()),
-									Service.STATES[s.getState()]};
-					
-					tm.addRow(filterBackUp[i] = o);
-					
-					sum += s.getCommission() * ind;
-					lblSum.setText(formatter.format(sum));
-				}		
+				}
 			}
 			
 			protected float[] getWidthsPrintableView() {
 				float[] i={9f, 25f, 7f, 10f, 15f, 10f, 10f, 7f};
 				return i;
 			}
+			
+			private void addServiceToReport(Service s, int backUpIndex) {
+				//indice que modifica la comision en funcion del estado del servicio
+				int ind = 0;
+				switch (s.getState()) {
+				case 0 : ind = 0; break;
+				case 1 : ind = 1; break;
+				case 2 : ind = 0; break;
+				case 3 : ind = -1; 
+				}
+				
+				services.add(s);
+				Object [] o = {	s.getId().toString(), 
+								s.getTitular(),
+								formatter.format(s.getCommission() * ind),
+								s.getCampaign(),
+								s.getService(), 
+								new SimpleDateFormat("dd-MM-yyyy").format(s.getDate()),								 
+								new SimpleDateFormat("dd-MM-yyyy").format(s.getExpiryDate()),
+								Service.STATES[s.getState()]};
+				
+				tm.addRow(filterBackUp[backUpIndex] = o);
+				
+				sum += s.getCommission() * ind;
+				lblSum.setText(formatter.format(sum));
+			}
 		};
 		
 		userChooser = new UChooserLauncher();
-		f_personal = new JRadioButton("Personal");
-		f_equipo = new JRadioButton("Equipo");
+		f_personal = new JRadioButton("Personal", true);
+		f_total = new JRadioButton("Total");
 		
 		ButtonGroup b_group = new ButtonGroup();
 		b_group.add(f_personal);
-		b_group.add(f_equipo);
+		b_group.add(f_total);
 		
 		JPanel panel_0 = new JPanel(new GridLayout(0, 1, 0, 2));
 		panel_0.add(userChooser);
 		panel_0.add(f_personal);
-		panel_0.add(f_equipo);
+		panel_0.add(f_total);
 		
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel panel_1 = new JPanel();

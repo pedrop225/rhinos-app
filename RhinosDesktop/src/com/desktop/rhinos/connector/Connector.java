@@ -28,8 +28,6 @@ public interface Connector {
 	
 	public boolean addService(int userId, Service s, Client c);
 	public ArrayList<Service> getServices(String _id);
-	
-	public int getSumCommissions(Client c);
 
 	public void deleteService(Service service);
 	
@@ -66,6 +64,8 @@ public interface Connector {
 	public void deleteConsultancy(int id);
 	
 	public void deleteAccount(int id);
+	
+	public ArrayList<User> getUserChildren(User user);
 	
 	public ArrayList<ArrayList<User>> getUserStructure(User user);
 }
