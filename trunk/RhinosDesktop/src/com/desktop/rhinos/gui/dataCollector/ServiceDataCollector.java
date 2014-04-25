@@ -8,10 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -43,7 +45,7 @@ public class ServiceDataCollector extends JDialog {
 	
 	private JComboBox<Object> campaign;
 	private JComboBox<Service> service;
-	private JTextField commission;
+	private CommissionEditor commission;
 	private JDateChooser dch;
 	private JDateChooser expiryDch;
 	private JComboBox<String> state;
@@ -99,7 +101,7 @@ public class ServiceDataCollector extends JDialog {
 		
 		campaign = new JComboBox<Object>(importUserCampaigns().toArray());
 		service = new JComboBox<Service>();
-		commission = new JTextField();
+		commission = new CommissionEditor();
 		commission.setEnabled(false);
 
 		dch = new JDateChooser(new Date());
@@ -142,7 +144,6 @@ public class ServiceDataCollector extends JDialog {
 		state.setFont(App.DEFAULT_FONT);
 		campaign.setFont(App.DEFAULT_FONT);
 		service.setFont(App.DEFAULT_FONT);
-		commission.setFont(App.DEFAULT_FONT);
 		
 		accept.addActionListener(new ActionListener() {
 			
@@ -257,7 +258,7 @@ public class ServiceDataCollector extends JDialog {
 				break;
 		service.setSelectedIndex(ind);
 		
-		commission.setText(s.getCommission()+"");
+		commission.setText(new DecimalFormat("0.00").format(s.getCommission()).replace(',', '.'));
 		
 		/*
 		 * En caso de que el servicio seleccionado, pertenezca a una campaña
@@ -269,14 +270,15 @@ public class ServiceDataCollector extends JDialog {
 		expiryDch.setDate(s.getExpiryDate());
 		notes.setText(s.getNotes());
 		
-		commission.setEnabled(false); 
+		if (!App.user.isRoot())
+			commission.setEnabled(false); 
 		
 		campaign.setEnabled(false);
 		service.setEnabled(false);
 		dch.setEnabled(false);
 		expiryDch.setEnabled(false);
 		notes.setEditable(true);
-		
+
 		uchooser.setFieldsEditable(false);
 		
 		accept.setText("Modificar");
@@ -320,5 +322,60 @@ public class ServiceDataCollector extends JDialog {
 	
 	public int getExitMode() {
 		return exitMode;
+	}
+	
+	@SuppressWarnings("serial")
+	class CommissionEditor extends JPanel {
+		
+		private JTextField tf_comm;
+		private JButton bt_activate;
+				
+		public CommissionEditor() {
+			super(new BorderLayout());
+			tf_comm = new JTextField();
+			tf_comm.setEnabled(false);
+			tf_comm.setFont(App.DEFAULT_FONT);
+			bt_activate = new JButton(new ImageIcon(CommissionEditor.class.getResource("/icons/modify.png")));
+
+			bt_activate.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					boolean e = tf_comm.isEnabled();
+					tf_comm.setEnabled(!e);
+					//edicion de comisiones
+					if (e) {
+						bt_activate.setIcon(new ImageIcon(CommissionEditor.class.getResource("/icons/modify.png")));
+						if (checkData()) {
+					//		MySqlConnector.getInstance().editServiceCommission(toModify, c);
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Error: \""+commission.getText()+"\" no es una cifra válida..", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+					else
+						bt_activate.setIcon(new ImageIcon(CommissionEditor.class.getResource("/icons/validate.png")));
+				}
+			});
+			
+			add(tf_comm);
+			add(bt_activate, BorderLayout.EAST);
+		}
+		
+		public String getText() {
+			return tf_comm.getText();
+		}
+		
+		public void setColumns(int cols) {
+			tf_comm.setColumns(cols);
+		}
+		
+		public void setText(String t) {
+			tf_comm.setText(t);
+		}
+		
+		public void setEnabled(boolean e) {
+			bt_activate.setEnabled(e);
+		}
 	}
 }

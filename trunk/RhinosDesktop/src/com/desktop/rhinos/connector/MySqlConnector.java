@@ -360,20 +360,19 @@ public class MySqlConnector implements Connector {
 		try {
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObj = jsonArray.getJSONObject(i);
-				Service s = new Service(cipher.decode(jsonObj.getString("service")), jsonObj.getInt("commission"));
+				Service s = new Service(cipher.decode(jsonObj.getString("service")), jsonObj.getDouble("commission"));
 				
 				s.setExtId(jsonObj.getInt("id"));
 				s.setCampaign(cipher.decode(jsonObj.getString("campaign")));
 				s.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
 				s.setExpiryDate(new Date(jsonObj.getString("expiry").replace("-", "/")));
-				s.setCommission(jsonObj.getDouble("commission"));
 				s.setState(jsonObj.getInt("state"));
 				s.setNotes(cipher.decode(jsonObj.getString("notes")));
 				
 				tr.add(s);
 			}
 		}
-		catch (Exception e) {}
+		catch (Exception e) {e.printStackTrace();}
 		
 		return tr;	
 	}

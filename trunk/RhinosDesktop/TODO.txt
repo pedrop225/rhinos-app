@@ -1,7 +1,4 @@
 
 * 	Completar edición de usuarios
 		
-* 	Cambiar tipo de datos de las comisiones... 
-		- int to float en (bd y app)
-		
 *	Mejorar enfoque de devolución de recibos
