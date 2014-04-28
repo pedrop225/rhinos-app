@@ -5,7 +5,8 @@
 	mysql_select_db($mysql_database);
 	
 	$q = mysql_query("SELECT id, type, user, name, mail, p_profit
-					  FROM Users NATURAL JOIN Login
+					  FROM (Users NATURAL JOIN Login) INNER JOIN Structure
+					  ON Users.id = Structure.child
 					  WHERE id IN ( SELECT child FROM Structure
 									WHERE parent='".$_REQUEST['parent']."')");
 	

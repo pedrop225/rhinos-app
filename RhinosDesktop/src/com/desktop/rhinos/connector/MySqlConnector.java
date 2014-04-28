@@ -347,6 +347,18 @@ public class MySqlConnector implements Connector {
 		catch (Exception e) {}
 	}
 	
+	@Override
+	public void editServiceCommission(int serviceId, double commission) {
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("id", serviceId+""));
+	    nameValuePairs.add(new BasicNameValuePair("commission", commission+""));
+		
+		try {
+			getDataFromDB(App.external_path+"/db_edit_service_commission.php", nameValuePairs);
+		}
+		catch (Exception e) {}
+	}
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public ArrayList<Service> getServices(String id) {
@@ -474,7 +486,7 @@ public class MySqlConnector implements Connector {
 	}
 	
 	@Override
-	public boolean createAccount(User u, String password) {
+	public boolean createAccount(User u, String password, boolean sendMail) {
 		
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	    nameValuePairs.add(new BasicNameValuePair("user", cipher.encode(u.getUser())));
@@ -488,13 +500,15 @@ public class MySqlConnector implements Connector {
 	    	
 		    getDataFromDB(App.external_path+"/db_create_account.php", nameValuePairs);
 		    
-		    nameValuePairs.clear();
-		    nameValuePairs.add(new BasicNameValuePair("name", u.getName()));
-		    nameValuePairs.add(new BasicNameValuePair("user", u.getUser()));
-		    nameValuePairs.add(new BasicNameValuePair("mail", u.getMail()));
-		    nameValuePairs.add(new BasicNameValuePair("password", password));
-		    nameValuePairs.add(new BasicNameValuePair("c_version", getCurrentVersion()));
-		    getDataFromDB(App.external_path+"/db_send_mail.php", nameValuePairs);
+		    if (sendMail) {
+			    nameValuePairs.clear();
+			    nameValuePairs.add(new BasicNameValuePair("name", u.getName()));
+			    nameValuePairs.add(new BasicNameValuePair("user", u.getUser()));
+			    nameValuePairs.add(new BasicNameValuePair("mail", u.getMail()));
+			    nameValuePairs.add(new BasicNameValuePair("password", password));
+			    nameValuePairs.add(new BasicNameValuePair("c_version", getCurrentVersion()));
+			    getDataFromDB(App.external_path+"/db_send_mail.php", nameValuePairs);
+		    }
 
 	    	return true;
 	    }
@@ -528,7 +542,6 @@ public class MySqlConnector implements Connector {
 				u.setUser(cipher.decode(jsonObj.getString("user")));
 				u.setName(cipher.decode(jsonObj.getString("name")));
 				u.setMail(cipher.decode(jsonObj.getString("mail")));
-	        	u.setParentProfit(jsonObj.getInt("p_profit"));
 				
 				result.add(u);
 			}

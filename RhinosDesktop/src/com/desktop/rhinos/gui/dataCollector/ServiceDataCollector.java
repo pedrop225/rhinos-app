@@ -347,7 +347,8 @@ public class ServiceDataCollector extends JDialog {
 					if (e) {
 						bt_activate.setIcon(new ImageIcon(CommissionEditor.class.getResource("/icons/modify.png")));
 						if (checkData()) {
-					//		MySqlConnector.getInstance().editServiceCommission(toModify, c);
+						
+							MySqlConnector.getInstance().editServiceCommission(toModify, Double.parseDouble(getText()));
 						}
 						else {
 							JOptionPane.showMessageDialog(null, "Error: \""+commission.getText()+"\" no es una cifra válida..", "Error", JOptionPane.ERROR_MESSAGE);

@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 
 import com.android.rhinos.gest.User;
 import com.desktop.rhinos.connector.MySqlConnector;
-import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.dataCollector.UserDataCollector;
 
 public class AddAccount extends JDialog {
@@ -21,8 +20,7 @@ public class AddAccount extends JDialog {
 
 	private UserDataCollector dc;
 	private JButton add;
-	
-	User u;
+	private User u;
 	
 	public AddAccount(JFrame loc) {
 		init();
@@ -37,16 +35,16 @@ public class AddAccount extends JDialog {
 		
 		u = null;
 		dc = new UserDataCollector();
-		dc.getSearchButton().setVisible(false);
+		dc.getResetPasswordButton().setVisible(false);
 		
-		add = new JButton("Añadir Usuario");
-		add.setFont(App.DEFAULT_FONT);
+		add = dc.getOkButton();
+		add.setText("Añadir Usuario");
 		add.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				u = dc.getUser();
-				MySqlConnector.getInstance().createAccount(u, "_0x"+u.getUser().toLowerCase()+"_");
+				MySqlConnector.getInstance().createAccount(u, "_0x"+u.getUser().toLowerCase()+"_", dc.isSendMailSelected());
 				dispose();
 			}
 		});
@@ -58,9 +56,7 @@ public class AddAccount extends JDialog {
 		getContentPane().add(new JPanel(), BorderLayout.EAST);
 		getContentPane().add(new JPanel(), BorderLayout.WEST);
 		getContentPane().add(new JPanel(), BorderLayout.SOUTH);
-		
-		dc.getSearchButton().getParent().add(add);
-		
+				
 		pack();
 	}
 }
