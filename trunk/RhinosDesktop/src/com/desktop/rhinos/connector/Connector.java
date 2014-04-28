@@ -33,6 +33,8 @@ public interface Connector {
 	
 	public void editService(int serviceId, int state, String notes);
 	
+	public void editServiceCommission(int serviceId, double commission);
+	
 	public ArrayList<Service> getUserServices(User u);
 	
 	public ArrayList<Service> getUserServicesByDate(User u, Date date_in, Date date_out);
@@ -41,7 +43,7 @@ public interface Connector {
 
 	public void changePassword(String user, String newpass);
 
-	public boolean createAccount(User u, String pass);
+	public boolean createAccount(User u, String pass, boolean sendMail);
 
 	public String getCurrentVersion();
 

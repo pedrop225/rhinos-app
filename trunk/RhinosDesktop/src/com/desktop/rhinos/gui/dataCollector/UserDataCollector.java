@@ -17,6 +17,7 @@ import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.AddContract;
 import com.desktop.rhinos.gui.Util;
 import com.desktop.rhinos.gui.dataCollector.interfaces.UserDisplay;
+import javax.swing.JCheckBox;
 
 public class UserDataCollector extends JPanel implements UserDisplay {
 	
@@ -36,9 +37,10 @@ public class UserDataCollector extends JPanel implements UserDisplay {
 	private JPanel labsPanel;
 	private JPanel dataPanel;
 		
-	private JButton search;
+	private JButton ok_button;
 	
 	private User _user;
+	private JCheckBox checkMail;
 	
 	public UserDataCollector() {
 		init();
@@ -61,12 +63,14 @@ public class UserDataCollector extends JPanel implements UserDisplay {
 		name = new JTextField(AddContract.LFIELD);
 		mail = new JTextField(AddContract.LFIELD);
 		password = new JButton("Reset Password");
+		ok_button = new JButton("Aceptar");
 		
 		type.setFont(App.DEFAULT_FONT);
 		user.setFont(App.DEFAULT_FONT);
 		name.setFont(App.DEFAULT_FONT);
 		mail.setFont(App.DEFAULT_FONT);
 		password.setFont(App.DEFAULT_FONT);
+		ok_button.setFont(App.DEFAULT_FONT);
 		password.setFocusable(false);
 		
 		labsPanel = new JPanel(new GridLayout(0, 1));
@@ -77,22 +81,24 @@ public class UserDataCollector extends JPanel implements UserDisplay {
 		labsPanel.add(Util.packInJP(labName));
 		labsPanel.add(Util.packInJP(labMail));
 		labsPanel.add(Util.packInJP(new JLabel())); //ocupando el espacio sobrante
+		labsPanel.add(Util.packInJP(new JLabel())); //ocupando el espacio sobrante
 		
 		dataPanel.add(Util.packInJP(type));
 		dataPanel.add(Util.packInJP(user));
 		dataPanel.add(Util.packInJP(name));
 		dataPanel.add(Util.packInJP(mail));
+		
+		checkMail = new JCheckBox("Enviar mail", true);
+		dataPanel.add(checkMail);
 		dataPanel.add(Util.packInJP(password));
-		
-		search = new JButton("Buscar");
-		search.setVisible(false);
-		
+				
 		setLayout(new BorderLayout());
 		
 		add(labsPanel, BorderLayout.WEST);
 		add(dataPanel);
+		
 		JPanel bot = new JPanel(new BorderLayout());
-		bot.add(Util.packInJP(new FlowLayout(FlowLayout.RIGHT), search), BorderLayout.SOUTH);
+		bot.add(Util.packInJP(new FlowLayout(FlowLayout.RIGHT), ok_button), BorderLayout.SOUTH);
 		add(bot, BorderLayout.SOUTH);
 	}
 	
@@ -162,7 +168,19 @@ public class UserDataCollector extends JPanel implements UserDisplay {
 		return _user;
 	}
 	
-	public JButton getSearchButton() {
-		return search;
+	public JButton getOkButton() {
+		return ok_button;
+	}
+	
+	public JButton getResetPasswordButton() {
+		return password;
+	}
+	
+	public JCheckBox getMailCheck() {
+		return checkMail;
+	}
+	
+	public boolean isSendMailSelected() {
+		return checkMail.isSelected();
 	}
 }

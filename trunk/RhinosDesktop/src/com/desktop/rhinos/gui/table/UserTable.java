@@ -15,7 +15,6 @@ import javax.swing.event.ListSelectionListener;
 
 import com.android.rhinos.gest.User;
 import com.desktop.rhinos.connector.MySqlConnector;
-import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.Util;
 import com.desktop.rhinos.gui.dataCollector.UserCampaingsCollector;
 import com.desktop.rhinos.gui.dataCollector.UserDataCollector;
@@ -61,6 +60,7 @@ public class UserTable extends RhTable {
 		tabs = new JTabbedPane(JTabbedPane.TOP);
 		
 		display = new UserDataCollector();
+		display.getMailCheck().setVisible(false);
 		display.setFieldsEditable(false);
 		
 		campaigns = new UserCampaingsCollector();
@@ -69,14 +69,15 @@ public class UserTable extends RhTable {
 		hierarchy = new UserHierarchyCollector();
 		hierarchy.setFieldsEditable(false);
 		
-		editButton = new JButton("Guardar");
-		editButton.setFont(App.DEFAULT_FONT);
+		editButton = display.getOkButton();
+		editButton.setText("Guardar");
 		editButton.setVisible(false);
 		
-		editButton.addActionListener(new ActionListener() {	
+		editButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//MySqlConnector.getInstance().editAccount(display.getUser());
+				display.setFieldsEditable(false);
 				updateTableData();
 			}
 		});
@@ -102,7 +103,6 @@ public class UserTable extends RhTable {
 		to_update.add(campaigns);
 		to_update.add(hierarchy); 
 		
-		display.getSearchButton().getParent().add(editButton);
 		tabs.addTab("Contacto", Util.packInJP(display));
 		tabs.addTab("Campañas", Util.packInJP(campaigns));
 		tabs.addTab("Jerarquía", hierarchy);
