@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.android.rhinos.gest.User;
+import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.UserHierarchyDialog;
 import com.desktop.rhinos.gui.Util;
@@ -91,6 +92,11 @@ public class UserParentCollector extends JPanel implements UserDisplay {
 	@Override
 	public void setData(User u) {
 		tf_name.setText(u.getName().toUpperCase());
+				
+		//Obteniendo datos del padre
+		User parent = MySqlConnector.getInstance().getUserParent(u.getExtId());
+		tf_launcher.setUser(parent);
+		tf_comm.setText((parent != null) ? parent.getParentProfit()+"" : "");
 	}
 
 	@Override
@@ -139,9 +145,7 @@ class UChooserLauncher extends JPanel {
 						}
 						
 						if (uhd.getExitMode() == JOptionPane.OK_OPTION) {
-							user = uhd.getSelectedUser();
-							if (user != null)
-								t_field.setText(user.getName().toUpperCase());
+							setUser(uhd.getSelectedUser());
 						}
 					};
 				}.start();
@@ -162,5 +166,10 @@ class UChooserLauncher extends JPanel {
 	
 	public User getSelectedUser() {
 		return user;
+	}
+	
+	public void setUser(User u) {
+		user = u;
+		t_field.setText((u != null) ? user.getName().toUpperCase() : "");
 	}
 }

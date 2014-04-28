@@ -77,7 +77,6 @@ public class MySqlConnector implements Connector {
 	        	App.user.setUser(user);
 	        	App.user.setName(cipher.decode(jsonObj.getString("name")));
 	        	App.user.setMail(cipher.decode(jsonObj.getString("mail")));
-	        	App.user.setParentProfit(jsonObj.getInt("p_profit"));
 	        	return true;
 	        }
 	    }
@@ -770,6 +769,26 @@ public class MySqlConnector implements Connector {
 	        }
 
 	        return t;
+	    }
+	    catch (Exception e) {return null;}
+	}
+	
+	public User getUserParent(int extId) {
+		User u = null;
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("child", extId+""));
+	    
+	    try {
+	        JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_user_parent.php", nameValuePairs);
+	        JSONObject jsonObj = jsonArray.getJSONObject(0);
+	        	
+        	u = new User();
+        	u.setExtId(jsonObj.getInt("parent"));
+        	u.setName(cipher.decode(jsonObj.getString("name")));
+        	u.setMail(cipher.decode(jsonObj.getString("mail")));
+        	u.setParentProfit(jsonObj.getInt("p_profit"));
+
+	        return u;
 	    }
 	    catch (Exception e) {return null;}
 	}
