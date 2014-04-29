@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,6 +35,8 @@ public class UserParentCollector extends JPanel implements UserDisplay {
 	
 	private JButton accept;
 	
+	private User user;
+	
 	public UserParentCollector() {
 		super(new BorderLayout());
 		init();
@@ -42,7 +45,7 @@ public class UserParentCollector extends JPanel implements UserDisplay {
 	private void init() {		
 		l_name = new JLabel("Usuario");
 		l_super = new JLabel("Supervisor");
-		l_comm = new JLabel("Comisión");
+		l_comm = new JLabel("Beneficio");
 		
 		l_name.setFont(App.DEFAULT_FONT);
 		l_super.setFont(App.DEFAULT_FONT);
@@ -74,7 +77,17 @@ public class UserParentCollector extends JPanel implements UserDisplay {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				setFieldsEditable(false);
+				try {
+					int idParent = tf_launcher.getSelectedUser().getExtId();
+					double p_profit = Double.parseDouble(tf_comm.getText());
+					
+					MySqlConnector.getInstance().editUserParent(user.getExtId(), idParent, p_profit);
+					setFieldsEditable(false);
+				}
+				catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "Error: \""+tf_comm.getText()+"\" no es una cifra válida..", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+
 			}
 		});
 		
@@ -91,12 +104,19 @@ public class UserParentCollector extends JPanel implements UserDisplay {
 
 	@Override
 	public void setData(User u) {
-		tf_name.setText(u.getName().toUpperCase());
+		user = u;
+		tf_name.setText(user.getName().toUpperCase());
 				
 		//Obteniendo datos del padre
-		User parent = MySqlConnector.getInstance().getUserParent(u.getExtId());
+		User parent = MySqlConnector.getInstance().getUserParent(user.getExtId());
 		tf_launcher.setUser(parent);
-		tf_comm.setText((parent != null) ? parent.getParentProfit()+"" : "");
+		
+		if (parent != null) {
+			String p_profit = new DecimalFormat("0.00").format(parent.getParentProfit()).replace(',', '.');
+			tf_comm.setText(p_profit);
+		}
+		else
+			tf_comm.setText("");
 	}
 
 	@Override

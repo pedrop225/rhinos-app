@@ -19,7 +19,7 @@ public class User extends Client {
 	private int connectionMode;
 	
 	//beneficio para el supervisor (%)
-	private int p_profit;
+	private double p_profit;
 	
 	public User() {
 		super();
@@ -51,11 +51,11 @@ public class User extends Client {
 		this.type = type;
 	}
 	
-	public void setParentProfit(int p_profit) {
+	public void setParentProfit(double p_profit) {
 		this.p_profit = p_profit;
 	}
 	
-	public int getParentProfit() {
+	public double getParentProfit() {
 		return p_profit;
 	}
 	
