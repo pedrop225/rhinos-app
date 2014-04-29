@@ -422,14 +422,14 @@ public class MySqlConnector implements Connector {
 	}
 
 	@SuppressWarnings("deprecation")
-	public ArrayList<Service> getUserServicesByDate(User u, Date date_in, Date date_out) {
+	public ArrayList<Service> getUserServicesByDate(User u, Date date_in, Date date_out, int date_type) {
 		ArrayList<Service> tr = new ArrayList<Service>();
 		
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	    nameValuePairs.add(new BasicNameValuePair("idUser", u.getExtId()+""));
 	    nameValuePairs.add(new BasicNameValuePair("date_in", formatter.format(date_in)));
 	    nameValuePairs.add(new BasicNameValuePair("date_out", formatter.format(date_out)));
-	    
+	    nameValuePairs.add(new BasicNameValuePair("date_type", date_type+""));
 	    	    
 	    JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_user_services_by_date.php", nameValuePairs);
 	    
