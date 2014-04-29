@@ -69,5 +69,7 @@ public interface Connector {
 	
 	public ArrayList<User> getUserChildren(User user);
 	
+	public void editUserParent(int extId, int idParent, double comm);
+	
 	public ArrayList<ArrayList<User>> getUserStructure(User user);
 }

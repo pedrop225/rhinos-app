@@ -763,7 +763,7 @@ public class MySqlConnector implements Connector {
 	        	u.setUser(cipher.decode(jsonObj.getString("user")));
 	        	u.setName(cipher.decode(jsonObj.getString("name")));
 	        	u.setMail(cipher.decode(jsonObj.getString("mail")));
-	        	u.setParentProfit(jsonObj.getInt("p_profit"));
+	        	u.setParentProfit(jsonObj.getDouble("p_profit"));
 	        	
 	        	t.add(u);
 	        }
@@ -786,11 +786,24 @@ public class MySqlConnector implements Connector {
         	u.setExtId(jsonObj.getInt("parent"));
         	u.setName(cipher.decode(jsonObj.getString("name")));
         	u.setMail(cipher.decode(jsonObj.getString("mail")));
-        	u.setParentProfit(jsonObj.getInt("p_profit"));
+        	u.setParentProfit(jsonObj.getDouble("p_profit"));
 
 	        return u;
 	    }
 	    catch (Exception e) {return null;}
+	}
+	
+	public void editUserParent(int extId, int idParent, double p_profit) {
+		
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("child", extId+""));
+	    nameValuePairs.add(new BasicNameValuePair("parent", idParent+""));
+	    nameValuePairs.add(new BasicNameValuePair("p_profit", p_profit+""));
+	    
+	    try {
+	        getDataFromDB(App.external_path+"/db_edit_user_parent.php", nameValuePairs);
+	    }
+	    catch (Exception e) {e.printStackTrace();}
 	}
 	
 	private JSONArray getDataFromDB(String url, ArrayList<NameValuePair> nameValuePairs) {
