@@ -61,8 +61,9 @@ public class ReportDataCollector extends JPanel {
 				if (user == null)
 					user = App.user;
 				
+				int date_type = dateFilter.getDateType();
 				ArrayList<Service> as = MySqlConnector.getInstance().getUserServicesByDate(user, dateFilter.getInitialDate(), 
-																									 dateFilter.getFinalDate());
+																							dateFilter.getFinalDate(), date_type);
 				filterBackUp = new Object[as.size()][];
 				
 				for (int i = 0; i < as.size(); i++) {
@@ -81,7 +82,7 @@ public class ReportDataCollector extends JPanel {
 					
 						for (User u : arr_u) {
 							ArrayList<Service> ser = MySqlConnector.getInstance().getUserServicesByDate(u, dateFilter.getInitialDate(),
-																											dateFilter.getFinalDate());
+																										dateFilter.getFinalDate(), date_type);
 							/*
 							 * Aumentamos el tamaño del backup de filtros para almacenar los nuevos servicios.
 							 * */

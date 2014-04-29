@@ -37,7 +37,7 @@ public interface Connector {
 	
 	public ArrayList<Service> getUserServices(User u);
 	
-	public ArrayList<Service> getUserServicesByDate(User u, Date date_in, Date date_out);
+	public ArrayList<Service> getUserServicesByDate(User u, Date date_in, Date date_out, int date_type);
 	
 	public void deleteClient(String id);
 
