@@ -39,6 +39,7 @@ public class MySqlConnector implements Connector {
 		public static final User user = new User();
 		
 		public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 11);
+		public static final Color LIGHT_GREEN = new Color(57, 134, 90, 40);
 		public static final Color APP_GREEN = new Color(57, 134, 90);
 	}
 	
