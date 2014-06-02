@@ -17,6 +17,11 @@
 						VALUES ('".$row['id']."',
 								'".$_REQUEST['name']."',
 								'".$_REQUEST['mail']."')");
+								
+	$q3 = mysql_query("	INSERT INTO Structure (parent, child, p_profit)
+						VALUES (1, 
+								'".$row['id']."',
+								0)");
 	
 	mysql_close();
 ?>

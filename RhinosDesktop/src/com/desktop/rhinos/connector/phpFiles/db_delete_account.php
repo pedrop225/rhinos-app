@@ -8,5 +8,7 @@
 	
 	$q = mysql_query("DELETE FROM Users WHERE id='".$_REQUEST['id']."'");
 
+	$q = mysql_query("DELETE FROM Structure WHERE child='".$_REQUEST['id']."'");
+	
 	mysql_close();
 ?>

@@ -131,10 +131,15 @@ public abstract class RhTable extends JPanel {
 				
 				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 				
-				if (value.toString().matches("-.*€"))
-					c.setForeground(Color.RED);
-				else
-					c.setForeground(Color.BLACK);
+				//row color
+				c.setBackground((row % 2 == 0) ? Color.WHITE : App.LIGHT_GREEN);
+					
+				//selected row
+				if (isSelected)
+					c.setBackground(App.APP_GREEN);
+				
+				//table font color
+				c.setForeground((value.toString().matches("-.*€")) ? Color.RED : Color.BLACK);
 				
 				return c;
 			}

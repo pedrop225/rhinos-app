@@ -1,7 +1,6 @@
 package com.desktop.rhinos.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -57,7 +56,7 @@ class LoaderImage extends JPanel {
 		super.paintComponent(g);
 		 
 		Graphics2D g2 = (Graphics2D)g;
-		setBackground(new Color(57, 134, 90, 40));
+		setBackground(App.LIGHT_GREEN);
 		g2.drawImage(img, 0, 0, RhLoader.WIDTH, RhLoader.HEIGHT, null);
 	}
 }

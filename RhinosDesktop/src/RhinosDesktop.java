@@ -1,3 +1,4 @@
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import com.desktop.rhinos.gui.RhFrame;
@@ -18,6 +19,7 @@ public class RhinosDesktop {
 			    
 		RhFrame f = new RhFrame();
 		load.setVisible(false);
+		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		f.setVisible(true);
 		
 		f.getLogger().setVisible(true);
