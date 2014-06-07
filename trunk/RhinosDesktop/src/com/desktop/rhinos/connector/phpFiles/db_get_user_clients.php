@@ -6,7 +6,9 @@
 	
 	$q = mysql_query("	SELECT DISTINCT Clients.id, name, Clients.tlf_1, Clients.tlf_2, mail, address, consultancy
 						FROM Clients, Services 
-						WHERE (Clients.id = Services.idClient) and (idUser = '".$_REQUEST['idUser']."')");
+						WHERE (Clients.id = Services.idClient) and (idUser = '".$_REQUEST['idUser']."')
+						ORDER BY date DESC
+						LIMIT 0, 150");
 	
 	while ($e = mysql_fetch_assoc($q))
 		$output[] = $e;
