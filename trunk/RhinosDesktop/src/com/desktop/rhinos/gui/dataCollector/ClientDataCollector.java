@@ -1,6 +1,7 @@
 package com.desktop.rhinos.gui.dataCollector;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
@@ -26,7 +27,6 @@ public class ClientDataCollector extends JPanel {
 	private JComboBox<String> idSelector;
 	private JLabel labName;
 	private JLabel labTel;
-	private JLabel labTelAux;
 	private JLabel labMail;
 	
 	private JTextField nif;
@@ -42,7 +42,7 @@ public class ClientDataCollector extends JPanel {
 	
 	public ClientDataCollector() {
 		init();
-		setBorder(BorderFactory.createTitledBorder(" Cliente "));
+		setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 	}
 	
 	private void init() {
@@ -52,8 +52,7 @@ public class ClientDataCollector extends JPanel {
 		String [] ids = {"", "DNI", "NIE", "CIF"};
 		idSelector = new JComboBox<String>(ids);
 		labName = new JLabel("Nombre:");
-		labTel = new JLabel("Teléfono:");
-		labTelAux = new JLabel("Teléfono Aux:");
+		labTel = new JLabel("Teléfonos:");
 		labMail = new JLabel("Mail:");
 		
 		nif = new JTextField(AddContract.SFIELD);
@@ -76,14 +75,18 @@ public class ClientDataCollector extends JPanel {
 		labsPanel.add(Util.packInJP(idSelector));
 		labsPanel.add(Util.packInJP(labName));
 		labsPanel.add(Util.packInJP(labTel));
-		labsPanel.add(Util.packInJP(labTelAux));
+	//	labsPanel.add(Util.packInJP(labTelAux));
 		labsPanel.add(Util.packInJP(labMail));
+		
+		JPanel tels = new JPanel(new FlowLayout(FlowLayout.LEADING));
+		tels.add(tel);
+		tels.add(telAux);
 		
 		dataPanel = new JPanel(new GridLayout(0, 1));
 		dataPanel.add(Util.packInJP(nif));
 		dataPanel.add(Util.packInJP(name));
-		dataPanel.add(Util.packInJP(tel));
-		dataPanel.add(Util.packInJP(telAux));
+		dataPanel.add(tels);
+		//dataPanel.add(Util.packInJP(telAux));
 		dataPanel.add(Util.packInJP(mail));
 		
 		addressPanel = new JPanel(new BorderLayout());
