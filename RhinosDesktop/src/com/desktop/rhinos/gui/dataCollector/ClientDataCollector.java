@@ -8,8 +8,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.android.rhinos.gest.Cif;
@@ -34,7 +32,6 @@ public class ClientDataCollector extends JPanel {
 	private JTextField tel;
 	private JTextField telAux;
 	private JTextField mail;
-	private JTextArea address;
 	
 	private JPanel labsPanel;
 	private JPanel dataPanel;
@@ -60,16 +57,12 @@ public class ClientDataCollector extends JPanel {
 		tel = new JTextField(AddContract.SFIELD);
 		telAux = new JTextField(AddContract.SFIELD);
 		mail = new JTextField(AddContract.LFIELD);
-		address = new JTextArea(4, 0);
-		address.setWrapStyleWord(true);
-		address.setLineWrap(true);
 		
 		nif.setFont(App.DEFAULT_FONT);
 		name.setFont(App.DEFAULT_FONT);
 		tel.setFont(App.DEFAULT_FONT);
 		telAux.setFont(App.DEFAULT_FONT);
 		mail.setFont(App.DEFAULT_FONT);
-		address.setFont(App.DEFAULT_FONT);
 		
 		labsPanel = new JPanel(new GridLayout(0, 1));
 		labsPanel.add(Util.packInJP(idSelector));
@@ -106,7 +99,7 @@ public class ClientDataCollector extends JPanel {
 		tel.setEditable(editable);
 		telAux.setEditable(editable);
 		mail.setEditable(editable);
-		address.setEditable(editable);
+		addressPanel.setFieldsEditable(editable);
 	}
 	
 	public JComboBox<String> getIdSelector() {
@@ -133,8 +126,8 @@ public class ClientDataCollector extends JPanel {
 		return mail;
 	}
 	
-	public JTextArea getAddress() {
-		return address;
+	public JTextField getAddress() {
+		return addressPanel.getRoadNameField();
 	}
 	
 	public boolean checkData() {
@@ -156,7 +149,7 @@ public class ClientDataCollector extends JPanel {
 		c.setTlf_1(tel.getText().trim());
 		c.setTlf_2(telAux.getText().trim());
 		c.setMail(mail.getText().trim());
-		c.setAddress(address.getText().trim());
+		c.setAddress("");
 		
 		return c;
 	}

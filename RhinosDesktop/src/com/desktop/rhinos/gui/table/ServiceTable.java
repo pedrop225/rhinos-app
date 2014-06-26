@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
@@ -28,7 +27,6 @@ public class ServiceTable extends RhTable {
 	
 	public ServiceTable() {
 		init();
-		setBorder(BorderFactory.createTitledBorder(" Servicios "));
 	}
 	
 	public ServiceTable(String...list) {
@@ -37,7 +35,6 @@ public class ServiceTable extends RhTable {
 		}
 		
 		init();
-		setBorder(BorderFactory.createTitledBorder(" Servicios "));
 	}
 	
 	private void init() {

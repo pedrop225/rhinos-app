@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.GregorianCalendar;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -37,7 +38,6 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import javax.swing.JScrollPane;
 
 public class AddContract extends JFrame {
 	
@@ -46,9 +46,7 @@ public class AddContract extends JFrame {
 	public static final int SSFIELD = 4; //super short field
 	public static final int SFIELD = 10; //short field
 	public static final int LFIELD = 37; //large field
-	
-	private JTabbedPane tabs;
-	
+		
 	private ClientDataCollector cliData;
 	private ConsultancyDataCollector conData;
 	private ServiceTable serData;
@@ -83,9 +81,7 @@ public class AddContract extends JFrame {
 																				"/icons/Add/Add_24x24.png")).getImage());
 		setResizable(false);
 		getContentPane().setLayout(new BorderLayout());
-		
-		tabs = new JTabbedPane();
-				
+						
 		accept = new JButton("Aceptar");
 		print = new JButton("Version Imprimible");
 		print.setVisible(false);
@@ -107,15 +103,16 @@ public class AddContract extends JFrame {
 		cliData = new ClientDataCollector();
 		tabbedPane.addTab("Informaci\u00F3n Personal", null, cliData, null);
 		serData = new ServiceTable();
+		serData.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		tabbedPane.addTab("Servicios", null, serData, null);
 		conData = new ConsultancyDataCollector();
 		tabbedPane.addTab("Asesor\u00EDa", null, conData, null);
-		conData.setFieldsEditable(false);
 		tabbedPane.addTab("Asesoría", Util.packInJP(conData));
 		
 		panel = new JPanel();
 		tabbedPane.addTab("Datos Bancarios", null, panel, null);
 		
+		conData.setFieldsEditable(false);
 		setFieldsEditable(false);
 
 		cliData.getNif().addKeyListener(new KeyAdapter() {
