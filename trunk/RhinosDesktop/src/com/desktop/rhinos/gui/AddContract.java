@@ -17,6 +17,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 import com.android.rhinos.gest.Cif;
@@ -36,6 +37,7 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import javax.swing.JScrollPane;
 
 public class AddContract extends JFrame {
 	
@@ -44,6 +46,8 @@ public class AddContract extends JFrame {
 	public static final int SSFIELD = 4; //super short field
 	public static final int SFIELD = 10; //short field
 	public static final int LFIELD = 37; //large field
+	
+	private JTabbedPane tabs;
 	
 	private ClientDataCollector cliData;
 	private ConsultancyDataCollector conData;
@@ -56,7 +60,12 @@ public class AddContract extends JFrame {
 	private JButton print;
 	
 	private boolean editMode;
+	private JTabbedPane tabbedPane;
+	private JPanel panel;
 	
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public AddContract(JFrame locIn) {
 		init();
 		setLocationRelativeTo(locIn);
@@ -73,11 +82,9 @@ public class AddContract extends JFrame {
 		setIconImage(new ImageIcon(AddContract.class.getResource((editMode) ? 	"/icons/User/User_24x24.png" : 
 																				"/icons/Add/Add_24x24.png")).getImage());
 		setResizable(false);
-		setLayout(new BorderLayout());
+		getContentPane().setLayout(new BorderLayout());
 		
-		cliData = new ClientDataCollector();
-		conData = new ConsultancyDataCollector();
-		serData = new ServiceTable();
+		tabs = new JTabbedPane();
 				
 		accept = new JButton("Aceptar");
 		print = new JButton("Version Imprimible");
@@ -86,21 +93,47 @@ public class AddContract extends JFrame {
 		JPanel buttons = new JPanel();
 		buttons.add(accept);
 		buttons.add(print);
-		
-		setFieldsEditable(false);
-		conData.setFieldsEditable(false);
-		
+				
 		centerPanel = new JPanel(new BorderLayout());
 		southPanel = new JPanel(new BorderLayout());
 		
-		centerPanel.add(cliData);
-		centerPanel.add(Util.packInJP(conData), BorderLayout.EAST);
-		centerPanel.add(serData, BorderLayout.SOUTH);
-		
 		southPanel.add(buttons, BorderLayout.EAST);
 		
-		add(centerPanel);
-		add(southPanel, BorderLayout.SOUTH);
+		getContentPane().add(centerPanel);
+		
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		centerPanel.add(tabbedPane, BorderLayout.NORTH);
+		
+		cliData = new ClientDataCollector();
+		tabbedPane.addTab("Informaci\u00F3n Personal", null, cliData, null);
+		serData = new ServiceTable();
+		tabbedPane.addTab("Servicios", null, serData, null);
+		conData = new ConsultancyDataCollector();
+		tabbedPane.addTab("Asesor\u00EDa", null, conData, null);
+		conData.setFieldsEditable(false);
+		tabbedPane.addTab("Asesoría", Util.packInJP(conData));
+		
+		panel = new JPanel();
+		tabbedPane.addTab("Datos Bancarios", null, panel, null);
+		
+		setFieldsEditable(false);
+
+		cliData.getNif().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				super.keyReleased(e);
+				checkClientId();
+			}
+		});
+		
+		cliData.getIdSelector().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				checkClientId();
+			}
+		});
+		getContentPane().add(southPanel, BorderLayout.SOUTH);
 		
 		accept.addActionListener(new ActionListener() {
 			@Override
@@ -115,22 +148,6 @@ public class AddContract extends JFrame {
 					
 					dispose();
 				}
-			}
-		});
-		
-		cliData.getNif().addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				super.keyReleased(e);
-				checkClientId();
-			}
-		});
-		
-		cliData.getIdSelector().addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				checkClientId();
 			}
 		});
 		
