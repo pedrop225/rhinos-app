@@ -45,7 +45,6 @@ public class ConsultancyDataCollector extends JPanel {
 	
 	public ConsultancyDataCollector() {
 		init();
-		setBorder(BorderFactory.createTitledBorder(" Asesoría "));
 	}
 	
 	private void init() {

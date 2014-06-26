@@ -38,7 +38,7 @@ public class ClientDataCollector extends JPanel {
 	
 	private JPanel labsPanel;
 	private JPanel dataPanel;
-	private JPanel addressPanel;
+	private AddressDataCollector addressPanel;
 	
 	public ClientDataCollector() {
 		init();
@@ -89,10 +89,13 @@ public class ClientDataCollector extends JPanel {
 		//dataPanel.add(Util.packInJP(telAux));
 		dataPanel.add(Util.packInJP(mail));
 		
+		/*
 		addressPanel = new JPanel(new BorderLayout());
 		addressPanel.setBorder(BorderFactory.createTitledBorder(" Dirección "));
-		addressPanel.add(new JScrollPane(address));
+		addressPanel.add(new JScrollPane(address));*/
 				
+		addressPanel = new AddressDataCollector();
+		
 		add(labsPanel, BorderLayout.WEST);
 		add(dataPanel);
 		add(addressPanel, BorderLayout.SOUTH);
