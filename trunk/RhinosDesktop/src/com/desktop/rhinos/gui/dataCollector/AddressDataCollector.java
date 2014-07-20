@@ -11,9 +11,6 @@ import javax.swing.JTextField;
 
 public class AddressDataCollector extends JPanel {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public static final String[] ROAD_TYPE = {	"ACCESO", "ACERA", "ALAMEDA", "AUTOPISTA", 
 												"AUTOVIA", "AVENIDA", "C. COMERCIAL", "CALLE", 
@@ -30,6 +27,7 @@ public class AddressDataCollector extends JPanel {
 	private JTextField tf_puerta;
 	private JTextField tf_cp;
 	private JTextField tf_poblacion;
+	private JTextField tf_municipio;
 	 
 	
 	public AddressDataCollector() {
@@ -116,7 +114,7 @@ public class AddressDataCollector extends JPanel {
 		JLabel lblMunicipio = new JLabel("Municipio");
 		panel_2.add(lblMunicipio);
 		
-		JTextField tf_municipio = new JTextField();
+		tf_municipio = new JTextField();
 		panel_2.add(tf_municipio);
 		tf_municipio.setColumns(25);
 		
@@ -144,8 +142,84 @@ public class AddressDataCollector extends JPanel {
 		
 	}
 	
-	public JTextField getRoadNameField() {
-		return r_name;
+	public String getTipoVia() {
+		return (String)r_type.getSelectedItem();
+	}
+	
+	public String getNombreVia() {
+		return r_name.getText().trim();
 	}
 
+	public String getNumero() {
+		return tf_num.getText().trim();
+	}
+
+	public String getEscalera() {
+		return tf_escalera.getText().trim();
+	}
+
+	public String getPortal() {
+		return tf_portal.getText().trim();
+	}
+
+	public String getPiso() {
+		return tf_piso.getText().trim();
+	}
+
+	public String getPuerta() {
+		return tf_puerta.getText().trim();
+	}
+
+	public String getCp() {
+		return tf_cp.getText().trim();
+	}
+
+	public String getPoblacion() {
+		return tf_poblacion.getText().trim();
+	}
+
+	public void setTipoVia(String tipo_via) {
+		if (tipo_via == null) tipo_via = "";
+		r_type.setSelectedItem(tipo_via.toUpperCase());
+	}
+	
+	public void setNombreVia(String nombre_via) {
+		r_name.setText(nombre_via);
+	}
+	
+	public void setNumero(String num) {
+		this.tf_num.setText(num);
+	}
+
+	public void setEscalera(String tf_escalera) {
+		this.tf_escalera.setText(tf_escalera);
+	}
+
+	public void setPortal(String tf_portal) {
+		this.tf_portal.setText(tf_portal);
+	}
+
+	public void setPiso(String tf_piso) {
+		this.tf_piso.setText(tf_piso);
+	}
+
+	public void setPuerta(String tf_puerta) {
+		this.tf_puerta.setText(tf_puerta);
+	}
+
+	public void setCp(String tf_cp) {
+		this.tf_cp.setText(tf_cp);
+	}
+
+	public void setPoblacion(String tf_poblacion) {
+		this.tf_poblacion.setText(tf_poblacion);
+	}
+	
+	public void setMunicipio(String municipio) {
+		this.tf_municipio.setText(municipio);
+	}
+	
+	public String getMunicipio () {
+		return tf_municipio.getText().trim();
+	}
 }

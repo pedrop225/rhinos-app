@@ -12,7 +12,18 @@ public class Client implements Serializable, Comparable<Client> {
 	private String tlf_1;
 	private String tlf_2;
 	private String mail;
-	private String address;
+	
+	//address
+	private String dir_tipo_via;
+	private String dir_nombre_via;
+	private String dir_numero;
+	private String dir_portal;
+	private String dir_escalera;
+	private String dir_piso;
+	private String dir_puerta;
+	private String dir_poblacion;
+	private String dir_municipio;
+	private String dir_cp;
 	
 	private int consultancy;
 	
@@ -71,14 +82,6 @@ public class Client implements Serializable, Comparable<Client> {
 		this.mail = mail;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
 	public int getConsultancy() {
 		return consultancy;
 	}
@@ -109,9 +112,88 @@ public class Client implements Serializable, Comparable<Client> {
 		tlf_1 = null;
 		tlf_2 = null;
 		mail = null;
-		address = null;
 	}
 	
+	public String getDirTipoVia() {
+		return dir_tipo_via;
+	}
+
+	public String getDirNombreVia() {
+		return dir_nombre_via;
+	}
+
+	public String getDirNumero() {
+		return dir_numero;
+	}
+
+	public String getDirPortal() {
+		return dir_portal;
+	}
+
+	public String getDirEscalera() {
+		return dir_escalera;
+	}
+
+	public String getDirPiso() {
+		return dir_piso;
+	}
+
+	public String getDirPuerta() {
+		return dir_puerta;
+	}
+
+	public String getDirPoblacion() {
+		return dir_poblacion;
+	}
+
+	public String getDirMunicipio() {
+		return dir_municipio;
+	}
+
+	public String getDirCp() {
+		return dir_cp;
+	}
+
+	public void setDirTipoVia(String dir_tipo_via) {
+		this.dir_tipo_via = dir_tipo_via;
+	}
+
+	public void setDirNombreVia(String dir_nombre_via) {
+		this.dir_nombre_via = dir_nombre_via;
+	}
+
+	public void setDirNumero(String dir_numero) {
+		this.dir_numero = dir_numero;
+	}
+
+	public void setDirPortal(String dir_portal) {
+		this.dir_portal = dir_portal;
+	}
+
+	public void setDirEscalera(String dir_escalera) {
+		this.dir_escalera = dir_escalera;
+	}
+
+	public void setDirPiso(String dir_piso) {
+		this.dir_piso = dir_piso;
+	}
+
+	public void setDirPuerta(String dir_puerta) {
+		this.dir_puerta = dir_puerta;
+	}
+
+	public void setDirPoblacion(String dir_poblacion) {
+		this.dir_poblacion = dir_poblacion;
+	}
+
+	public void setDirMunicipio(String dir_municipio) {
+		this.dir_municipio = dir_municipio;
+	}
+
+	public void setDirCp(String dir_cp) {
+		this.dir_cp = dir_cp;
+	}
+
 	@Override
 	public String toString() {
 		return name;

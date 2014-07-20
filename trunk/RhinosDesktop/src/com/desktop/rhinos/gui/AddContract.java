@@ -27,6 +27,7 @@ import com.android.rhinos.gest.Dni;
 import com.android.rhinos.gest.Id;
 import com.android.rhinos.gest.Nie;
 import com.desktop.rhinos.connector.MySqlConnector;
+import com.desktop.rhinos.gui.dataCollector.AccountNumberCollector;
 import com.desktop.rhinos.gui.dataCollector.ClientDataCollector;
 import com.desktop.rhinos.gui.dataCollector.ConsultancyDataCollector;
 import com.desktop.rhinos.gui.table.ServiceTable;
@@ -50,6 +51,7 @@ public class AddContract extends JFrame {
 	private ClientDataCollector cliData;
 	private ConsultancyDataCollector conData;
 	private ServiceTable serData;
+	private AccountNumberCollector accountNumber;
 	
 	private JPanel centerPanel;
 	private JPanel southPanel;
@@ -114,6 +116,9 @@ public class AddContract extends JFrame {
 		
 		conData.setFieldsEditable(false);
 		setFieldsEditable(false);
+		
+		accountNumber = new AccountNumberCollector();
+		panel.add(accountNumber);
 
 		cliData.getNif().addKeyListener(new KeyAdapter() {
 			@Override
@@ -214,7 +219,10 @@ public class AddContract extends JFrame {
 		cliData.getTel().setText(c.getTlf_1());
 		cliData.getTelAux().setText(c.getTlf_2());
 		cliData.getMail().setText(c.getMail());
-		cliData.getAddress().setText(c.getAddress());
+
+		//address
+		cliData.setTipoVia(c.getDirTipoVia());
+		cliData.setNombreVia(c.getDirNombreVia());
 		
 		cliData.getNif().setEditable(false);
 		cliData.getIdSelector().setVisible(false);
@@ -332,7 +340,7 @@ public class AddContract extends JFrame {
 			PdfPCell p6   = new PdfPCell(new Phrase("E-mail:  ", bf));
 			PdfPCell p6_0 = new PdfPCell(new Phrase(cliData.getMail().getText(), nf));
 			PdfPCell p7   = new PdfPCell(new Phrase("Dirección:  ", bf));
-			PdfPCell p7_0 = new PdfPCell(new Phrase(cliData.getAddress().getText(), nf));
+			PdfPCell p7_0 = new PdfPCell(new Phrase(cliData.getAddress(), nf));
 			
 			p2.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
 			p2_0.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
