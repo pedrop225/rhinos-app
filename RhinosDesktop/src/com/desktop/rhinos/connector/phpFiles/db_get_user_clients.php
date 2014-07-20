@@ -4,9 +4,11 @@
 	mysql_connect($mysql_host, $mysql_user, $mysql_password);
 	mysql_select_db($mysql_database);
 	
-	$q = mysql_query("	SELECT DISTINCT Clients.id, name, Clients.tlf_1, Clients.tlf_2, mail, address, consultancy
-						FROM Clients, Services 
-						WHERE (Clients.id = Services.idClient) and (idUser = '".$_REQUEST['idUser']."')
+	$q = mysql_query("	SELECT DISTINCT Clients.id, name, Clients.tlf_1, Clients.tlf_2, mail, consultancy,
+										tipo_via, nombre_via, numero, portal, escalera, piso, puerta, 
+										poblacion, municipio, cp
+						FROM Clients, Address, Services 
+						WHERE (Clients.id = Services.idClient) and (Clients.id = Address.id) and (idUser = '".$_REQUEST['idUser']."')
 						ORDER BY date DESC
 						LIMIT 0, 150");
 	

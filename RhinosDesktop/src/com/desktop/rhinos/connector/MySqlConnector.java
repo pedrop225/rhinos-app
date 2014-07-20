@@ -172,8 +172,19 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("tlf_1", cipher.encode(c.getTlf_1())));
 	    nameValuePairs.add(new BasicNameValuePair("tlf_2", cipher.encode(c.getTlf_2())));
 	    nameValuePairs.add(new BasicNameValuePair("mail", cipher.encode(c.getMail())));
-	    nameValuePairs.add(new BasicNameValuePair("address", cipher.encode(c.getAddress())));
 	    nameValuePairs.add(new BasicNameValuePair("consultancy", c.getConsultancy()+""));
+	    
+	    //address
+	    nameValuePairs.add(new BasicNameValuePair("tipo_via", cipher.encode(c.getDirTipoVia())));
+	    nameValuePairs.add(new BasicNameValuePair("nombre_via", cipher.encode(c.getDirNombreVia())));
+	    nameValuePairs.add(new BasicNameValuePair("numero", cipher.encode(c.getDirNumero())));
+	    nameValuePairs.add(new BasicNameValuePair("portal", cipher.encode(c.getDirPortal())));
+	    nameValuePairs.add(new BasicNameValuePair("escalera", cipher.encode(c.getDirEscalera())));
+	    nameValuePairs.add(new BasicNameValuePair("piso", cipher.encode(c.getDirPiso())));
+	    nameValuePairs.add(new BasicNameValuePair("puerta", cipher.encode(c.getDirPuerta())));
+	    nameValuePairs.add(new BasicNameValuePair("poblacion", cipher.encode(c.getDirPoblacion())));
+	    nameValuePairs.add(new BasicNameValuePair("municipio", cipher.encode(c.getDirMunicipio())));
+	    nameValuePairs.add(new BasicNameValuePair("cp", cipher.encode(c.getDirCp())));
 	    
 	    try {
 	        getDataFromDB(App.external_path+"/db_add_client.php", nameValuePairs);
@@ -194,8 +205,19 @@ public class MySqlConnector implements Connector {
 	    nameValuePairs.add(new BasicNameValuePair("tlf_1", cipher.encode(c.getTlf_1())));
 	    nameValuePairs.add(new BasicNameValuePair("tlf_2", cipher.encode(c.getTlf_2())));
 	    nameValuePairs.add(new BasicNameValuePair("mail", cipher.encode(c.getMail())));
-	    nameValuePairs.add(new BasicNameValuePair("address", cipher.encode(c.getAddress())));
 	    nameValuePairs.add(new BasicNameValuePair("consultancy", c.getConsultancy()+""));
+	    
+	    //address
+	    nameValuePairs.add(new BasicNameValuePair("tipo_via", cipher.encode(c.getDirTipoVia())));
+	    nameValuePairs.add(new BasicNameValuePair("nombre_via", cipher.encode(c.getDirNombreVia())));
+	    nameValuePairs.add(new BasicNameValuePair("numero", cipher.encode(c.getDirNumero())));
+	    nameValuePairs.add(new BasicNameValuePair("portal", cipher.encode(c.getDirPortal())));
+	    nameValuePairs.add(new BasicNameValuePair("escalera", cipher.encode(c.getDirEscalera())));
+	    nameValuePairs.add(new BasicNameValuePair("piso", cipher.encode(c.getDirPiso())));
+	    nameValuePairs.add(new BasicNameValuePair("puerta", cipher.encode(c.getDirPuerta())));
+	    nameValuePairs.add(new BasicNameValuePair("poblacion", cipher.encode(c.getDirPoblacion())));
+	    nameValuePairs.add(new BasicNameValuePair("municipio", cipher.encode(c.getDirMunicipio())));
+	    nameValuePairs.add(new BasicNameValuePair("cp", cipher.encode(c.getDirCp())));
 	    
 	    try {
 	        getDataFromDB(App.external_path+"/db_edit_client.php", nameValuePairs);
@@ -233,7 +255,10 @@ public class MySqlConnector implements Connector {
 					cl.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
 					cl.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
 					cl.setMail(cipher.decode(jsonObj.getString("mail")));
-					cl.setAddress(cipher.decode(jsonObj.getString("address")));
+					
+					cl.setDirTipoVia(cipher.decode(jsonObj.getString("tipo_via")));
+					cl.setDirNombreVia(cipher.decode(jsonObj.getString("nombre_via")));
+					
 					cl.setConsultancy(jsonObj.getInt("consultancy"));
 					
 					r.add(cl);
@@ -272,7 +297,7 @@ public class MySqlConnector implements Connector {
 				cl.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
 				cl.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
 				cl.setMail(cipher.decode(jsonObj.getString("mail")));
-				cl.setAddress(cipher.decode(jsonObj.getString("address")));
+				cl.setDirNombreVia(cipher.decode(jsonObj.getString("address")));
 				cl.setConsultancy(jsonObj.getInt("consultancy"));
 				
 				tr.add(cl);
@@ -302,8 +327,11 @@ public class MySqlConnector implements Connector {
 				client.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
 				client.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
 				client.setMail(cipher.decode(jsonObj.getString("mail")));
-				client.setAddress(cipher.decode(jsonObj.getString("address")));
 				client.setConsultancy(jsonObj.getInt("consultancy"));
+				
+				client.setDirTipoVia(cipher.decode(jsonObj.getString("tipo_via")));
+				client.setDirNombreVia(cipher.decode(jsonObj.getString("nombre_via")));
+
 			}
 	    }
 	    catch (Exception e) {}

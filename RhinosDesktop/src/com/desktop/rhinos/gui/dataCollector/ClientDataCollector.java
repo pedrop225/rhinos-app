@@ -126,8 +126,25 @@ public class ClientDataCollector extends JPanel {
 		return mail;
 	}
 	
-	public JTextField getAddress() {
-		return addressPanel.getRoadNameField();
+	//address
+	public String getNombreVia() {
+		return addressPanel.getNombreVia();
+	}
+	
+	public void setNombreVia(String nombre_via) {
+		addressPanel.setNombreVia(nombre_via);
+	}
+	
+	public String getTipoVia() {
+		return addressPanel.getTipoVia();
+	}
+	
+	public void setTipoVia(String tipo_via) {
+		addressPanel.setTipoVia(tipo_via);
+	}
+	
+	public String getAddress() {
+		return addressPanel.getNombreVia();
 	}
 	
 	public boolean checkData() {
@@ -149,7 +166,28 @@ public class ClientDataCollector extends JPanel {
 		c.setTlf_1(tel.getText().trim());
 		c.setTlf_2(telAux.getText().trim());
 		c.setMail(mail.getText().trim());
-		c.setAddress("");
+		
+		c.setDirTipoVia(addressPanel.getTipoVia());
+		c.setDirNombreVia(addressPanel.getNombreVia());
+		c.setDirNumero(addressPanel.getNumero());
+		c.setDirPortal(addressPanel.getPortal());
+		c.setDirEscalera(addressPanel.getEscalera());
+		c.setDirPiso(addressPanel.getPiso());
+		c.setDirPuerta(addressPanel.getPuerta());
+		c.setDirPoblacion(addressPanel.getPoblacion());
+		c.setDirMunicipio(addressPanel.getMunicipio());
+		c.setDirCp(addressPanel.getCp());
+		
+		/*
+		 * 	private String dir_numero;
+	private String dir_portal;
+	private String dir_escalera;
+	private String dir_piso;
+	private String dir_puerta;
+	private String dir_poblacion;
+	private String dir_municipio;
+	private String dir_cp;
+		 */
 		
 		return c;
 	}
