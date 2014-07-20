@@ -58,6 +58,7 @@ public class ClientDataCollector extends JPanel {
 		telAux = new JTextField(AddContract.SFIELD);
 		mail = new JTextField(AddContract.LFIELD);
 		
+		idSelector.setFont(App.DEFAULT_FONT);
 		nif.setFont(App.DEFAULT_FONT);
 		name.setFont(App.DEFAULT_FONT);
 		tel.setFont(App.DEFAULT_FONT);
@@ -81,12 +82,7 @@ public class ClientDataCollector extends JPanel {
 		dataPanel.add(tels);
 		//dataPanel.add(Util.packInJP(telAux));
 		dataPanel.add(Util.packInJP(mail));
-		
-		/*
-		addressPanel = new JPanel(new BorderLayout());
-		addressPanel.setBorder(BorderFactory.createTitledBorder(" Dirección "));
-		addressPanel.add(new JScrollPane(address));*/
-				
+			
 		addressPanel = new AddressDataCollector();
 		
 		add(labsPanel, BorderLayout.WEST);
@@ -127,14 +123,6 @@ public class ClientDataCollector extends JPanel {
 	}
 	
 	//address
-	public String getNombreVia() {
-		return addressPanel.getNombreVia();
-	}
-	
-	public void setNombreVia(String nombre_via) {
-		addressPanel.setNombreVia(nombre_via);
-	}
-	
 	public String getTipoVia() {
 		return addressPanel.getTipoVia();
 	}
@@ -143,8 +131,76 @@ public class ClientDataCollector extends JPanel {
 		addressPanel.setTipoVia(tipo_via);
 	}
 	
-	public String getAddress() {
+	public String getNombreVia() {
 		return addressPanel.getNombreVia();
+	}
+	
+	public void setNombreVia(String nombre_via) {
+		addressPanel.setNombreVia(nombre_via);
+	}
+	
+	public String getNumero() {
+		return addressPanel.getNumero();
+	}
+
+	public void setNumero(String numero) {
+		addressPanel.setNumero(numero);
+	}
+	
+	public String getPortal() {
+		return addressPanel.getPortal();
+	}
+	
+	public void setPortal(String portal) {
+		addressPanel.setPortal(portal);
+	}
+	
+	public String getEscalera() {
+		return addressPanel.getEscalera();
+	}
+	
+	public void setEscalera(String escalera) {
+		addressPanel.setEscalera(escalera);
+	}
+	
+	public String getPiso() {
+		return addressPanel.getPiso();
+	}
+	
+	public void setPiso(String piso) {
+		addressPanel.setPiso(piso);
+	}
+	
+	public String getPuerta() {
+		return addressPanel.getPuerta();
+	}
+	
+	public void setPuerta(String puerta) {
+		addressPanel.setPuerta(puerta);
+	}
+	
+	public String getPoblacion() {
+		return addressPanel.getPoblacion();
+	}
+	
+	public void setPoblacion(String poblacion) {
+		addressPanel.setPoblacion(poblacion);
+	}
+	
+	public String getMunicipio() {
+		return addressPanel.getMunicipio();
+	}
+	
+	public void setMunicipio(String municipio) {
+		addressPanel.setMunicipio(municipio);
+	}
+	
+	public String getCp() {
+		return addressPanel.getCp();
+	}
+	
+	public void setCp(String cp) {
+		addressPanel.setCp(cp);
 	}
 	
 	public boolean checkData() {
@@ -177,17 +233,6 @@ public class ClientDataCollector extends JPanel {
 		c.setDirPoblacion(addressPanel.getPoblacion());
 		c.setDirMunicipio(addressPanel.getMunicipio());
 		c.setDirCp(addressPanel.getCp());
-		
-		/*
-		 * 	private String dir_numero;
-	private String dir_portal;
-	private String dir_escalera;
-	private String dir_piso;
-	private String dir_puerta;
-	private String dir_poblacion;
-	private String dir_municipio;
-	private String dir_cp;
-		 */
 		
 		return c;
 	}

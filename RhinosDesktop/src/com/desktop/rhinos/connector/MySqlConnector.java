@@ -258,6 +258,14 @@ public class MySqlConnector implements Connector {
 					
 					cl.setDirTipoVia(cipher.decode(jsonObj.getString("tipo_via")));
 					cl.setDirNombreVia(cipher.decode(jsonObj.getString("nombre_via")));
+					cl.setDirNumero(cipher.decode(jsonObj.getString("numero")));
+					cl.setDirPortal(cipher.decode(jsonObj.getString("portal")));
+					cl.setDirEscalera(cipher.decode(jsonObj.getString("escalera")));
+					cl.setDirPiso(cipher.decode(jsonObj.getString("piso")));
+					cl.setDirPuerta(cipher.decode(jsonObj.getString("puerta")));
+					cl.setDirPoblacion(cipher.decode(jsonObj.getString("poblacion")));
+					cl.setDirMunicipio(cipher.decode(jsonObj.getString("municipio")));
+					cl.setDirCp(cipher.decode(jsonObj.getString("cp")));
 					
 					cl.setConsultancy(jsonObj.getInt("consultancy"));
 					
@@ -331,6 +339,14 @@ public class MySqlConnector implements Connector {
 				
 				client.setDirTipoVia(cipher.decode(jsonObj.getString("tipo_via")));
 				client.setDirNombreVia(cipher.decode(jsonObj.getString("nombre_via")));
+				client.setDirNumero(cipher.decode(jsonObj.getString("numero")));
+				client.setDirPortal(cipher.decode(jsonObj.getString("portal")));
+				client.setDirEscalera(cipher.decode(jsonObj.getString("escalera")));
+				client.setDirPiso(cipher.decode(jsonObj.getString("piso")));
+				client.setDirPuerta(cipher.decode(jsonObj.getString("puerta")));
+				client.setDirPoblacion(cipher.decode(jsonObj.getString("poblacion")));
+				client.setDirMunicipio(cipher.decode(jsonObj.getString("municipio")));
+				client.setDirCp(cipher.decode(jsonObj.getString("cp")));
 
 			}
 	    }

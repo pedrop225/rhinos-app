@@ -223,6 +223,14 @@ public class AddContract extends JFrame {
 		//address
 		cliData.setTipoVia(c.getDirTipoVia());
 		cliData.setNombreVia(c.getDirNombreVia());
+		cliData.setNumero(c.getDirNumero());
+		cliData.setPortal(c.getDirPortal());
+		cliData.setEscalera(c.getDirEscalera());
+		cliData.setPiso(c.getDirPiso());
+		cliData.setPuerta(c.getDirPuerta());
+		cliData.setMunicipio(c.getDirMunicipio());
+		cliData.setPoblacion(c.getDirPoblacion());
+		cliData.setCp(c.getDirCp());
 		
 		cliData.getNif().setEditable(false);
 		cliData.getIdSelector().setVisible(false);
@@ -340,7 +348,7 @@ public class AddContract extends JFrame {
 			PdfPCell p6   = new PdfPCell(new Phrase("E-mail:  ", bf));
 			PdfPCell p6_0 = new PdfPCell(new Phrase(cliData.getMail().getText(), nf));
 			PdfPCell p7   = new PdfPCell(new Phrase("Dirección:  ", bf));
-			PdfPCell p7_0 = new PdfPCell(new Phrase(cliData.getAddress(), nf));
+			PdfPCell p7_0 = new PdfPCell(new Phrase(cliData.getNombreVia(), nf));
 			
 			p2.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
 			p2_0.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);

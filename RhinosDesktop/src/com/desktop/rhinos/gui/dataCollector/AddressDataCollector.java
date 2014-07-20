@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.desktop.rhinos.connector.MySqlConnector.App;
+
 public class AddressDataCollector extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
@@ -43,7 +45,7 @@ public class AddressDataCollector extends JPanel {
 		
 		r_name = new JTextField();
 		panel_1.add(r_name);
-		r_name.setColumns(25);
+		r_name.setColumns(45);
 		
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.CENTER);
@@ -51,7 +53,7 @@ public class AddressDataCollector extends JPanel {
 		JPanel panel_3 = new JPanel();
 		panel.add(panel_3);
 		
-		JLabel lblNewLabel = new JLabel("Num");
+		JLabel lblNewLabel = new JLabel("Num", JLabel.CENTER);
 		panel_3.add(lblNewLabel);
 		
 		tf_num = new JTextField();
@@ -61,7 +63,7 @@ public class AddressDataCollector extends JPanel {
 		JPanel panel_4 = new JPanel();
 		panel.add(panel_4);
 		
-		JLabel lblNewLabel_1 = new JLabel("Portal");
+		JLabel lblNewLabel_1 = new JLabel("Portal", JLabel.CENTER);
 		panel_4.add(lblNewLabel_1);
 		
 		tf_portal = new JTextField();
@@ -71,7 +73,7 @@ public class AddressDataCollector extends JPanel {
 		JPanel panel_5 = new JPanel();
 		panel.add(panel_5);
 		
-		JLabel lblNewLabel_2 = new JLabel("Escalera");
+		JLabel lblNewLabel_2 = new JLabel("Escalera", JLabel.CENTER);
 		panel_5.add(lblNewLabel_2);
 		
 		tf_escalera = new JTextField();
@@ -81,7 +83,7 @@ public class AddressDataCollector extends JPanel {
 		JPanel panel_6 = new JPanel();
 		panel.add(panel_6);
 		
-		JLabel lblPiso = new JLabel("Piso");
+		JLabel lblPiso = new JLabel("Piso", JLabel.CENTER);
 		panel_6.add(lblPiso);
 		
 		tf_piso = new JTextField();
@@ -91,7 +93,7 @@ public class AddressDataCollector extends JPanel {
 		JPanel panel_7 = new JPanel();
 		panel.add(panel_7);
 		
-		JLabel lblPuerta = new JLabel("Puerta");
+		JLabel lblPuerta = new JLabel("Puerta", JLabel.CENTER);
 		panel_7.add(lblPuerta);
 		
 		tf_puerta = new JTextField();
@@ -121,12 +123,14 @@ public class AddressDataCollector extends JPanel {
 		JPanel panel_9 = new JPanel();
 		panel.add(panel_9);
 		
-		JLabel lblCp = new JLabel("CP");
+		JLabel lblCp = new JLabel("CP", JLabel.CENTER);
 		panel_9.add(lblCp);
 		
 		tf_cp = new JTextField();
 		panel_9.add(tf_cp);
 		tf_cp.setColumns(10);
+		
+		
 	}
 
 	public void setFieldsEditable(boolean e) {
@@ -139,7 +143,18 @@ public class AddressDataCollector extends JPanel {
 		tf_puerta.setEditable(e);
 		tf_cp.setEditable(e);
 		tf_poblacion.setEditable(e);
+		tf_municipio.setEditable(e);
 		
+		r_type.setFont(App.DEFAULT_FONT);
+		r_name.setFont(App.DEFAULT_FONT);
+		tf_num.setFont(App.DEFAULT_FONT);
+		tf_escalera.setFont(App.DEFAULT_FONT);
+		tf_portal.setFont(App.DEFAULT_FONT);
+		tf_piso.setFont(App.DEFAULT_FONT);
+		tf_puerta.setFont(App.DEFAULT_FONT);
+		tf_poblacion.setFont(App.DEFAULT_FONT);
+		tf_municipio.setFont(App.DEFAULT_FONT);
+		tf_cp.setFont(App.DEFAULT_FONT);
 	}
 	
 	public String getTipoVia() {
@@ -179,7 +194,6 @@ public class AddressDataCollector extends JPanel {
 	}
 
 	public void setTipoVia(String tipo_via) {
-		if (tipo_via == null) tipo_via = "";
 		r_type.setSelectedItem(tipo_via.toUpperCase());
 	}
 	
