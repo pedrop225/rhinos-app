@@ -13,7 +13,7 @@
 								WHERE (id='".$_REQUEST['id']."')");	
 	
 	$q = mysql_query("	UPDATE Address
-								tipo_via='".$_REQUEST['tipo_via']."',
+								SET tipo_via='".$_REQUEST['tipo_via']."',
 								nombre_via='".$_REQUEST['nombre_via']."',
 								numero='".$_REQUEST['numero']."',
 								portal='".$_REQUEST['portal']."',
@@ -22,7 +22,7 @@
 								puerta='".$_REQUEST['puerta']."',
 								poblacion='".$_REQUEST['poblacion']."',
 								municipio='".$_REQUEST['municipio']."',
-								cp='".$_REQUEST['cp']."',
+								cp='".$_REQUEST['cp']."'
 								WHERE (id='".$_REQUEST['id']."')");	
 	mysql_close();
 ?>
