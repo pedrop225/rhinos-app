@@ -32,7 +32,7 @@ public class RCipher {
 			byte [] utf8 = word.getBytes("UTF8");
 			byte [] enc = c_enc.doFinal(utf8);
 			
-			return Base64.encodeBase64String(enc)+'\n';
+			return Base64.encodeBase64String(enc);
 		} 
 		catch (Exception e) {e.printStackTrace();}
 		
