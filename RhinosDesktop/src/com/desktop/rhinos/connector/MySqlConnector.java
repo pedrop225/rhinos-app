@@ -35,7 +35,7 @@ import com.android.rhinos.gest.User;
 public class MySqlConnector implements Connector {
 
 	public static class App {
-		private static final String external_path = "http://www.pedroapv.com/rhinos";
+		private static final String external_path = "http://www.pedroapv.com/desktopApp";
 		public static final User user = new User();
 		
 		public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 11);
@@ -52,10 +52,10 @@ public class MySqlConnector implements Connector {
 		formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
 		try {
-			SecretKey key = RCipher.importKeyFromUrl(App.external_path+"/security/security.keys");
+			SecretKey key = RCipher.importKeyFromFile("security/security.keys");
 			cipher = new RCipher(key);
 		}
-		catch (Exception e) {}
+		catch (Exception e) {e.getStackTrace();}
 	}
 	
 	public synchronized static MySqlConnector getInstance() {
@@ -71,7 +71,6 @@ public class MySqlConnector implements Connector {
 	    try {
 	        JSONArray jsonArray = getDataFromDB(App.external_path+"/db_login.php", nameValuePairs);
 	        JSONObject jsonObj = jsonArray.getJSONObject(0);
-	            
 	        if (cipher.decode(jsonObj.getString("password")).equals(password)) {
 	        	App.user.setExtId(jsonObj.getInt("id"));
 	        	App.user.setType(jsonObj.getInt("type"));
