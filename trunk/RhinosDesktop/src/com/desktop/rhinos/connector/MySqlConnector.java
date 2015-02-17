@@ -114,7 +114,6 @@ public class MySqlConnector implements Connector {
 				
 				getDataFromDB(App.external_path+"/db_insert_into_campinfo.php", nameValuePairs);
 			}
-	        
 	        return true;
 	    }
 	    catch (Exception e) {}

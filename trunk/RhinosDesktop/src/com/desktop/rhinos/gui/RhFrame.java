@@ -39,6 +39,7 @@ public class RhFrame extends JFrame {
 	private JMenuItem addConsultancy;
 	private JMenuItem editConsultancy;
 	private JMenu edCampaigns;
+	private JMenuItem uptCampaigns;
 	private JMenu edUsers;
 	private JMenuItem addUser;
 	private JMenuItem editUser;
@@ -181,6 +182,7 @@ public class RhFrame extends JFrame {
 		addConsultancy = new JMenuItem("Añadir Asesoría");
 		editConsultancy = new JMenuItem("Editar Asesorías");
 		edCampaigns = new JMenu("Campañas");
+		uptCampaigns = new JMenuItem("Actualizar");
 		edUsers = new JMenu("Usuarios");
 		addUser = new JMenuItem("Añadir Usuario");
 		editUser = new JMenuItem("Editar Usuarios");
@@ -193,6 +195,7 @@ public class RhFrame extends JFrame {
 		addConsultancy.setFont(App.DEFAULT_FONT);
 		editConsultancy.setFont(App.DEFAULT_FONT);
 		edCampaigns.setFont(App.DEFAULT_FONT);
+		uptCampaigns.setFont(App.DEFAULT_FONT);
 		edUsers.setFont(App.DEFAULT_FONT);
 		addUser.setFont(App.DEFAULT_FONT);
 		editUser.setFont(App.DEFAULT_FONT);
@@ -207,6 +210,7 @@ public class RhFrame extends JFrame {
 		mEdit.add(edUsers);
 		edUsers.add(addUser);
 		edUsers.add(editUser);
+		edCampaigns.add(uptCampaigns);
 		//----------------------------------------
 		help = new JMenu("Ayuda");
 		about = new JMenuItem("Acerca de ..");
@@ -342,6 +346,14 @@ public class RhFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new UserTableDialog(_this, true).setVisible(true);
+			}
+		});
+		
+		uptCampaigns.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new CampaignsUpdater().setVisible(true);
 			}
 		});
 	}
