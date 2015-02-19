@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,6 +27,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.Client;
@@ -33,6 +36,7 @@ import com.android.rhinos.gest.Service;
 import com.android.rhinos.gest.User;
 import com.desktop.rhinos.connector.MySqlConnector;
 import com.desktop.rhinos.connector.MySqlConnector.App;
+import com.desktop.rhinos.gui.DocumentsDialog;
 import com.desktop.rhinos.gui.Util;
 import com.toedter.calendar.JDateChooser;
 
@@ -77,6 +81,10 @@ public class ServiceDataCollector extends JDialog {
 	
 	//notas del servicio
 	private JTextArea notes;
+	
+	private JButton btnDocs;
+	private JButton btnScan;
+	private JButton btnPdf;
 		
 	public ServiceDataCollector(String _c) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ServiceDataCollector.class.getResource("/icons/Globe/Globe_16x16.png")));
@@ -230,8 +238,48 @@ public class ServiceDataCollector extends JDialog {
 		notes.setLineWrap(true);
 		notes.setWrapStyleWord(true);
 		panel.add(new JScrollPane(notes), BorderLayout.CENTER);
-		getContentPane().add(new JPanel(), BorderLayout.SOUTH);
+		JPanel panel_1 = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
+		flowLayout.setHgap(10);
+		flowLayout.setAlignment(FlowLayout.RIGHT);
+		getContentPane().add(panel_1, BorderLayout.SOUTH);
+		
+		btnDocs = new JButton("");
+		btnDocs.setIcon(new ImageIcon(ServiceDataCollector.class.getResource("/icons/document.png")));
+		panel_1.add(btnDocs);
+		btnDocs.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new DocumentsDialog().setVisible(true);
+			}
+		});
+		
+		btnScan = new JButton("");
+		btnScan.setIcon(new ImageIcon(ServiceDataCollector.class.getResource("/icons/scanner.png")));
+		panel_1.add(btnScan);
+		
+		btnPdf = new JButton("");
+		btnPdf.setIcon(new ImageIcon(ServiceDataCollector.class.getResource("/icons/pdf.png")));
+		panel_1.add(btnPdf);
+		btnPdf.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fch = new JFileChooser();
+				fch.setFileFilter(new FileNameExtensionFilter("PDF", "pdf"));
+				
+				if (fch.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+					File f = fch.getSelectedFile();
+					System.out.println(f.getName());
+				}
+			}
+		});
 
+		btnDocs.setEnabled(false);
+		btnScan.setEnabled(false);
+		btnPdf.setEnabled(false);
+		
 		pack();
 	}
 	
@@ -280,6 +328,10 @@ public class ServiceDataCollector extends JDialog {
 		notes.setEditable(true);
 
 		uchooser.setFieldsEditable(false);
+		
+		btnDocs.setEnabled(true);
+		btnScan.setEnabled(true);
+		btnPdf.setEnabled(true);
 		
 		accept.setText("Modificar");
 	}
