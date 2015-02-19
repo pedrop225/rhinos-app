@@ -107,12 +107,12 @@ public class AddContract extends JFrame {
 		serData = new ServiceTable();
 		serData.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		tabbedPane.addTab("Servicios", null, serData, null);
-		conData = new ConsultancyDataCollector();
-		tabbedPane.addTab("Asesor\u00EDa", null, conData, null);
-		tabbedPane.addTab("Asesoría", Util.packInJP(conData));
 		
 		panel = new JPanel();
 		tabbedPane.addTab("Datos Bancarios", null, panel, null);
+		
+		conData = new ConsultancyDataCollector();
+		tabbedPane.addTab("Asesoría", Util.packInJP(conData));
 		
 		conData.setFieldsEditable(false);
 		setFieldsEditable(false);

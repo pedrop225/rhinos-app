@@ -866,12 +866,13 @@ public class MySqlConnector implements Connector {
             StringBuilder sb = new StringBuilder();
             sb.append(reader.readLine());
 	        
-            is.close();
             result = sb.toString();
+            is.close();
+            
             return ((result.trim().length() > 0) ? new JSONArray(result) : new JSONArray());
 	    }
 	    catch (Exception e) {}
 	    
-		return null;
+		return new JSONArray();
 	}
 }
