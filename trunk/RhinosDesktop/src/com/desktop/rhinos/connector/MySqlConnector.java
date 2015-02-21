@@ -3,8 +3,12 @@ package com.desktop.rhinos.connector;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +17,7 @@ import java.util.Iterator;
 
 import javax.crypto.SecretKey;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -29,6 +34,7 @@ import com.android.rhinos.gest.Campaign;
 import com.android.rhinos.gest.Client;
 import com.android.rhinos.gest.Consultancy;
 import com.android.rhinos.gest.Dni;
+import com.android.rhinos.gest.RhFile;
 import com.android.rhinos.gest.Service;
 import com.android.rhinos.gest.User;
 
@@ -847,6 +853,81 @@ public class MySqlConnector implements Connector {
 	        getDataFromDB(App.external_path+"/db_edit_user_parent.php", nameValuePairs);
 	    }
 	    catch (Exception e) {e.printStackTrace();}
+	}
+	
+	public void addDocument(File f, int idService, String filename) {
+	    
+		try {
+			String b = Base64.encodeBase64String(Files.readAllBytes(f.toPath()));
+			
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		    nameValuePairs.add(new BasicNameValuePair("idService", idService+""));
+		    nameValuePairs.add(new BasicNameValuePair("name", cipher.encode(filename)));
+		    nameValuePairs.add(new BasicNameValuePair("date", formatter.format(new Date())));
+		    nameValuePairs.add(new BasicNameValuePair("doc", b));
+			
+	        getDataFromDB(App.external_path+"/db_add_document.php", nameValuePairs);
+		} 
+		catch (IOException e) {}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public ArrayList<RhFile> getDocumentsInfo(int idService) {
+		
+		ArrayList<RhFile> infoFiles = new ArrayList<RhFile>();
+		
+		try {
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		    nameValuePairs.add(new BasicNameValuePair("idService", idService+""));
+			
+			JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_documents_info.php", nameValuePairs);
+
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObj = jsonArray.getJSONObject(i);
+				
+				RhFile f  = new RhFile();
+				
+				f.setName(cipher.decode(jsonObj.getString("name")));
+				f.setId(jsonObj.getInt("id"));
+				f.setIdService(idService);
+				f.setDate(new Date(jsonObj.getString("date").replace("-", "/")));
+				
+				infoFiles.add(f);
+			}
+		}
+		catch (Exception e) {e.printStackTrace();}
+		
+		return infoFiles;
+	}
+	
+	public File getDocument(int idDocument) {
+		File f = null;
+		
+	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("idDocument", idDocument+""));
+	    
+	    try {
+	        JSONArray jsonArray = getDataFromDB(App.external_path+"/db_get_document.php", nameValuePairs);
+	        JSONObject jsonObj = jsonArray.getJSONObject(0);
+	        	
+        	f = File.createTempFile("doc", ".pdf");
+        	FileOutputStream fos = new FileOutputStream(f);
+        	
+        	byte[] content = Base64.decodeBase64(jsonObj.getString("doc"));
+        	fos.write(content);
+        	fos.close();
+	    }
+	    catch (Exception e) {}
+	    
+	    return f;
+	}
+	
+	public void deleteDocument(int idDocument) {
+		
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    nameValuePairs.add(new BasicNameValuePair("idDocument", idDocument+""));
+	    
+	    getDataFromDB(App.external_path+"/db_delete_document.php", nameValuePairs);
 	}
 	
 	private JSONArray getDataFromDB(String url, ArrayList<NameValuePair> nameValuePairs) {
