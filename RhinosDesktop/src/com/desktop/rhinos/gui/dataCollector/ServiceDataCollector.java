@@ -12,6 +12,7 @@ import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -251,17 +252,24 @@ public class ServiceDataCollector extends JDialog {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new DocumentsDialog().setVisible(true);
+				new DocumentsDialog(toModify).setVisible(true);
 			}
 		});
 		
 		btnScan = new JButton("");
 		btnScan.setIcon(new ImageIcon(ServiceDataCollector.class.getResource("/icons/scanner.png")));
 		panel_1.add(btnScan);
+		btnScan.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Not Available");
+			}
+		});
 		
 		btnPdf = new JButton("");
 		btnPdf.setIcon(new ImageIcon(ServiceDataCollector.class.getResource("/icons/pdf.png")));
 		panel_1.add(btnPdf);
+		
 		btnPdf.addActionListener(new ActionListener() {
 			
 			@Override
@@ -271,7 +279,20 @@ public class ServiceDataCollector extends JDialog {
 				
 				if (fch.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 					File f = fch.getSelectedFile();
-					System.out.println(f.getName());
+					
+					String r = "";
+					Scanner sc = new Scanner(campaign.getSelectedItem().toString());
+					while (sc.hasNext())
+						r += sc.next().charAt(0);
+					sc.close();
+					
+					sc = new Scanner(service.getSelectedItem().toString());
+					while (sc.hasNext())
+						r += sc.next().charAt(0);
+					sc.close();				
+					r = r.toUpperCase();
+					
+					MySqlConnector.getInstance().addDocument(f, toModify, r);
 				}
 			}
 		});
