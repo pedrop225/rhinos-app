@@ -234,6 +234,7 @@ public class MySqlConnector implements Connector {
 		return false;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public ArrayList<Client> getClients(User u) {
 		ArrayList<Client> r = new ArrayList<Client>();
@@ -257,10 +258,11 @@ public class MySqlConnector implements Connector {
 					JSONObject jsonObj = jsonArray.getJSONObject(i);
 					
 					cl.setId(new Dni(cipher.decode(jsonObj.getString("id"))));
+					cl.setBDate(new Date(jsonObj.getString("b_date").replace("-", "/")));
 					cl.setName(cipher.decode(jsonObj.getString("name")));
 					cl.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
 		//			cl.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
-					cl.setMail(cipher.decode(jsonObj.getString("mail")));
+		//			cl.setMail(cipher.decode(jsonObj.getString("mail")));
 	
 	/* ELEMENTOS NO NECESARIOS EN LA TABLA PRINCIPAL
 	 * NO SOLICITADOS A DB PARA AGILIZAR CARGA

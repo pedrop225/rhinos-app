@@ -1,5 +1,6 @@
 package com.desktop.rhinos.gui.table;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -13,11 +14,13 @@ public class ClientTable extends RhTable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+	
 	public ClientTable() {
 		tm.addColumn("Nif");
 		tm.addColumn("Nombre");
+		tm.addColumn("F. Nacimiento");
 		tm.addColumn("Teléfono");
-		tm.addColumn("Mail");
 	}
 	
 	protected void removeSelected() {
@@ -57,8 +60,8 @@ public class ClientTable extends RhTable {
 			Client c = ac.get(i);
 			Object [] o = {	c.getId().toString(),
 							c.getName(),
-							c.getTlf_1(),
-							c.getMail()};
+							formatter.format(c.getBDate()),
+							c.getTlf_1()};
 			
 			tm.addRow(filterBackUp[i] = o);
 		}

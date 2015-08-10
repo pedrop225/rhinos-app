@@ -4,7 +4,8 @@
 	mysql_connect($mysql_host, $mysql_user, $mysql_password);
 	mysql_select_db($mysql_database);
 	
-	$q = mysql_query("SELECT * FROM Clients NATURAL JOIN Address");
+	$q = mysql_query(" 	SELECT id, name, b_date, tlf_1 
+					 	FROM Clients");
 	
 	while ($e = mysql_fetch_assoc($q))
 		$output[] = $e;
