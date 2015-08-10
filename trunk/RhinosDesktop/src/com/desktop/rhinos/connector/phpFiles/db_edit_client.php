@@ -6,6 +6,7 @@
 	
 	$q = mysql_query("	UPDATE Clients 
 								SET name='".$_REQUEST['name']."',
+								b_date = '".$_REQUEST['b_date']."',
 								tlf_1='".$_REQUEST['tlf_1']."',
 								tlf_2='".$_REQUEST['tlf_2']."',
 								mail='".$_REQUEST['mail']."',

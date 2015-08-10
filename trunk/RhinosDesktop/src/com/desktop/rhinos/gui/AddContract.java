@@ -46,7 +46,7 @@ public class AddContract extends JFrame {
 	
 	public static final int SSFIELD = 4; //super short field
 	public static final int SFIELD = 10; //short field
-	public static final int LFIELD = 37; //large field
+	public static final int LFIELD = 45; //large field
 		
 	private ClientDataCollector cliData;
 	private ConsultancyDataCollector conData;
@@ -215,6 +215,7 @@ public class AddContract extends JFrame {
 	
 	private void prepareContract(Client c) {
 		cliData.getNif().setText(c.getId().toString());
+		cliData.getBDate().setDate(c.getBDate());
 		cliData.getClientName().setText(c.getName());
 		cliData.getTel().setText(c.getTlf_1());
 		cliData.getTelAux().setText(c.getTlf_2());

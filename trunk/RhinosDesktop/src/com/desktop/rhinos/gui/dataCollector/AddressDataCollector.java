@@ -103,7 +103,7 @@ public class AddressDataCollector extends JPanel {
 		JPanel panel_8 = new JPanel();
 		panel.add(panel_8);
 		
-		JLabel lblPoblacion = new JLabel("Población");
+		JLabel lblPoblacion = new JLabel("Municipio");/*Poblacion*/
 		panel_8.add(lblPoblacion);
 		
 		tf_poblacion = new JTextField();
@@ -113,7 +113,7 @@ public class AddressDataCollector extends JPanel {
 		JPanel panel_2 = new JPanel();
 		panel.add(panel_2);
 		
-		JLabel lblMunicipio = new JLabel("Municipio");
+		JLabel lblMunicipio = new JLabel("Provincia");/*Municipio*/
 		panel_2.add(lblMunicipio);
 		
 		tf_municipio = new JTextField();

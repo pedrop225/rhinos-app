@@ -4,7 +4,7 @@
 	mysql_connect($mysql_host, $mysql_user, $mysql_password);
 	mysql_select_db($mysql_database);
 	
-	$q = mysql_query("	SELECT DISTINCT Clients.id, name, Clients.tlf_1, Clients.tlf_2, mail, consultancy,
+	$q = mysql_query("	SELECT DISTINCT Clients.id, b_date, name, Clients.tlf_1, Clients.tlf_2, mail, consultancy,
 										tipo_via, nombre_via, numero, portal, escalera, piso, puerta, 
 										poblacion, municipio, cp
 						FROM Clients, Address, Services 

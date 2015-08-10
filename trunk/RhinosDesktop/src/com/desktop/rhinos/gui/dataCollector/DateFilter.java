@@ -19,8 +19,10 @@ import com.toedter.calendar.JCalendar;
 public class DateFilter extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
 	public static final int DATE = 0;
 	public static final int EXPIRY = 1;
+	public static final int BDATE = 2;
 	
 	private JCalendar calendar_1;
 	private JCalendar calendar_2;
@@ -28,6 +30,7 @@ public class DateFilter extends JPanel {
 	
 	private JRadioButton date;
 	private JRadioButton expiry;
+	private JRadioButton bdate;
 
 	/**
 	 * Create the frame.
@@ -59,13 +62,16 @@ public class DateFilter extends JPanel {
 		
 		date = new JRadioButton("Fecha", true);
 		expiry = new JRadioButton("Vencimiento");
+		bdate = new JRadioButton("F. Nacimiento");
 		
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(date);
 		bg.add(expiry);
+		bg.add(bdate);
 		
 		panel.add(date);
 		panel.add(expiry);
+		panel.add(bdate);
 		
 		add(panel_1, BorderLayout.WEST);
 		add(panel_2, BorderLayout.EAST);
@@ -85,6 +91,13 @@ public class DateFilter extends JPanel {
 	}
 	
 	public int getDateType() {
-		return (date.isSelected()) ? DATE : EXPIRY;
+		if (date.isSelected()) {
+			return DATE;
+		}
+		else if (expiry.isSelected()) {
+			return EXPIRY;
+		}
+		else
+			return BDATE;
 	}
 }

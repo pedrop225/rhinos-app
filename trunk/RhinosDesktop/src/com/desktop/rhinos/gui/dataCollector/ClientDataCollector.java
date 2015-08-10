@@ -1,8 +1,10 @@
 package com.desktop.rhinos.gui.dataCollector;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -17,17 +19,20 @@ import com.android.rhinos.gest.Nie;
 import com.desktop.rhinos.connector.MySqlConnector.App;
 import com.desktop.rhinos.gui.AddContract;
 import com.desktop.rhinos.gui.Util;
+import com.toedter.calendar.JDateChooser;
 
 public class ClientDataCollector extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private JComboBox<String> idSelector;
+	private JLabel labBDate;
 	private JLabel labName;
 	private JLabel labTel;
 	private JLabel labMail;
 	
 	private JTextField nif;
+	private JDateChooser bdate;
 	private JTextField name;
 	private JTextField tel;
 	private JTextField telAux;
@@ -48,41 +53,49 @@ public class ClientDataCollector extends JPanel {
 		
 		String [] ids = {"", "DNI", "NIE", "CIF"};
 		idSelector = new JComboBox<String>(ids);
+		labBDate = new JLabel("F. Nacimiento:");
 		labName = new JLabel("Nombre:");
 		labTel = new JLabel("Teléfonos:");
 		labMail = new JLabel("Mail:");
 		
 		nif = new JTextField(AddContract.SFIELD);
+		bdate = new JDateChooser(new Date());
+		bdate.setPreferredSize(new Dimension(120, 20));
 		name = new JTextField(AddContract.LFIELD);
 		tel = new JTextField(AddContract.SFIELD);
 		telAux = new JTextField(AddContract.SFIELD);
 		mail = new JTextField(AddContract.LFIELD);
 		
+		bdate.setDateFormatString("dd/MM/yyyy");
+		bdate.getDateEditor().setEnabled(false);
+		
 		idSelector.setFont(App.DEFAULT_FONT);
 		nif.setFont(App.DEFAULT_FONT);
-		name.setFont(App.DEFAULT_FONT);
+		bdate.setFont(App.DEFAULT_FONT);
+		name.setFont(App.DEFAULT_FONT); 
+		
 		tel.setFont(App.DEFAULT_FONT);
 		telAux.setFont(App.DEFAULT_FONT);
 		mail.setFont(App.DEFAULT_FONT);
 		
 		labsPanel = new JPanel(new GridLayout(0, 1));
 		labsPanel.add(Util.packInJP(idSelector));
+		labsPanel.add(Util.packInJP(labBDate));
 		labsPanel.add(Util.packInJP(labName));
 		labsPanel.add(Util.packInJP(labTel));
-	//	labsPanel.add(Util.packInJP(labTelAux));
 		labsPanel.add(Util.packInJP(labMail));
 		
-		JPanel tels = new JPanel(new FlowLayout(FlowLayout.LEADING));
+		JPanel tels = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		tels.add(tel);
 		tels.add(telAux);
 		
 		dataPanel = new JPanel(new GridLayout(0, 1));
 		dataPanel.add(Util.packInJP(nif));
+		dataPanel.add(Util.packInJP(bdate));
 		dataPanel.add(Util.packInJP(name));
 		dataPanel.add(tels);
-		//dataPanel.add(Util.packInJP(telAux));
 		dataPanel.add(Util.packInJP(mail));
-			
+		
 		addressPanel = new AddressDataCollector();
 		
 		add(labsPanel, BorderLayout.WEST);
@@ -91,6 +104,9 @@ public class ClientDataCollector extends JPanel {
 	}
 	
 	public void setFieldsEditable(boolean editable) {
+		bdate.setEnabled(editable);
+		bdate.getDateEditor().setEnabled(false);
+		
 		name.setEditable(editable);
 		tel.setEditable(editable);
 		telAux.setEditable(editable);
@@ -104,6 +120,10 @@ public class ClientDataCollector extends JPanel {
 	
 	public JTextField getNif() {
 		return nif;
+	}
+	
+	public JDateChooser getBDate() {
+		return bdate;
 	}
 	
 	public JTextField getClientName() {
@@ -218,6 +238,7 @@ public class ClientDataCollector extends JPanel {
 			default: c.setId(new Dni(""));
 		}
 		
+		c.setBDate(bdate.getDate());
 		c.setName(name.getText().trim());
 		c.setTlf_1(tel.getText().trim());
 		c.setTlf_2(telAux.getText().trim());

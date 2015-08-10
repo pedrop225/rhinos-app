@@ -4,8 +4,9 @@
 	mysql_connect($mysql_host, $mysql_user, $mysql_password);
 	mysql_select_db($mysql_database);
 	
-	$q = mysql_query("	INSERT INTO Clients (id, name, tlf_1, tlf_2, mail, consultancy) 
+	$q = mysql_query("	INSERT INTO Clients (id, b_date, name, tlf_1, tlf_2, mail, consultancy) 
 						VALUES(	'".$_REQUEST['id']."',
+								'".$_REQUEST['b_date']."',
 								'".$_REQUEST['name']."',
 								'".$_REQUEST['tlf_1']."',
 								'".$_REQUEST['tlf_2']."',

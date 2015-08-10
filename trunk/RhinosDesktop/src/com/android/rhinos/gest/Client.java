@@ -2,12 +2,14 @@ package com.android.rhinos.gest;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Client implements Serializable, Comparable<Client> {
 
 	private static final long serialVersionUID = 1L;
 	
 	private Id id;
+	private Date bdate;
 	private String name;
 	private String tlf_1;
 	private String tlf_2;
@@ -38,6 +40,10 @@ public class Client implements Serializable, Comparable<Client> {
 		return id;
 	}
 	
+	public Date getBDate() {
+		return bdate;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -48,6 +54,10 @@ public class Client implements Serializable, Comparable<Client> {
 	
 	public void setId(Id id) {
 		this.id = id;
+	}
+	
+	public void setBDate(Date bdate) {
+		this.bdate = bdate;
 	}
 	
 	public void setName(String name) {

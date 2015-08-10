@@ -172,6 +172,7 @@ public class MySqlConnector implements Connector {
 	    //the mail data to send
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	    nameValuePairs.add(new BasicNameValuePair("id", cipher.encode(c.getId().toString())));
+	    nameValuePairs.add(new BasicNameValuePair("b_date", formatter.format(c.getBDate())));
 	    nameValuePairs.add(new BasicNameValuePair("name", cipher.encode(c.getName())));
 	    nameValuePairs.add(new BasicNameValuePair("tlf_1", cipher.encode(c.getTlf_1())));
 	    nameValuePairs.add(new BasicNameValuePair("tlf_2", cipher.encode(c.getTlf_2())));
@@ -205,6 +206,7 @@ public class MySqlConnector implements Connector {
 	    //the mail data to send
 	    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	    nameValuePairs.add(new BasicNameValuePair("id", cipher.encode(c.getId().toString())));
+	    nameValuePairs.add(new BasicNameValuePair("b_date", formatter.format(c.getBDate())));
 	    nameValuePairs.add(new BasicNameValuePair("name", cipher.encode(c.getName())));
 	    nameValuePairs.add(new BasicNameValuePair("tlf_1", cipher.encode(c.getTlf_1())));
 	    nameValuePairs.add(new BasicNameValuePair("tlf_2", cipher.encode(c.getTlf_2())));
@@ -257,10 +259,13 @@ public class MySqlConnector implements Connector {
 					cl.setId(new Dni(cipher.decode(jsonObj.getString("id"))));
 					cl.setName(cipher.decode(jsonObj.getString("name")));
 					cl.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
-					cl.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
+		//			cl.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
 					cl.setMail(cipher.decode(jsonObj.getString("mail")));
-					
-					cl.setDirTipoVia(cipher.decode(jsonObj.getString("tipo_via")));
+	
+	/* ELEMENTOS NO NECESARIOS EN LA TABLA PRINCIPAL
+	 * NO SOLICITADOS A DB PARA AGILIZAR CARGA
+	 */
+	/*				cl.setDirTipoVia(cipher.decode(jsonObj.getString("tipo_via")));
 					cl.setDirNombreVia(cipher.decode(jsonObj.getString("nombre_via")));
 					cl.setDirNumero(cipher.decode(jsonObj.getString("numero")));
 					cl.setDirPortal(cipher.decode(jsonObj.getString("portal")));
@@ -271,7 +276,7 @@ public class MySqlConnector implements Connector {
 					cl.setDirMunicipio(cipher.decode(jsonObj.getString("municipio")));
 					cl.setDirCp(cipher.decode(jsonObj.getString("cp")));
 					
-					cl.setConsultancy(jsonObj.getInt("consultancy"));
+					cl.setConsultancy(jsonObj.getInt("consultancy")); */
 					
 					r.add(cl);
 				}
@@ -320,6 +325,7 @@ public class MySqlConnector implements Connector {
 		return tr;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public Client clientExists(String id) {
 		Client client = null;
@@ -335,6 +341,8 @@ public class MySqlConnector implements Connector {
 				JSONObject jsonObj = jsonArray.getJSONObject(0);
 				
 				client.setId(new Dni(id));
+				client.setBDate(new Date(jsonObj.getString("b_date").replace("-", "/")));
+				
 				client.setName(cipher.decode(jsonObj.getString("name")));
 				client.setTlf_1(cipher.decode(jsonObj.getString("tlf_1")));
 				client.setTlf_2(cipher.decode(jsonObj.getString("tlf_2")));
